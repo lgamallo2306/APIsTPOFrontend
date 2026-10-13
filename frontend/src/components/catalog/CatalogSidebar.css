@@ -1,12 +1,12 @@
 .catalog-sidebar {
-  width: 252px;
+  width: 15.75rem;
   flex-shrink: 0;
 }
 .catalog-sidebar-toggle {
   display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
   .catalog-sidebar-toggle {
     display: inline-flex;
   }

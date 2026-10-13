@@ -1,20 +1,20 @@
 .price-tag {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.125rem;
 }
 .price-tag-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 .price-tag-final {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
   .price-tag-final {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }

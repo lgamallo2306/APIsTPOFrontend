@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
-import { getMe, getCart } from './utils/api'
+import { getMe, getCart, getCategories } from './utils/api'
 
 import CatalogView from './views/CatalogView'
 import ProductDetailView from './views/ProductDetailView'
@@ -22,6 +22,7 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [user, setUser] = useState(null)
   const [cartCount, setCartCount] = useState(0)
+  const [categories, setCategories] = useState([])
 
    const handleLogin = (newToken) => {
     localStorage.setItem('token', newToken)
@@ -35,7 +36,12 @@ function App() {
     setCartCount(0)
   }
 
-  
+  useEffect(() => {
+    getCategories()
+      .then((data) => setCategories(data.content))
+      .catch(() => setCategories([]))
+  }, [])
+
   useEffect(() => {
     if (!token) return
     getMe(token)
@@ -53,7 +59,7 @@ function App() {
     <div className='app'>
       <Header user={user} cartCount={cartCount} onLogout={handleLogout} />
       <Routes>
-        <Route path='/' element={<CatalogView />} />
+        <Route path='/' element={<CatalogView categories={categories} />} />
         <Route path="/productos/:id" element={<ProductDetailView />} />
         <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
         <Route path="/registro" element={<RegisterView onLogin={handleLogin} />} />
@@ -62,14 +68,14 @@ function App() {
         <Route path="/mis-compras" element={user ? <MyPurchasesView /> : <LoginView onLogin={handleLogin} />} />
         <Route path="/perfil" element={user ? <ProfileView user={user} /> : <LoginView onLogin={handleLogin} />} />
 
-        <Route path="/vendedor/productos" element={isVendor ? <MyProductsView /> : <CatalogView />} />
-        <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView /> : <CatalogView />} />
-        <Route path="/vendedor/productos/:id" element={isVendor ? <ProductFormView /> : <CatalogView />} />
-        <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView /> : <CatalogView />} />
-        <Route path="/vendedor/ventas" element={isVendor ? <MySalesView /> : <CatalogView />} />
+        <Route path="/vendedor/productos" element={isVendor ? <MyProductsView /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/productos/:id" element={isVendor ? <ProductFormView /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/ventas" element={isVendor ? <MySalesView /> : <CatalogView categories={categories} />} />
 
-        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView /> : <CatalogView />} />
-        <Route path="/admin/usuarios" element={isAdmin ? <UsersView /> : <CatalogView />} />
+        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView /> : <CatalogView categories={categories} />} />
+        <Route path="/admin/usuarios" element={isAdmin ? <UsersView /> : <CatalogView categories={categories} />} />
       </Routes>
     </div>
   )

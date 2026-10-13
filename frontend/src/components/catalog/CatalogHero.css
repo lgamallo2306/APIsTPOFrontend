@@ -1,19 +1,19 @@
 .catalog-hero {
-  padding: 36px 40px 28px;
-  border-bottom: 1px solid var(--border);
+  padding: 2.25rem 2.5rem 1.75rem;
+  border-bottom: 0.0625rem solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 .catalog-hero-title {
-  font-size: 36px;
+  font-size: 2.25rem;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
   .catalog-hero {
-    padding: 20px 16px;
+    padding: 1.25rem 1rem;
   }
   .catalog-hero-title {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 }

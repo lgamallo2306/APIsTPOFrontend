@@ -5,13 +5,13 @@ function PriceFilter({ minPrice, maxPrice, onChange }) {
     <fieldset className="price-filter">
       <legend className="label">Precio</legend>
       <div className="price-filter-inputs">
-        <div className="affix">
-          <span className="pre">$</span>
-          <input name="minPrice" type="number" min="0" className="input" placeholder="Mín." aria-label="Precio mínimo" value={minPrice} onChange={onChange} />
+        <div className="field">
+          <label className="label" htmlFor="minPrice">Mínimo</label>
+          <input id="minPrice" name="minPrice" type="number" min="0" className="input" value={minPrice} onChange={onChange} />
         </div>
-        <div className="affix">
-          <span className="pre">$</span>
-          <input name="maxPrice" type="number" min="0" className="input" placeholder="Máx." aria-label="Precio máximo" value={maxPrice} onChange={onChange} />
+        <div className="field">
+          <label className="label" htmlFor="maxPrice">Máximo</label>
+          <input id="maxPrice" name="maxPrice" type="number" min="0" className="input" value={maxPrice} onChange={onChange} />
         </div>
       </div>
     </fieldset>

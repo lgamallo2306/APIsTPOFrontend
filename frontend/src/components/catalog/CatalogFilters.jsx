@@ -4,8 +4,13 @@ import PriceFilter from './PriceFilter'
 import SortDropdown from './SortDropdown'
 import './CatalogFilters.css'
 
-function CatalogFilters({ categories, filters, error, onApply, onClear }) {
+function CatalogFilters({ categories, filters, search, error, onApply, onClear }) {
   const [form, setForm] = useState(filters)
+  const [lastSearch, setLastSearch] = useState(search)
+  if (search !== lastSearch) {
+    setLastSearch(search)
+    setForm(filters)
+  }
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })

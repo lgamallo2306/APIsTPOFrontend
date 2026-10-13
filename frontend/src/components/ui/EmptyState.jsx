@@ -1,6 +1,6 @@
 import './EmptyState.css'
 
-function EmptyState({ title, text, children }) {
+function EmptyState({ title, text, actionLabel, onAction }) {
   return (
     <section className="empty-state">
       <div className="bed empty-state-art">
@@ -10,7 +10,7 @@ function EmptyState({ title, text, children }) {
         <h2 className="h2">{title}</h2>
         <p className="muted">{text}</p>
       </div>
-      {children}
+      {actionLabel && <button type="button" className="btn btn-primary" onClick={onAction}>{actionLabel}</button>}
     </section>
   )
 }
