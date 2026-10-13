@@ -111,9 +111,12 @@ textarea.input{height:auto;padding:12px 14px;resize:vertical;line-height:1.5}
    2. Ajustes propios para la app
    ========================================================= */
 
-/* El div.app ocupa toda la pantalla y pinta el fondo */
+/* El div.app ocupa toda la pantalla y pinta el fondo.
+   Es una columna: arriba el header, abajo la vista, que ocupa el resto. */
 .app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* En el diseño el overlay y el sheet se posicionan dentro del canvas;
@@ -123,4 +126,112 @@ textarea.input{height:auto;padding:12px 14px;resize:vertical;line-height:1.5}
 }
 .app .sheet {
   position: fixed;
+}
+
+/* =========================================================
+   3. Estilos de componentes y pantallas
+   ========================================================= */
+
+/* ---------- Logo ---------- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none !important;
+}
+.logo-text {
+  font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--text);
+}
+
+/* ---------- Input con botón (ojo de la contraseña) ---------- */
+.affix-btn {
+  position: absolute;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+/* ---------- Login / Registro ---------- */
+.auth-page {
+  flex: 1;
+  display: flex;
+}
+.auth-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px;
+  background-color: var(--surface-2);
+}
+.auth-layers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.auth-layer {
+  height: 34px;
+  max-width: 100%;
+  border-radius: 17px;
+}
+.auth-claim {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 460px;
+}
+.auth-claim .display {
+  font-size: 40px;
+}
+.auth-side {
+  width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: var(--surface);
+}
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.auth-form-title {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.auth-form .btn {
+  width: 100%;
+  margin-top: 6px;
+}
+.auth-note {
+  text-align: center;
+}
+
+/* Mobile: se oculta el panel decorativo y el form ocupa todo el ancho */
+@media (max-width: 900px) {
+  .auth-panel {
+    display: none;
+  }
+  .auth-side {
+    width: 100%;
+    padding: 32px 20px;
+    align-items: flex-start;
+  }
 }
