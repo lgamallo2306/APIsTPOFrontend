@@ -1,0 +1,21 @@
+/* Layout de las vistas de login y registro: panel a la izquierda, formulario a la derecha */
+.auth-page {
+  flex: 1;
+  display: flex;
+}
+.auth-side {
+  width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: var(--surface);
+}
+
+@media (max-width: 900px) {
+  .auth-side {
+    width: 100%;
+    padding: 32px 20px;
+    align-items: flex-start;
+  }
+}

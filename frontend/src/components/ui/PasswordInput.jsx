@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './PasswordInput.css'
 
 // Input de contraseña con el botón del ojo para mostrarla u ocultarla.
 function PasswordInput({ id, name, value, onChange }) {

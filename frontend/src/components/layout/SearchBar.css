@@ -1,0 +1,9 @@
+.search {
+  flex-grow: 1;
+  max-width: 520px;
+}
+.search-input {
+  padding-left: 42px;
+  background: var(--surface-2);
+  border-color: transparent;
+}

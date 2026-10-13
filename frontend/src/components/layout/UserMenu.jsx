@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import UserDropdown from './UserDropdown'
+import './UserMenu.css'
 
 function UserMenu({ user, onLogout }) {
   const [open, setOpen] = useState(false)

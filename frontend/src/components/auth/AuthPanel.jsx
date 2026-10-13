@@ -1,4 +1,5 @@
 import Logo from '../layout/Logo'
+import './AuthPanel.css'
 
 
 const CAPAS = [180, 260, 340, 420, 500]

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { login } from '../utils/api'
 import AuthPanel from '../components/auth/AuthPanel'
 import LoginForm from '../components/auth/LoginForm'
+import './AuthView.css'
 
 function LoginView({ onLogin }) {
   const [error, setError] = useState('')

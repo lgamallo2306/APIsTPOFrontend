@@ -1,0 +1,17 @@
+.user-menu {
+  position: relative;
+}
+.user-btn {
+  padding: 0 10px 0 6px;
+  gap: 10px;
+}
+.user-name {
+  font-weight: 600;
+  font-size: 14.5px;
+}
+
+@media (max-width: 700px) {
+  .user-name {
+    display: none;
+  }
+}

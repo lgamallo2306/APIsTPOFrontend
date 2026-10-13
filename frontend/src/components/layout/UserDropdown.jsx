@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
+import './UserDropdown.css'
 
 function UserDropdown({ user, initials, onLogout, onClose }) {
   const navigate = useNavigate()

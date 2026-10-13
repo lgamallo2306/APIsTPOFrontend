@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../ui/PasswordInput'
+import './AuthForm.css'
 
 function LoginForm({ onSubmit, error, loading }) {
   const [form, setForm] = useState({ email: '', password: '' })

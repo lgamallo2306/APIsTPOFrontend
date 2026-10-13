@@ -23,7 +23,9 @@ npm run lint     # tiene que quedar sin errores
 frontend/src/
   main.jsx          BrowserRouter + App. No se modifica.
   App.jsx           Estado de sesión, Header y definición de rutas.
-  index.css         Tokens y clases del diseño + estilos de componentes y pantallas.
+  index.css         Fuentes + import de los tokens + estilos globales (.app).
+  styles/
+    tokens.css      Sistema de diseño (variables y clases base). No se edita.
   utils/
     api.js          URL base y una función por endpoint.
     format.js       formatPrice, finalPrice, formatDate.
@@ -115,8 +117,10 @@ Los filtros del catálogo viven en la query string (`/?name=maceta&categoryId=3&
 ## Diseño
 
 - La especificación visual está en el handoff de diseño (pantallas desktop 1280 px y mobile 390 px, `tokens.css`, `mock-data.json`).
-- `index.css` empieza con el contenido de `tokens.css`. Las variables están definidas sobre `.app`, por eso el `div` raíz de `App` lleva `className="app"`.
-- Usar las clases del diseño (`btn btn-primary`, `input`, `field`, `label`, `card`, `pcard`, `badge`, `alert-err`, `modal`, `skel`, `pager`, etc.) antes de crear estilos nuevos. Los estilos nuevos van al final de `index.css`, por sección.
+- `styles/tokens.css` es el sistema de diseño tal como viene del handoff: no se edita; si el diseño cambia, se reemplaza entero. Las variables están definidas sobre `.app`, por eso el `div` raíz de `App` lleva `className="app"`.
+- Usar las clases del diseño (`btn btn-primary`, `input`, `field`, `label`, `card`, `pcard`, `badge`, `alert-err`, `modal`, `skel`, `pager`, etc.) antes de crear estilos nuevos.
+- Cada componente o vista con estilos propios tiene su CSS al lado (`Header.jsx` + `Header.css`) y lo importa (`import './Header.css'`). Los CSS compartidos llevan nombre propio (`auth/AuthForm.css`, `views/AuthView.css`).
+- Estos CSS son globales (no quedan limitados al componente): las clases nuevas se prefijan con el nombre del componente (`.header-actions`, `.user-dropdown`) para no chocar.
 - Responsive solo con `@media` en CSS.
 - Formatos (`utils/format.js`): precio `$ 15.725,00`; precio final `price * (1 - discount / 100)`; fecha `30 sep 2026, 14:20`.
 - Stock: `0` → badge "Sin stock" y botón deshabilitado; `<= 3` → badge "Últimas N".

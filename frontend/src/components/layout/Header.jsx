@@ -3,6 +3,7 @@ import SearchBar from './SearchBar'
 import CartIcon from './CartIcon'
 import UserMenu from './UserMenu'
 import AuthButtons from './AuthButtons'
+import './Header.css'
 
 function Header({ user, cartCount, onLogout}) {
   return (
