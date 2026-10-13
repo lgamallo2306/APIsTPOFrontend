@@ -44,3 +44,6 @@ export const getCart = (token) =>
 
 export const getCategories = () =>
   fetch(`${URL}/categories`).then(handle)
+
+export const getProducts = (query) =>
+  fetch(`${URL}/products?size=12&${query}`).then(handle)

@@ -1,0 +1,19 @@
+.catalog-hero {
+  padding: 36px 40px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.catalog-hero-title {
+  font-size: 36px;
+}
+
+@media (max-width: 700px) {
+  .catalog-hero {
+    padding: 20px 16px;
+  }
+  .catalog-hero-title {
+    font-size: 24px;
+  }
+}

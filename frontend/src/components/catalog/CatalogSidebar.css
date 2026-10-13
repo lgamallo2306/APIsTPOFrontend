@@ -1,0 +1,20 @@
+.catalog-sidebar {
+  width: 252px;
+  flex-shrink: 0;
+}
+.catalog-sidebar-toggle {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .catalog-sidebar-toggle {
+    display: inline-flex;
+  }
+  .catalog-sidebar {
+    display: none;
+    width: 100%;
+  }
+  .catalog-sidebar-open {
+    display: block;
+  }
+}

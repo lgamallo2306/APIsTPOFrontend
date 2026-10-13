@@ -1,0 +1,25 @@
+.category-filter {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.category-filter legend {
+  margin-bottom: 6px;
+}
+.category-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 14.5px;
+}
+.category-filter-option input {
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}

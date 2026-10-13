@@ -1,0 +1,12 @@
+.catalog-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.catalog-filters-actions {
+  display: flex;
+  gap: 8px;
+}
+.catalog-filters-actions .btn-primary {
+  flex-grow: 1;
+}

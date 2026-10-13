@@ -1,0 +1,23 @@
+.product-grid-skeleton-img {
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+}
+.product-grid-skeleton-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.product-grid-skeleton-line {
+  height: 12px;
+  width: 40%;
+}
+.product-grid-skeleton-wide {
+  height: 14px;
+  width: 85%;
+}
+.product-grid-skeleton-price {
+  height: 20px;
+  width: 45%;
+  margin-top: 6px;
+}
