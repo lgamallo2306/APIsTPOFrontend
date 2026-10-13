@@ -21,8 +21,6 @@ function LoginView({ onLogin }) {
     login(credentials)
       .then((data) => {
         onLogin(data.access_token)
-        // Si entró por /login lo mando al catálogo. Si llegó acá desde una
-        // ruta protegida (ej. /carrito), se queda: App mostrará esa vista.
         setLoading(false)
         if (location.pathname === '/login') navigate('/')
       })

@@ -1,24 +1,19 @@
-import { Link } from 'react-router-dom'
+import Logo from './Logo'
+import SearchBar from './SearchBar'
+import CartIcon from './CartIcon'
+import UserMenu from './UserMenu'
+import AuthButtons from './AuthButtons'
 
-function Header() {
+function Header({ user, cartCount, onLogout}) {
   return (
-    <header>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Inicio</Link>
-          </li>
-          <li>
-            <Link to="/carrito">Carrito</Link>
-          </li>
-          <li>
-            <Link to="/login">Ingresar</Link>
-          </li>
-          <li>
-            <Link to="/registro">Crear cuenta</Link>
-          </li>
-        </ul>
-      </nav>
+    <header className="header">
+        <Logo />
+        <SearchBar />
+        <div className='header-actions'>
+            <CartIcon count={cartCount} />
+             {user ? <UserMenu user={user} onLogout={onLogout} /> : <AuthButtons />}
+        </div>
+   
     </header>
   )
 }

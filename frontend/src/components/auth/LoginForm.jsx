@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../ui/PasswordInput'
 
-// Formulario controlado de login. Guarda lo que escribe el usuario
-// y, al enviar, le pasa los datos al padre (LoginView) por onSubmit.
 function LoginForm({ onSubmit, error, loading }) {
   const [form, setForm] = useState({ email: '', password: '' })
 
