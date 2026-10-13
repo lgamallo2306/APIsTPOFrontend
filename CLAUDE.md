@@ -57,6 +57,11 @@ frontend/src/
 - Cada input lleva `name` igual al campo del DTO del backend; un solo `handleChange` con `[e.target.name]: e.target.value`.
 - `e.preventDefault()` en el submit. Validar primero los casos inválidos y cortar con `return`.
 
+**Código simple y explicable**
+- Todo el equipo tiene que poder explicar cada línea. Ante dos soluciones, elegir la más directa aunque sea más larga.
+- Estados explícitos en vez de valores deducidos con trucos. Por ejemplo, la carga se maneja con un estado `loading` (`setLoading(true)` antes del fetch, `setLoading(false)` en `.then` y `.catch`), no comparando strings.
+- Evitar, salvo acuerdo del equipo: la prop `children`, `key` para forzar el reinicio de un componente, `??` y `?.`, desestructuración dentro de callbacks (`([, value]) =>`), `Object.entries` / `reduce` encadenados, y hooks de librerías que no estén en esta lista (`useSearchParams`, `useParams`, etc.).
+
 **Prohibido**
 - TypeScript.
 - Acceder a `document` o `window` desde componentes (incluye `alert`, `confirm`, `getElementById`, `document.title`). La única excepción es `main.jsx`. Avisos y confirmaciones se hacen con componentes (`Modal`, `Toast`) mostrados con estado.
@@ -137,6 +142,7 @@ El backend real manda sobre el handoff:
 | `PATCH /products/{id}/stock` | body `{ quantity }` |
 | `PATCH /products/{id}/discount` | body `{ discount }` |
 | `GET /users` | existe, paginado (ADMIN) |
+| `GET /categories` | devuelve una página (`Page`): la lista está en `data.content` |
 
 - Sin token, el back responde **403** (no 401).
 - Pendiente en el back: configurar CORS para `http://localhost:5173` y corregir `DELETE /cart/items` (tiene un `@PathVariable` sin variable en la ruta).
