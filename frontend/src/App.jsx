@@ -9,6 +9,7 @@ import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import CartView from './views/CartView'
 import MyPurchasesView from './views/MyPurchasesView'
+import OrderDetailView from './views/OrderDetailView'
 import ProfileView from './views/ProfileView'
 import MyProductsView from './views/MyProductsView'
 import ProductFormView from './views/ProductFormView'
@@ -30,6 +31,17 @@ function App() {
    const handleLogin = (newToken) => {
     localStorage.setItem('token', newToken)
     setToken(newToken)
+  }
+
+  // el panel admin pide su propia página; App mantiene la lista del catálogo al día con cada cambio
+  const handleCategorySaved = (saved) => {
+    setCategories((prev) => (prev.some((item) => item.id === saved.id)
+      ? prev.map((item) => (item.id === saved.id ? saved : item))
+      : [...prev, saved]))
+  }
+
+  const handleCategoryDeleted = (id) => {
+    setCategories((prev) => prev.filter((item) => item.id !== id))
   }
 
   const handleLogout = () => {
@@ -98,7 +110,8 @@ function App() {
 
         <Route path="/carrito" element={user ? <CartView cart={cart} products={cartProducts} error={cartError} onRetry={handleRetryCart} token={token} onCartChange={handleCartChange} onLogout={handleLogout} /> : <LoginView onLogin={handleLogin} />} />
         <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView token={token} onLogout={handleLogout} /> : <LoginView onLogin={handleLogin} />} />
-        <Route path="/mis-compras" element={user ? <MyPurchasesView /> : <LoginView onLogin={handleLogin} />} />
+        <Route path="/mis-compras" element={user ? <MyPurchasesView token={token} onLogout={handleLogout} /> : <LoginView onLogin={handleLogin} />} />
+        <Route path="/mis-compras/:id" element={user ? <OrderDetailView token={token} onLogout={handleLogout} /> : <LoginView onLogin={handleLogin} />} />
         <Route path="/perfil" element={user ? <ProfileView user={user} /> : <LoginView onLogin={handleLogin} />} />
 
         <Route path="/vendedor/productos" element={isVendor ? <MyProductsView /> : <CatalogView categories={categories} />} />
@@ -107,8 +120,8 @@ function App() {
         <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView token={token} /> : <CatalogView categories={categories} />} />
         <Route path="/vendedor/ventas" element={isVendor ? <MySalesView token={token} /> : <CatalogView categories={categories} />} />
 
-        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView /> : <CatalogView categories={categories} />} />
-        <Route path="/admin/usuarios" element={isAdmin ? <UsersView /> : <CatalogView categories={categories} />} />
+        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} onCategorySaved={handleCategorySaved} onCategoryDeleted={handleCategoryDeleted} onLogout={handleLogout} /> : <CatalogView categories={categories} />} />
+        <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : <CatalogView categories={categories} />} />
       </Routes>
     </div>
   )

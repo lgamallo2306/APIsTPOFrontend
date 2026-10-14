@@ -1,0 +1,28 @@
+.categories-admin {
+  padding: 2rem 2.5rem;
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 43.75rem) {
+  .categories-admin {
+    padding: 1rem;
+  }
+}
+
+.categories-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.categories-admin-header .h1 {
+  margin: 0;
+}
+
+.categories-skeleton {
+  height: 16rem;
+}

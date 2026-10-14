@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import PasswordInput from '../ui/PasswordInput'
 import './RegisterForm.css'
 
 function RegisterForm({ onSubmit, error, loading }) {
-  const [form, setForm] = useState({ email: '', password: '',firstName:'', lastName:'' })
+  // los name coinciden con el DTO del back (RegisterRequest): firstname, lastname
+  const [form, setForm] = useState({ email: '', password: '', firstname: '', lastname: '' })
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -33,13 +33,13 @@ function RegisterForm({ onSubmit, error, loading }) {
       </div>
       
       <div className="field">
-        <label className="label" htmlFor="firstName">FirstName</label>
-        <input id="firstName" name="firstName" type="text" className="input" value={form.firstName} onChange={handleChange} />
+        <label className="label" htmlFor="firstname">Nombre</label>
+        <input id="firstname" name="firstname" type="text" className="input" value={form.firstname} onChange={handleChange} />
       </div>
       
       <div className="field">
-        <label className="label" htmlFor="lastName">LastName</label>
-        <input id="lastName" name="lastName" type="text" className="input" value={form.lastName} onChange={handleChange} />
+        <label className="label" htmlFor="lastname">Apellido</label>
+        <input id="lastname" name="lastname" type="text" className="input" value={form.lastname} onChange={handleChange} />
       </div>
 
       {error && <p className="alert-err">{error}</p>}

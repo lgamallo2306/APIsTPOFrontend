@@ -45,6 +45,10 @@ export const getCart = (token) =>
 export const getCategories = () =>
   fetch(`${URL}/categories`).then(handle)
 
+// página de categorías para el panel admin: 10 por página
+export const getCategoriesPage = (page) =>
+  fetch(`${URL}/categories?page=${page}&size=10`).then(handle)
+
 export const getProducts = (query) =>
   fetch(`${URL}/products?size=12&${query}`).then(handle)
 
@@ -92,3 +96,36 @@ export const estimatePrice = (token, data) =>
 
 export const getSales = (token) =>
   fetch(`${URL}/orders/sales`, { headers: authHeaders(token) }).then(handle)
+
+export const getOrders = (token) =>
+  fetch(`${URL}/orders`, { headers: authHeaders(token) }).then(handle)
+
+// ---------- Admin: categorías ----------
+// data = { description }
+export const createCategory = (token, data) =>
+  fetch(`${URL}/categories`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+export const updateCategory = (token, id, data) =>
+  fetch(`${URL}/categories/${id}`, {
+    method: 'PUT',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+export const deleteCategory = (token, id) =>
+  fetch(`${URL}/categories/${id}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
+
+// ---------- Admin: usuarios ----------
+export const getUserByEmail = (token, email) =>
+  fetch(`${URL}/users/email/${encodeURIComponent(email)}`, { headers: authHeaders(token) }).then(handle)
+
+// role = 'USER' | 'VENDOR' | 'ADMIN'
+export const assignRole = (token, userId, role) =>
+  fetch(`${URL}/users/${userId}/roles/${role}`, { method: 'POST', headers: authHeaders(token) }).then(handle)
+
+export const removeRole = (token, userId, role) =>
+  fetch(`${URL}/users/${userId}/roles/${role}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)

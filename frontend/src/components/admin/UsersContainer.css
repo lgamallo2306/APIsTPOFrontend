@@ -1,0 +1,22 @@
+.users-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 2.5rem;
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 43.75rem) {
+  .users-admin {
+    padding: 1rem;
+  }
+}
+
+.users-admin .h1 {
+  margin: 0;
+}
+
+.users-skeleton {
+  height: 12rem;
+}
