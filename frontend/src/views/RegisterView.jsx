@@ -1,7 +1,10 @@
+import RegisterForm from "../components/auth/RegisterForm"
+
 function RegisterView() {
   return (
     <>
-      <h2>Crear cuenta</h2>
+      
+      <RegisterForm />
     </>
   )
 }

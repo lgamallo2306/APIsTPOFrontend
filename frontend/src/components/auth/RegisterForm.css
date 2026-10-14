@@ -1,0 +1,33 @@
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.auth-form-title {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.auth-form .btn {
+  width: 100%;
+  margin-top: 6px;
+}
+.auth-note {
+  text-align: center;
+}
+
+.RegisterForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente los elementos internos del form */
+  align-items: center;     /* Centra horizontalmente los elementos internos del form */
+  
+  /* Para centrar el div en toda la pantalla */
+  width: 100%;
+  max-width: 400px;        /* O el ancho que prefieras para tu formulario */
+  min-height: 80vh;       /* Ocupa toda la altura de la pantalla */
+  margin: 0 auto;
+    
+}
