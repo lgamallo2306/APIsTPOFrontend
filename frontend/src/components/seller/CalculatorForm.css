@@ -1,0 +1,31 @@
+.calculator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: none;
+}
+
+.calculator-form-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.875rem;
+}
+
+.calculator-form-submit {
+  align-self: flex-start;
+}
+
+@media (max-width: 43.75rem) {
+  .calculator-form {
+    padding: 1rem;
+  }
+
+  .calculator-form-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calculator-form-submit {
+    align-self: stretch;
+  }
+}

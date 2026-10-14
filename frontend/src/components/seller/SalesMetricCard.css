@@ -1,0 +1,11 @@
+.sales-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem;
+  box-shadow: none;
+}
+
+.sales-metric-card-value {
+  font-size: 1.75rem;
+}

@@ -1,0 +1,13 @@
+.calculator-row {
+  padding: 0.625rem 0;
+}
+
+.calculator-row-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator-row-total {
+  border-top: 1px dashed var(--border-strong);
+  font-weight: 600;
+}

@@ -1,0 +1,13 @@
+.price-calculator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 26.25rem;
+  gap: 1.75rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 62rem) {
+  .price-calculator {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}

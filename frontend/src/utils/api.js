@@ -47,3 +47,16 @@ export const getCategories = () =>
 
 export const getProducts = (query) =>
   fetch(`${URL}/products?size=12&${query}`).then(handle)
+
+export const getMaterials = () =>
+  fetch(`${URL}/products/materials`).then(handle)
+
+export const estimatePrice = (token, data) =>
+  fetch(`${URL}/products/estimate-price`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+export const getSales = (token) =>
+  fetch(`${URL}/orders/sales`, { headers: authHeaders(token) }).then(handle)

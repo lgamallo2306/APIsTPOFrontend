@@ -1,0 +1,8 @@
+.sales-table {
+  overflow-x: auto;
+  box-shadow: none;
+}
+
+.sales-table .table {
+  min-width: 40rem;
+}
