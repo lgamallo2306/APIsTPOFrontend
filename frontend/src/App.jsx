@@ -104,8 +104,8 @@ function App() {
         <Route path="/vendedor/productos" element={isVendor ? <MyProductsView /> : <CatalogView categories={categories} />} />
         <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView /> : <CatalogView categories={categories} />} />
         <Route path="/vendedor/productos/:id" element={isVendor ? <ProductFormView /> : <CatalogView categories={categories} />} />
-        <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView /> : <CatalogView categories={categories} />} />
-        <Route path="/vendedor/ventas" element={isVendor ? <MySalesView /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView token={token} /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/ventas" element={isVendor ? <MySalesView token={token} /> : <CatalogView categories={categories} />} />
 
         <Route path="/admin/categorias" element={isAdmin ? <CategoriesView /> : <CatalogView categories={categories} />} />
         <Route path="/admin/usuarios" element={isAdmin ? <UsersView /> : <CatalogView categories={categories} />} />

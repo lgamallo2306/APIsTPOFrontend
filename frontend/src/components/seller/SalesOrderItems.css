@@ -1,0 +1,18 @@
+.sales-order-items {
+  background: var(--surface-2);
+  padding: 0.75rem 1.5rem 1rem 4.5rem;
+}
+
+.sales-order-items-row {
+  padding: 0.375rem 0;
+}
+
+.sales-order-items-subtotal {
+  font-weight: 600;
+}
+
+@media (max-width: 43.75rem) {
+  .sales-order-items {
+    padding: 0.75rem 1rem;
+  }
+}

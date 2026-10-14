@@ -12,34 +12,22 @@ function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFil
   const [retry, setRetry] = useState(0)
 
   const query = `${new URLSearchParams({ ...filters, page: pageNumber })}`
-  const [lastQuery, setLastQuery] = useState(query)
-  if (query !== lastQuery) {
-    setLastQuery(query)
-    setLoading(true)
-    setError('')
-  }
 
   useEffect(() => {
-    let active = true
+    setLoading(true)
+    setError('')
     getProducts(query)
       .then((data) => {
-        if (!active) return
         setProducts(data)
         setLoading(false)
       })
       .catch((err) => {
-        if (!active) return
         setError(err.status && err.message ? err.message : ERROR_CARGA)
         setLoading(false)
       })
-    return () => {
-      active = false
-    }
   }, [query, retry])
 
   const handleRetry = () => {
-    setLoading(true)
-    setError('')
     setRetry(retry + 1)
   }
 
@@ -47,8 +35,18 @@ function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFil
 
   return (
     <section className="catalog-products">
-      <CatalogResults loading={loading} error={error} products={products} filters={filters} hasFilters={hasFilters} categories={categories}
-        onRetry={handleRetry} onClear={onClear} onRemoveFilter={onRemoveFilter} onPageChange={onPageChange} />
+      <CatalogResults
+        loading={loading}
+        error={error}
+        products={products}
+        filters={filters}
+        hasFilters={hasFilters}
+        categories={categories}
+        onRetry={handleRetry}
+        onClear={onClear}
+        onRemoveFilter={onRemoveFilter}
+        onPageChange={onPageChange}
+      />
     </section>
   )
 }

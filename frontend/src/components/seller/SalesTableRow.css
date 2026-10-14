@@ -1,0 +1,8 @@
+.sales-table-row-open {
+  background: var(--accent-soft);
+}
+
+.sales-table-row-id,
+.sales-table-row-total {
+  font-weight: 600;
+}

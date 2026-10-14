@@ -1,16 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CategoryFilter from './CategoryFilter'
 import PriceFilter from './PriceFilter'
 import SortDropdown from './SortDropdown'
 import './CatalogFilters.css'
 
-function CatalogFilters({ categories, filters, search, error, onApply, onClear }) {
+function CatalogFilters({ categories, filters, error, onApply, onClear }) {
+  const { name, categoryId, minPrice, maxPrice, sort } = filters
   const [form, setForm] = useState(filters)
-  const [lastSearch, setLastSearch] = useState(search)
-  if (search !== lastSearch) {
-    setLastSearch(search)
-    setForm(filters)
-  }
+
+  // Cuando cambian los filtros de la URL (por ejemplo, al sacar uno), el formulario se actualiza
+  useEffect(() => {
+    setForm({ name, categoryId, minPrice, maxPrice, sort })
+  }, [name, categoryId, minPrice, maxPrice, sort])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })

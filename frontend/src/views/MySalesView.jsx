@@ -1,8 +1,11 @@
-function MySalesView() {
+import SellerLayout from '../components/seller/SellerLayout'
+import MySales from '../components/seller/MySales'
+
+function MySalesView({ token }) {
   return (
-    <>
-      <h2>Mis ventas</h2>
-    </>
+    <SellerLayout title="Mis ventas">
+      <MySales token={token} />
+    </SellerLayout>
   )
 }
 

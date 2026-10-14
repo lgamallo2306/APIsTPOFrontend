@@ -1,0 +1,30 @@
+.material-selector {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.material-selector-legend {
+  margin-bottom: 0.625rem;
+}
+
+.material-selector-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.material-selector-options .segopt {
+  padding: 0.625rem 0.75rem;
+  gap: 0.125rem;
+}
+
+.material-selector-name {
+  font-weight: 600;
+}
+
+@media (max-width: 43.75rem) {
+  .material-selector-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
