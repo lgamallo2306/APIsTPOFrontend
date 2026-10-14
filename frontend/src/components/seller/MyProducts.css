@@ -1,0 +1,10 @@
+.my-products {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.my-products-bar {
+  display: flex;
+  justify-content: flex-end;
+}

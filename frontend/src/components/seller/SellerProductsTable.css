@@ -1,0 +1,8 @@
+.seller-products-table {
+  overflow-x: auto;
+  box-shadow: none;
+}
+
+.seller-products-table .table {
+  min-width: 40rem;
+}

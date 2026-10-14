@@ -101,7 +101,7 @@ function App() {
         <Route path="/mis-compras" element={user ? <MyPurchasesView /> : <LoginView onLogin={handleLogin} />} />
         <Route path="/perfil" element={user ? <ProfileView user={user} /> : <LoginView onLogin={handleLogin} />} />
 
-        <Route path="/vendedor/productos" element={isVendor ? <MyProductsView /> : <CatalogView categories={categories} />} />
+        <Route path="/vendedor/productos" element={isVendor ? <MyProductsView token={token} /> : <CatalogView categories={categories} />} />
         <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView /> : <CatalogView categories={categories} />} />
         <Route path="/vendedor/productos/:id" element={isVendor ? <ProductFormView /> : <CatalogView categories={categories} />} />
         <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView token={token} /> : <CatalogView categories={categories} />} />

@@ -1,0 +1,11 @@
+.my-products-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  box-shadow: none;
+}
+
+.my-products-skeleton-row {
+  height: 3.5rem;
+}

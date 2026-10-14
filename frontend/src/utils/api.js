@@ -92,3 +92,53 @@ export const estimatePrice = (token, data) =>
 
 export const getSales = (token) =>
   fetch(`${URL}/orders/sales`, { headers: authHeaders(token) }).then(handle)
+
+// ---------- Productos del vendedor ----------
+
+export const getSellerProducts = (token, page) =>
+  fetch(`${URL}/products/mine?page=${page}`, { headers: authHeaders(token) }).then(handle)
+
+export const createProduct = (token, data) =>
+  fetch(`${URL}/products`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+export const updateProduct = (token, id, data) =>
+  fetch(`${URL}/products/${id}`, {
+    method: 'PUT',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+export const deleteProduct = (token, id) =>
+  fetch(`${URL}/products/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  }).then(handle)
+
+export const updateDiscount = (token, id, discount) =>
+  fetch(`${URL}/products/${id}/discount`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify({ discount }),
+  }).then(handle)
+
+// ---------- Imágenes ----------
+
+export const uploadProductImage = (token, productId, file) => {
+  const formData = new FormData()
+  formData.append('file', file)
+  return fetch(`${URL}/products/${productId}/images`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  }).then(handle)
+}
+
+export const deleteProductImage = (token, productId, imageId) =>
+  fetch(`${URL}/products/${productId}/images/${imageId}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  }).then(handle)

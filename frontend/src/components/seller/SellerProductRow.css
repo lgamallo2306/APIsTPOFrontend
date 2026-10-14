@@ -1,0 +1,39 @@
+.seller-product-row-info {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.seller-product-row-img {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background-color: var(--surface-2);
+}
+
+.seller-product-row-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.seller-product-row-name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.seller-product-row-price .price-tag {
+  align-items: flex-end;
+}
+
+.seller-product-row-price .price-tag-row {
+  justify-content: flex-end;
+}
+
+.seller-product-row-stock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
