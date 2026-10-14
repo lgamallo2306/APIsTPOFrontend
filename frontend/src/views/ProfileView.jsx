@@ -1,8 +1,10 @@
-function ProfileView() {
+import Profile from '../components/profile/Profile'
+
+function ProfileView({ user, onLogout }) {
   return (
-    <>
-      <h2>Perfil</h2>
-    </>
+    <main>
+      <Profile user={user} onLogout={onLogout} />
+    </main>
   )
 }
 

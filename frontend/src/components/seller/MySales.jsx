@@ -10,6 +10,8 @@ function MySales({ token }) {
   const [retry, setRetry] = useState(0)
 
   useEffect(() => {
+    setLoading(true)
+    setError('')
     getSales(token)
       .then((data) => {
         setSales(data)
@@ -22,8 +24,6 @@ function MySales({ token }) {
   }, [token, retry])
 
   const handleRetry = () => {
-    setLoading(true)
-    setError('')
     setRetry(retry + 1)
   }
 

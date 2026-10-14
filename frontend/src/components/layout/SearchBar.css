@@ -1,9 +1,18 @@
 .search {
   flex-grow: 1;
-  max-width: 520px;
+  max-width: 32.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.search-label {
+  margin: 0;
+}
+.search-field {
+  flex-grow: 1;
 }
 .search-input {
-  padding-left: 42px;
+  padding-left: 2.625rem;
   background: var(--surface-2);
   border-color: transparent;
 }

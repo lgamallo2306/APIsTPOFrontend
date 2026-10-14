@@ -108,6 +108,7 @@ Vive en `App.jsx` y se pasa por props:
 - `categories`: `GET /categories` una sola vez al montar (`useEffect` con `[]`); se pasa a las vistas que la usan.
 - `handleLogin(token)` / `handleLogout()`: se pasan a las vistas y al Header.
 - Un `useEffect` con `[token]` trae usuario y carrito cada vez que cambia el token.
+- `loadingUser`: mientras llega `GET /users/me`, las rutas protegidas muestran `PageLoading` en vez del login.
 - Si un visitante tuvo que loguearse en medio de una acción (por ejemplo, agregar al carrito), después del login vuelve a donde estaba (`navigate(-1)`), no al inicio.
 
 Rutas protegidas con renderizado condicional en `element` (no se usan `Navigate` ni `Outlet`):
@@ -152,17 +153,18 @@ El backend real manda sobre el handoff:
 | --- | --- |
 | `POST /api/v1/auth/register` | `{ firstname, lastname, email, password, role }` |
 | `PUT /cart/items` | body `{ productId, quantity }` (`quantity: 0` elimina el ítem) |
-| `PATCH /products/{id}/stock` | body `{ quantity }` |
+| `PATCH /products/{id}/stock` | body `{ quantity }`: **se suma** al stock actual (negativo resta). El front pide el valor nuevo y manda la diferencia |
 | `PATCH /products/{id}/discount` | body `{ discount }` |
 | `GET /users` | existe, paginado (ADMIN) |
 | `GET /categories` | devuelve una página (`Page`): la lista está en `data.content` |
+| `GET /products/{id}`, `/products/mine` | el producto trae `categoryName` (no el id) e `imageUrls` (sin id de imagen). Para quitar una imagen se hace `PUT /products/{id}` con `imageUrls` sin esa url; si el `PUT` no manda `imageUrls`, las imágenes no se tocan |
 
 - Sin token, el back responde **403** (no 401).
 - CORS configurado en el back para `http://localhost:5173` (si el front levanta en otro puerto, las llamadas fallan).
+- Pendiente en el back: `POST /products/{id}/images` responde 500 (`cloud_name is disabled`): la cuenta de Cloudinary configurada está deshabilitada.
 - Pendiente en el back: corregir `DELETE /cart/items` (tiene un `@PathVariable` sin variable en la ruta). Mientras tanto, para borrar un ítem se usa `PUT /cart/items` con `quantity: 0`.
 
 ## Decisiones pendientes
 
 - `/productos/:id` lee el id con `useLocation().pathname.split('/')[2]` para no usar `useParams`. Si la cátedra lo permite, se puede cambiar.
 - Modo oscuro: se haría con un estado en `App` que agrega la clase `dark` a `.app`. Baja prioridad.
-- Al recargar una ruta protegida se ve el login un instante hasta que llega `GET /users/me` (se resuelve con un estado `loadingUser`).

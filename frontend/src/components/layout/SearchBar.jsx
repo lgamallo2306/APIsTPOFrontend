@@ -16,20 +16,24 @@ function SearchBar() {
   }
 
   return (
-    <form className="affix search" onSubmit={handleSubmit}>
-      <span className="ico">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" />
-        </svg>
-      </span>
-      <input
-        className="input search-input"
-        type="search"
-        placeholder="Buscar macetas, repuestos, figuras…"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+    <form className="search" onSubmit={handleSubmit}>
+      <label htmlFor="header-search" className="label search-label">Buscar</label>
+      <div className="affix search-field">
+        <span className="ico">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+        </span>
+        <input
+          id="header-search"
+          className="input search-input"
+          type="search"
+          placeholder="Macetas, repuestos, figuras…"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      </div>
     </form>
   )
 }

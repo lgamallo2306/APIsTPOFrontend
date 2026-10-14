@@ -1,0 +1,58 @@
+/* Formulario de producto: datos a la izquierda, imágenes a la derecha */
+.product-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.product-editor-skeleton {
+  height: 28rem;
+}
+
+.product-data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+  padding: 1.5rem;
+}
+
+.product-data-form-textarea {
+  height: auto;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  resize: vertical;
+}
+
+.product-data-form-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.product-data-form-price {
+  padding-left: 2rem;
+}
+
+.product-data-form-preview {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-data-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+@media (max-width: 56rem) {
+  .product-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 43.75rem) {
+  .product-data-form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

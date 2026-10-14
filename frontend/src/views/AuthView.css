@@ -4,18 +4,18 @@
   display: flex;
 }
 .auth-side {
-  width: 560px;
+  width: 35rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px;
+  padding: 3rem;
   background: var(--surface);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .auth-side {
     width: 100%;
-    padding: 32px 20px;
+    padding: 2rem 1.25rem;
     align-items: flex-start;
   }
 }

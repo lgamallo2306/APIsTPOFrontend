@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { getSellerProducts } from '../../utils/api'
-import MyProductsResults from './MyProductsResults'
+import MyProductsPanel from './MyProductsPanel'
 import './MyProducts.css'
 
 const ERROR_CARGA = 'No pudimos traer tus productos. Revisá tu conexión e intentá de nuevo.'
 
-function MyProducts({ token }) {
+// data es la página que devuelve el back: content, number, totalPages, totalElements, first, last
+function MyProducts({ token, onLogout }) {
   const [data, setData] = useState(null)
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -31,19 +31,33 @@ function MyProducts({ token }) {
     setRetry(retry + 1)
   }
 
+  // stock y descuento devuelven el producto actualizado: se reemplaza en la página, sin otro GET
+  const handleUpdated = (updated) => {
+    setData({ ...data, content: data.content.map((item) => (item.id === updated.id ? updated : item)) })
+  }
+
+  const handleDeleted = (id) => {
+    const remaining = data.content.filter((item) => item.id !== id)
+    // si se vació una página que no es la primera, se vuelve a la anterior
+    if (remaining.length === 0 && page > 0) {
+      setPage(page - 1)
+      return
+    }
+    setData({ ...data, content: remaining, totalElements: data.totalElements - 1 })
+  }
+
   return (
-    <section className="my-products">
-      <div className="my-products-bar">
-        <Link to="/vendedor/productos/nuevo" className="btn btn-primary">Nuevo producto</Link>
-      </div>
-      <MyProductsResults
-        loading={loading}
-        error={error}
-        data={data}
-        onRetry={handleRetry}
-        onPageChange={(number) => setPage(number)}
-      />
-    </section>
+    <MyProductsPanel
+      token={token}
+      onLogout={onLogout}
+      loading={loading}
+      error={error}
+      data={data}
+      onRetry={handleRetry}
+      onPageChange={(number) => setPage(number)}
+      onUpdated={handleUpdated}
+      onDeleted={handleDeleted}
+    />
   )
 }
 

@@ -1,18 +1,18 @@
 .auth-form {
   width: 100%;
-  max-width: 400px;
+  max-width: 25rem;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 1.125rem;
 }
 .auth-form-title {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.375rem;
 }
 .auth-form .btn {
   width: 100%;
-  margin-top: 6px;
+  margin-top: 0.375rem;
 }
 .auth-note {
   text-align: center;
@@ -26,7 +26,7 @@
   
   /* Para centrar el div en toda la pantalla */
   width: 100%;
-  max-width: 400px;        /* O el ancho que prefieras para tu formulario */
+  max-width: 25rem;        /* O el ancho que prefieras para tu formulario */
   min-height: 80vh;       /* Ocupa toda la altura de la pantalla */
   margin: 0 auto;
     

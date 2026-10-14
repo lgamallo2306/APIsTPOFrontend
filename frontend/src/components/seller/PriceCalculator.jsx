@@ -24,20 +24,8 @@ function PriceCalculator({ token }) {
       })
   }, [])
 
+  // el formulario ya validó los datos: acá solo se arma el body y se llama al back
   const handleCalculate = (form) => {
-    if (form.material === '') {
-      setError('Elegí un material.')
-      return
-    }
-    if (form.weightGrams === '' || Number(form.weightGrams) <= 0) {
-      setError('El peso tiene que ser mayor a 0.')
-      return
-    }
-    if (Number(form.printHours) < 0 || Number(form.marginPercentage) < 0) {
-      setError('Las horas y el margen no pueden ser negativos.')
-      return
-    }
-
     setError('')
     setLoading(true)
     estimatePrice(token, {

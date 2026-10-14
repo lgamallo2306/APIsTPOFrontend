@@ -1,9 +1,9 @@
-import { formatPrice } from '../../utils/format'
+import { formatPrice, countUnits } from '../../utils/format'
 import SalesMetricCard from './SalesMetricCard'
 import './SalesMetrics.css'
 
 function SalesMetrics({ sales }) {
-  const units = sales.reduce((total, order) => total + order.items.reduce((count, item) => count + item.quantity, 0), 0)
+  const units = sales.reduce((total, order) => total + countUnits(order.items), 0)
   const amount = sales.reduce((total, order) => total + order.total, 0)
 
   return (

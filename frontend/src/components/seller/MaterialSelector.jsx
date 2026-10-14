@@ -8,8 +8,8 @@ function MaterialSelector({ materials, loading, error, selected, onSelect }) {
       {loading && <p className="muted">Cargando materiales…</p>}
       {error && <p className="alert-err">{error}</p>}
       <div className="material-selector-options">
-        {materials.map((material, index) => (
-          <button key={index} type="button" className={material.name === selected ? 'segopt on' : 'segopt'}
+        {materials.map((material) => (
+          <button key={material.name} type="button" className={material.name === selected ? 'segopt on' : 'segopt'}
             onClick={() => onSelect(material.name)}>
             <span className="mono material-selector-name">{material.name}</span>
             <span className="small muted">{formatPrice(material.pricePerKg)}/kg</span>

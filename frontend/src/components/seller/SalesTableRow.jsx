@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { formatPrice, formatDate } from '../../utils/format'
+import { formatPrice, formatDate, countUnits } from '../../utils/format'
 import SalesOrderItems from './SalesOrderItems'
 import './SalesTableRow.css'
 
 function SalesTableRow({ order }) {
   const [open, setOpen] = useState(false)
 
-  const units = order.items.reduce((count, item) => count + item.quantity, 0)
+  const units = countUnits(order.items)
 
   return (
     <>

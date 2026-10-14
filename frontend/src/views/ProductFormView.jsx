@@ -1,8 +1,12 @@
-function ProductFormView() {
+import SellerLayout from '../components/seller/SellerLayout'
+import ProductEditor from '../components/seller/ProductEditor'
+
+// La misma vista sirve para alta y edición: App le pasa el título según la ruta
+function ProductFormView({ title, user, token, categories, onLogout }) {
   return (
-    <>
-      <h2>Producto (alta / edición)</h2>
-    </>
+    <SellerLayout title={title}>
+      <ProductEditor user={user} token={token} categories={categories} onLogout={onLogout} />
+    </SellerLayout>
   )
 }
 

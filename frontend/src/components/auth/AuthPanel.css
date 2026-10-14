@@ -3,32 +3,32 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 48px;
+  padding: 3rem;
   background-color: var(--surface-2);
 }
 .auth-layers {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 0.625rem;
 }
 .auth-layer {
-  height: 34px;
+  height: 2.125rem;
   max-width: 100%;
-  border-radius: 17px;
+  border-radius: 1.0625rem;
 }
 .auth-claim {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 460px;
+  gap: 0.625rem;
+  max-width: 28.75rem;
 }
 .auth-claim .display {
-  font-size: 40px;
+  font-size: 2.5rem;
 }
 
 /* Mobile: se oculta el panel decorativo */
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .auth-panel {
     display: none;
   }

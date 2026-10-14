@@ -1,33 +1,33 @@
 .user-dropdown {
   position: absolute;
-  top: 52px;
+  top: 3.25rem;
   right: 0;
-  width: 260px;
-  padding: 8px;
+  width: 16.25rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.125rem;
   box-shadow: var(--shadow-lg);
   z-index: 30;
 }
 .user-dropdown-head {
   display: flex;
-  gap: 10px;
+  gap: 0.625rem;
   align-items: center;
-  padding: 10px 10px 12px;
+  padding: 0.625rem 0.625rem 0.75rem;
 }
 .user-fullname {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .user-roles {
   display: flex;
-  gap: 4px;
-  margin-top: 4px;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
 }
 .user-roles .badge {
-  height: 20px;
-  font-size: 10.5px;
+  height: 1.25rem;
+  font-size: 0.6562rem;
 }
 .navlink.logout {
   color: var(--danger) !important;

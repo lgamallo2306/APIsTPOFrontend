@@ -1,19 +1,19 @@
 /* Compartido por LoginForm y RegisterForm */
 .auth-form {
   width: 100%;
-  max-width: 400px;
+  max-width: 25rem;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 1.125rem;
 }
 .auth-form-title {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.375rem;
 }
 .auth-form .btn {
   width: 100%;
-  margin-top: 6px;
+  margin-top: 0.375rem;
 }
 .auth-note {
   text-align: center;

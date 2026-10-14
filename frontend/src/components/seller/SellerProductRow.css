@@ -22,18 +22,3 @@
   font-weight: 600;
   color: var(--text);
 }
-
-.seller-product-row-price .price-tag {
-  align-items: flex-end;
-}
-
-.seller-product-row-price .price-tag-row {
-  justify-content: flex-end;
-}
-
-.seller-product-row-stock {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}

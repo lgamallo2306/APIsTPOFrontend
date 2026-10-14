@@ -14,3 +14,6 @@ export const formatDate = (iso) => {
   const mm = String(d.getMinutes()).padStart(2, '0')
   return `${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}, ${hh}:${mm}`
 }
+
+// suma las cantidades de una lista de ítems (carrito u orden)
+export const countUnits = (items) => items.reduce((total, item) => total + item.quantity, 0)

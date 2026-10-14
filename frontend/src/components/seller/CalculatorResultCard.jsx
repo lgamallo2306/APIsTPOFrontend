@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { formatPrice } from '../../utils/format'
 import CalculatorRow from './CalculatorRow'
 import './CalculatorResultCard.css'
@@ -24,6 +25,10 @@ function CalculatorResultCard({ result }) {
         <span className="price calculator-result-amount">{formatPrice(result.suggestedPrice)}</span>
       </div>
       <p className="note calculator-result-note">{result.note}</p>
+      {/* el precio viaja en el state del Link: el formulario de alta lo usa como precio inicial */}
+      <Link to="/vendedor/productos/nuevo" state={{ price: result.suggestedPrice }} className="btn btn-secondary">
+        Usar este precio
+      </Link>
     </section>
   )
 }

@@ -1,0 +1,9 @@
+.seller-product-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.seller-product-actions-delete {
+  color: var(--danger) !important;
+}

@@ -19,12 +19,12 @@ function SellerNav() {
   return (
     <nav className="seller-nav" aria-label="Panel vendedor">
       <span className="eyebrow seller-nav-title">Panel vendedor</span>
-      {SELLER_LINKS.map((link, index) => (
-        <Link key={index} to={link.to} className={location.pathname === link.to ? 'navlink on' : 'navlink'}>{link.label}</Link>
+      {SELLER_LINKS.map((link) => (
+        <Link key={link.to} to={link.to} className={location.pathname === link.to ? 'navlink on' : 'navlink'}>{link.label}</Link>
       ))}
       <span className="eyebrow seller-nav-title">Cuenta</span>
-      {ACCOUNT_LINKS.map((link, index) => (
-        <Link key={index} to={link.to} className="navlink">{link.label}</Link>
+      {ACCOUNT_LINKS.map((link) => (
+        <Link key={link.to} to={link.to} className="navlink">{link.label}</Link>
       ))}
     </nav>
   )

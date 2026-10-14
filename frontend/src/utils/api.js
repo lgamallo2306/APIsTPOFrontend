@@ -125,6 +125,14 @@ export const deleteProduct = (token, id) =>
     headers: authHeaders(token),
   }).then(handle)
 
+// quantity se suma al stock actual (puede ser negativa para restar)
+export const updateStock = (token, id, quantity) =>
+  fetch(`${URL}/products/${id}/stock`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify({ quantity }),
+  }).then(handle)
+
 export const updateDiscount = (token, id, discount) =>
   fetch(`${URL}/products/${id}/discount`, {
     method: 'PATCH',

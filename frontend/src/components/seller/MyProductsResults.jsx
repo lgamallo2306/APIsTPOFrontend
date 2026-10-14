@@ -3,7 +3,7 @@ import Pagination from '../ui/Pagination'
 import MyProductsSkeleton from './MyProductsSkeleton'
 import SellerProductsTable from './SellerProductsTable'
 
-function MyProductsResults({ loading, error, data, onRetry, onPageChange }) {
+function MyProductsResults({ loading, error, data, onRetry, onPageChange, onStock, onDiscount, onDelete }) {
   if (loading) return <MyProductsSkeleton />
 
   if (error) {
@@ -16,7 +16,7 @@ function MyProductsResults({ loading, error, data, onRetry, onPageChange }) {
 
   return (
     <>
-      <SellerProductsTable products={data.content} />
+      <SellerProductsTable products={data.content} onStock={onStock} onDiscount={onDiscount} onDelete={onDelete} />
       <Pagination page={data} onChange={onPageChange} />
       <p className="small muted">{data.totalElements} {data.totalElements === 1 ? 'producto publicado' : 'productos publicados'}</p>
     </>

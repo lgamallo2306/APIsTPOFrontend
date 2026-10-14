@@ -1,0 +1,21 @@
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2.25rem 2.5rem;
+}
+
+.page-loading-title {
+  width: 16rem;
+  height: 2.5rem;
+}
+
+.page-loading-block {
+  height: 20rem;
+}
+
+@media (max-width: 43.75rem) {
+  .page-loading {
+    padding: 1.25rem 1rem;
+  }
+}
