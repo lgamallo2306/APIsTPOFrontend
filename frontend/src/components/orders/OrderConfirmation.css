@@ -1,0 +1,14 @@
+.order-confirmation {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+.order-confirmation-skeleton {
+  height: 20rem;
+}
+
+@media (max-width: 43.75rem) {
+  .order-confirmation {
+    padding: 1rem;
+  }
+}

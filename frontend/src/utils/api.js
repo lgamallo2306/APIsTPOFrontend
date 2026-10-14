@@ -47,3 +47,36 @@ export const getCategories = () =>
 
 export const getProducts = (query) =>
   fetch(`${URL}/products?size=12&${query}`).then(handle)
+
+export const getProduct = (id) =>
+  fetch(`${URL}/products/${id}`).then(handle)
+
+// item = { productId, quantity }
+export const addCartItem = (token, item) =>
+  fetch(`${URL}/cart/items`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(item),
+  }).then(handle)
+
+// item = { productId, quantity }; quantity 0 elimina el ítem
+export const updateCartItem = (token, item) =>
+  fetch(`${URL}/cart/items`, {
+    method: 'PUT',
+    headers: authHeaders(token),
+    body: JSON.stringify(item),
+  }).then(handle)
+
+export const checkout = (token) =>
+  fetch(`${URL}/orders/checkout`, { method: 'POST', headers: authHeaders(token) }).then(handle)
+
+// los ítems del carrito no traen imagen: se pide cada producto.
+// Promise.all espera todas las promesas y devuelve un array con los productos en el mismo orden
+export const getCartProducts = (items) =>
+  Promise.all(items.map((item) => getProduct(item.productId)))
+
+export const clearCart = (token) =>
+  fetch(`${URL}/cart`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
+
+export const getOrder = (token, id) =>
+  fetch(`${URL}/orders/${id}`, { headers: authHeaders(token) }).then(handle)

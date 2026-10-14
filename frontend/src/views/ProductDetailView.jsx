@@ -1,8 +1,10 @@
-function ProductDetailView() {
+import ProductDetail from '../components/products/ProductDetail'
+
+function ProductDetailView({ token, onCartChange, onLogout }) {
   return (
-    <>
-      <h2>Detalle de producto</h2>
-    </>
+    <main>
+      <ProductDetail token={token} onCartChange={onCartChange} onLogout={onLogout} />
+    </main>
   )
 }
 

@@ -1,8 +1,10 @@
-function CartView() {
+import Cart from '../components/cart/Cart'
+
+function CartView({ cart, products, error, onRetry, token, onCartChange, onLogout }) {
   return (
-    <>
-      <h2>Carrito</h2>
-    </>
+    <main>
+      <Cart cart={cart} products={products} error={error} onRetry={onRetry} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+    </main>
   )
 }
 

@@ -101,7 +101,9 @@ Vive en `App.jsx` y se pasa por props:
 
 - `token`: se guarda en `localStorage` (es lo único que se persiste en el navegador).
 - `user`: respuesta de `GET /users/me`. `user.roles` es un array (`USER`, `VENDOR`, `ADMIN`).
-- `cartCount`: suma de `quantity` de los ítems del carrito.
+- `cart`: respuesta de `GET /cart` (se pide una sola vez por token y baja a `CartView`). `cartCount` se calcula sumando `quantity` de `cart.items`.
+- `cartProducts`: los productos de los ítems del carrito (los ítems no traen imagen ni stock). Se piden con `GET /products/{id}` una vez, junto con el carrito.
+- `onCartChange(cart, product)`: las vistas que modifican el carrito (detalle, carrito) le pasan a `App` el carrito que devuelve el back, así el contador del Header se actualiza sin otro GET. Desde el detalle también pasa el producto, que se suma a `cartProducts`.
 - `categories`: `GET /categories` una sola vez al montar (`useEffect` con `[]`); se pasa a las vistas que la usan.
 - `handleLogin(token)` / `handleLogout()`: se pasan a las vistas y al Header.
 - Un `useEffect` con `[token]` trae usuario y carrito cada vez que cambia el token.
@@ -121,6 +123,7 @@ Rutas protegidas con renderizado condicional en `element` (no se usan `Navigate`
 | `/productos/:id` | público | ProductDetailView |
 | `/login`, `/registro` | público | LoginView, RegisterView |
 | `/carrito`, `/mis-compras`, `/perfil` | USER | CartView, MyPurchasesView, ProfileView |
+| `/compra/:id/confirmada` | USER | OrderConfirmationView (la orden llega del checkout en `location.state`; sin state, `GET /orders/{id}`) |
 | `/vendedor/productos`, `/vendedor/productos/nuevo`, `/vendedor/productos/:id` | VENDOR / ADMIN | MyProductsView, ProductFormView |
 | `/vendedor/calculadora`, `/vendedor/ventas` | VENDOR / ADMIN | PriceCalculatorView, MySalesView |
 | `/admin/categorias`, `/admin/usuarios` | ADMIN | CategoriesView, UsersView |
@@ -154,10 +157,11 @@ El backend real manda sobre el handoff:
 | `GET /categories` | devuelve una página (`Page`): la lista está en `data.content` |
 
 - Sin token, el back responde **403** (no 401).
-- Pendiente en el back: configurar CORS para `http://localhost:5173` y corregir `DELETE /cart/items` (tiene un `@PathVariable` sin variable en la ruta).
+- CORS configurado para `http://localhost:5173` (GET, POST, PUT, PATCH, DELETE).
+- Pendiente en el back: corregir `DELETE /cart/items` (tiene un `@PathVariable` sin variable en la ruta). El front no lo usa: elimina ítems con `PUT /cart/items` y `quantity: 0`.
 
 ## Decisiones pendientes
 
-- `/productos/:id` necesita leer el parámetro de la URL (`useParams`). Confirmar si se puede usar antes de implementar el detalle.
+- `/productos/:id` lee el id con `useLocation().pathname.split('/')[2]` para no usar `useParams`. Si la cátedra lo permite, se puede cambiar.
 - Modo oscuro: se haría con un estado en `App` que agrega la clase `dark` a `.app`. Baja prioridad.
 - Al recargar una ruta protegida se ve el login un instante hasta que llega `GET /users/me` (se resuelve con un estado `loadingUser`).

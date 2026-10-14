@@ -23,7 +23,8 @@ function LoginView({ onLogin }) {
       .then((data) => {
         onLogin(data.access_token)
         setLoading(false)
-        if (location.pathname === '/login') navigate('/')
+        // vuelve a donde estaba (ej: el detalle del producto)
+        if (location.pathname === '/login') navigate(-1)
       })
       .catch((err) => {
         setError(err.message)

@@ -1,0 +1,14 @@
+.cart {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2rem 2.5rem;
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 43.75rem) {
+  .cart {
+    padding: 1rem;
+  }
+}
