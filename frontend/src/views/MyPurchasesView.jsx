@@ -1,8 +1,10 @@
-function MyPurchasesView() {
+import PurchasesContainer from '../components/orders/PurchasesContainer'
+
+function MyPurchasesView({ token, onLogout }) {
   return (
-    <>
-      <h2>Mis compras</h2>
-    </>
+    <main>
+      <PurchasesContainer token={token} onLogout={onLogout} />
+    </main>
   )
 }
 
