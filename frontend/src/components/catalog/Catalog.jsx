@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CatalogSidebar from './CatalogSidebar'
+import CatalogFilters from './CatalogFilters'
 import CatalogProducts from './CatalogProducts'
 import './Catalog.css'
 
@@ -40,11 +41,23 @@ function Catalog({ categories }) {
 
   return (
     <div className="catalog">
-      <CatalogSidebar open={showFilters} onToggle={() => setShowFilters(!showFilters)} categories={categories}
-        filters={filters} search={location.search} error={filterError} onApply={handleApply} onClear={handleClear} />
-      <CatalogProducts filters={filters} pageNumber={pageNumber} categories={categories} onClear={handleClear}
+      <CatalogSidebar open={showFilters} onToggle={() => setShowFilters(!showFilters)}>
+        <CatalogFilters
+          categories={categories}
+          filters={filters}
+          error={filterError}
+          onApply={handleApply}
+          onClear={handleClear}
+        />
+      </CatalogSidebar>
+      <CatalogProducts
+        filters={filters}
+        pageNumber={pageNumber}
+        categories={categories}
+        onClear={handleClear}
         onRemoveFilter={(field) => search({ ...filters, [field]: '' })}
-        onPageChange={(number) => search({ ...filters, page: number })} />
+        onPageChange={(number) => search({ ...filters, page: number })}
+      />
     </div>
   )
 }

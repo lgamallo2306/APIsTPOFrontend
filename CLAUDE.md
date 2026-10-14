@@ -64,8 +64,9 @@ frontend/src/
 **Código simple y explicable**
 - Todo el equipo tiene que poder explicar cada línea. Ante dos soluciones, elegir la más directa aunque sea más larga.
 - Estados explícitos en vez de valores deducidos con trucos. Por ejemplo, la carga se maneja con un estado `loading` (`setLoading(true)` antes del fetch, `setLoading(false)` en `.then` y `.catch`), no comparando strings.
-- `setLoading(true)` no puede ir directo en el cuerpo de un `useEffect`: el lint lo marca como error (`react-hooks/set-state-in-effect`). Si la consulta cambia por un evento propio, va en el handler; si cambia desde afuera (la URL), se usa el patrón de React de guardar el valor anterior antes del `return`: `if (query !== lastQuery) { setLastQuery(query); setLoading(true) }` (ver `CatalogProducts` y `CatalogFilters`).
-- Evitar, salvo acuerdo del equipo: la prop `children`, `key` para forzar el reinicio de un componente, `??` y `?.`, desestructuración dentro de callbacks (`([, value]) =>`), `Object.entries` / `reduce` encadenados, y hooks de librerías que no estén en esta lista (`useSearchParams`, `useParams`, etc.).
+- La regla de ESLint `react-hooks/set-state-in-effect` está desactivada a propósito (en `eslint.config.js`): se permite `setLoading(true)` y `setError('')` al inicio de un `useEffect`, antes del `fetch`. Para sincronizar un formulario con la URL se usa un `useEffect` con los campos como dependencias (ver `CatalogProducts` y `CatalogFilters`). No usar el patrón de guardar el valor anterior en un estado (`lastQuery`).
+- Usar `children` para componentes que son marcos o layouts: el componente arma la estructura fija y recibe el contenido entre sus etiquetas (`Modal`, `CatalogSidebar`, `SellerLayout`, `AuthLayout`). Los componentes que muestran datos con forma fija (`ProductCard`, `PriceTag`, `Pagination`) usan props normales.
+- Evitar, salvo acuerdo del equipo: `key` para forzar el reinicio de un componente, `??` y `?.`, desestructuración dentro de callbacks (`([, value]) =>`), `Object.entries` / `reduce` encadenados, y hooks de librerías que no estén en esta lista (`useSearchParams`, `useParams`, etc.).
 
 **Prohibido**
 - TypeScript y componentes de clase.
@@ -154,7 +155,8 @@ El backend real manda sobre el handoff:
 | `GET /categories` | devuelve una página (`Page`): la lista está en `data.content` |
 
 - Sin token, el back responde **403** (no 401).
-- Pendiente en el back: configurar CORS para `http://localhost:5173` y corregir `DELETE /cart/items` (tiene un `@PathVariable` sin variable en la ruta).
+- CORS configurado en el back para `http://localhost:5173` (si el front levanta en otro puerto, las llamadas fallan).
+- Pendiente en el back: corregir `DELETE /cart/items` (tiene un `@PathVariable` sin variable en la ruta). Mientras tanto, para borrar un ítem se usa `PUT /cart/items` con `quantity: 0`.
 
 ## Decisiones pendientes
 
