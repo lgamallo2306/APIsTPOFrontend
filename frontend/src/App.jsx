@@ -135,6 +135,7 @@ function App() {
 
         <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} onCategorySaved={handleCategorySaved} onCategoryDeleted={handleCategoryDeleted} onLogout={handleLogout} /> : catalogOrLoading} />
         <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
+        
       </Routes>
     </div>
   )
