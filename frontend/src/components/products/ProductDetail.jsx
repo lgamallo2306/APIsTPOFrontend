@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getProduct } from '../../utils/api'
 import EmptyState from '../ui/EmptyState'
+import BackButton from '../layout/BackButton'
 import ProductInfo from './ProductInfo'
 import './ProductDetail.css'
 
@@ -39,6 +40,9 @@ function ProductDetail({ token, onCartChange, onLogout }) {
 
   return (
     <section className="product-detail">
+      <div style={{ marginBottom: '16px' }}>
+        <BackButton />
+      </div>
       <ProductInfo product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
     </section>
   )

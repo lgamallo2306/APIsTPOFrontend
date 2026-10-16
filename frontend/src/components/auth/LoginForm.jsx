@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../ui/PasswordInput'
+import BackButton from '../layout/BackButton'
 import './AuthForm.css'
+
 
 function LoginForm({ onSubmit, error, loading }) {
   const [form, setForm] = useState({ email: '', password: '' })
@@ -17,6 +19,9 @@ function LoginForm({ onSubmit, error, loading }) {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
+      <div style={{ marginBottom: '16px' }}>
+        <BackButton />
+      </div>
       <div className="auth-form-title">
         <h1 className="h1">Ingresar</h1>
         <p className="muted">

@@ -11,7 +11,6 @@ function Header({ user, cartCount, onLogout}) {
     <header className="header">
         <Logo />
         <SearchBar />
-        <CatalogButton />
         <div className='header-actions'>
             <CartIcon count={cartCount} />
              {user ? <UserMenu user={user} onLogout={onLogout} /> : <AuthButtons />}
