@@ -13,7 +13,7 @@ function CartContent({ cart, products, error, updating, onRetry, onQuantity, onC
 
   if (cart.items.length === 0) {
     return <EmptyState title="Tu carrito está vacío" text="Agregá productos desde el catálogo."
-      actionLabel="Ver productos" onAction={() => navigate('/')} />
+      actionLabel="Ver productos" onAction={() => navigate('/catalogo')} />
   }
 
   return (

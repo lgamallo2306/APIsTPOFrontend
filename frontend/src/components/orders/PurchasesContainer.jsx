@@ -41,7 +41,7 @@ function PurchasesContainer({ token, onLogout }) {
 
   if (error) return <EmptyState title="No pudimos cargar tus compras" text={error} actionLabel="Reintentar" onAction={handleRetry} />
 
-  if (orders.length === 0) return <EmptyState title="Todavía no compraste nada" text="Cuando completes una compra, va a aparecer acá." actionLabel="Ir al catálogo" onAction={() => navigate('/')} />
+  if (orders.length === 0) return <EmptyState title="Todavía no compraste nada" text="Cuando completes una compra, va a aparecer acá." actionLabel="Ir al catálogo" onAction={() => navigate('/catalogo')} />
 
   return (
     <section className="purchases">

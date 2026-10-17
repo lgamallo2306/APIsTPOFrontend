@@ -20,6 +20,8 @@ import MySalesView from './views/MySalesView'
 import CategoriesView from './views/admin/CategoriesView'
 import UsersView from './views/admin/UsersView'
 import OrderConfirmationView from './views/OrderConfirmationView'
+import HomeView from './views/HomeView'
+
 
 
 function App() {
@@ -116,7 +118,8 @@ function App() {
     <div className='app'>
       <Header user={user} cartCount={cartCount} onLogout={handleLogout} />
       <Routes>
-        <Route path='/' element={<CatalogView categories={categories} />} />
+        <Route path='/' element={<HomeView categories={categories} user={user} />} />
+        <Route path='/catalogo' element={<CatalogView categories={categories} />} />
         <Route path="/productos/:id" element={<ProductDetailView token={token} onCartChange={handleCartChange} onLogout={handleLogout} />} />
         <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
         <Route path="/registro" element={<RegisterView onLogin={handleLogin} />} />

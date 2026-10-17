@@ -52,6 +52,10 @@ export const getCategoriesPage = (page) =>
 export const getProducts = (query) =>
   fetch(`${URL}/products?size=12&${query}`).then(handle)
 
+
+export const getProductRow = (query) =>
+  fetch(`${URL}/products?size=5&${query}`).then(handle)
+
 export const getProduct = (id) =>
   fetch(`${URL}/products/${id}`).then(handle)
 

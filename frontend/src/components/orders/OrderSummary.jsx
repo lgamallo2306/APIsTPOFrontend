@@ -23,7 +23,7 @@ function OrderSummary({ order }) {
       </div>
       <div className="order-summary-actions">
         <Link to="/mis-compras" className="btn btn-primary">Ver mis compras</Link>
-        <Link to="/" className="btn btn-ghost">Seguir comprando</Link>
+        <Link to="/catalogo" className="btn btn-ghost">Seguir comprando</Link>
       </div>
     </div>
   )

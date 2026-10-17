@@ -9,10 +9,10 @@ function SearchBar() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (text.trim() === '') {
-      navigate('/')
+      navigate('/catalogo')
       return
     }
-    navigate(`/?name=${encodeURIComponent(text.trim())}`)
+    navigate(`/catalogo?name=${encodeURIComponent(text.trim())}`)
   }
 
   return (

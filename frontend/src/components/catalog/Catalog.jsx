@@ -21,7 +21,7 @@ function Catalog({ categories }) {
   }
   const pageNumber = params.get('page') || '0'
 
-  const search = (values) => navigate(`/?${new URLSearchParams(values)}`)
+  const search = (values) => navigate(`/catalogo?${new URLSearchParams(values)}`)
 
   const handleApply = (form) => {
     if (form.minPrice !== '' && form.maxPrice !== '' && Number(form.minPrice) > Number(form.maxPrice)) {
@@ -36,7 +36,7 @@ function Catalog({ categories }) {
   const handleClear = () => {
     setFilterError('')
     setShowFilters(false)
-    navigate('/')
+    navigate('/catalogo')
   }
 
   return (
