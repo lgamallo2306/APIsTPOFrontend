@@ -19,14 +19,9 @@ function LoginForm({ onSubmit, error, loading }) {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      <div style={{ marginBottom: '16px' }}>
-        <BackButton />
-      </div>
       <div className="auth-form-title">
         <h1 className="h1">Ingresar</h1>
-        <p className="muted">
-          ¿No tenés cuenta? <Link to="/registro">Registrate</Link>
-        </p>
+        
       </div>
 
       <div className="field">
@@ -44,7 +39,11 @@ function LoginForm({ onSubmit, error, loading }) {
       <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
         {loading ? 'Ingresando…' : 'Ingresar'}
       </button>
-      <p className="small muted auth-note">La sesión dura 24 horas.</p>
+
+      <p className="muted">
+          ¿No tenés cuenta? <Link to="/registro">Registrate</Link>
+      </p>
+    
     </form>
   )
 }

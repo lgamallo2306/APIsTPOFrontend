@@ -1,4 +1,3 @@
-import Logo from '../layout/Logo'
 import './AuthPanel.css'
 
 
@@ -7,7 +6,6 @@ const CAPAS = [180, 260, 340, 420, 500]
 function AuthPanel() {
   return (
     <section className="auth-panel bed">
-      <Logo />
       <div className="auth-layers">
         {CAPAS.map((ancho, index) => (
           <div
