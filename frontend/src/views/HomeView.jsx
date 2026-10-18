@@ -3,9 +3,13 @@ import './HomeView.css'
 import CategoryStrip from '../components/home/CategoryStrip'
 import HomeHero from '../components/home/HomeHero'
 import MakersBanner from '../components/home/MakersBanner'
+import PromoBanners from '../components/home/PromoBanners'
+import CategoryNav from '../components/home/CategoryNav'
 
 function HomeView({ categories, user }) {
   return (
+    <>
+    <CategoryNav categories={categories}/>
     <main className="home-view">
         <HomeHero />
         <CategoryStrip categories={ categories} />
@@ -15,6 +19,7 @@ function HomeView({ categories, user }) {
             query="sort=discount,desc"
             moreLink="/catalogo?sort=discount,desc"
         />
+        <PromoBanners categories={categories}/>
         <ProductRow
             title="Novedades"
             subtitle="Recién publicados por los makers"
@@ -29,6 +34,7 @@ function HomeView({ categories, user }) {
         />
         <MakersBanner user={user} />
     </main>
+    </>
   )
 }
 

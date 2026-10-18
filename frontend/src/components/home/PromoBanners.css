@@ -1,0 +1,77 @@
+.promo-banners {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+/* .promo-banners delante para ganarle al color de links de tokens.css */
+.promo-banners .promo-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  color: #1f1d1a;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.promo-banners .promo-banner:hover {
+  transform: translateY(-3px);
+}
+
+.promo-banner-parts {
+  background: #e6dcc7;
+}
+
+.promo-banner-gifts {
+  background: #f0d77a;
+}
+
+.promo-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 20rem;
+}
+
+.promo-banner-text .eyebrow {
+  color: rgba(31, 29, 26, 0.6);
+}
+
+.promo-banner-cta {
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+
+.promo-banner-shape {
+  flex-shrink: 0;
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.promo-banner-ring {
+  border-radius: 50%;
+  border: 1.25rem solid rgba(31, 29, 26, 0.18);
+}
+
+.promo-banner-diamond {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.75rem;
+  background: rgba(31, 29, 26, 0.15);
+  transform: rotate(45deg);
+}
+
+@media (max-width: 56.25rem) {
+  .promo-banners {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-banners .promo-banner {
+    padding: 1.5rem;
+  }
+}

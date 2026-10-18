@@ -21,7 +21,7 @@ import CategoriesView from './views/admin/CategoriesView'
 import UsersView from './views/admin/UsersView'
 import OrderConfirmationView from './views/OrderConfirmationView'
 import HomeView from './views/HomeView'
-
+import Footer from './components/layout/Footer'
 
 
 function App() {
@@ -104,7 +104,7 @@ function App() {
       .catch((error) => setCartError(error.message))
   }
 
-  // product llega cuando se agrega desde el detalle: se guarda para tener su imagen sin otro GET
+ 
   const handleCartChange = (newCart, product) => {
     setCart(newCart)
     if (product && !cartProducts.some((saved) => saved.id === product.id)) {
@@ -114,7 +114,7 @@ function App() {
 
   const cartCount = cart ? countUnits(cart.items) : 0
 
-  // lo que se muestra en una ruta protegida cuando no hay permiso (o todavía no llegó el usuario)
+  
   const loginOrLoading = loadingUser ? <PageLoading /> : <LoginView onLogin={handleLogin} />
   const catalogOrLoading = loadingUser ? <PageLoading /> : <CatalogView categories={categories} />
 
@@ -147,6 +147,7 @@ function App() {
         <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
         
       </Routes>
+      <Footer />
     </div>
   )
 }

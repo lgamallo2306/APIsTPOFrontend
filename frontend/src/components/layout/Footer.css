@@ -1,0 +1,61 @@
+.footer {
+  margin-top: auto;
+  padding: 3rem 2.5rem 1.5rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 20rem;
+}
+
+.footer-columns {
+  display: flex;
+  gap: 4rem;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+/* .footer delante para ganarle al color de links de tokens.css */
+.footer .footer-link {
+  color: var(--text-2);
+}
+
+.footer .footer-link:hover {
+  color: var(--text);
+}
+
+.footer-bottom {
+  padding-top: 1.25rem;
+}
+
+@media (max-width: 43.75rem) {
+  .footer {
+    padding: 2rem 1rem 1.25rem;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer-columns {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+}
