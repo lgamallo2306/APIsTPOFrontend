@@ -61,6 +61,13 @@ function App() {
     setCartProducts([])
   }
 
+  // cambio de email: el back manda un token nuevo; el useEffect de [token] trae el usuario actualizado.
+  // A diferencia de handleLogin, user no se borra, así el perfil sigue en pantalla
+  const handleTokenChange = (newToken) => {
+    localStorage.setItem('token', newToken)
+    setToken(newToken)
+  }
+
   useEffect(() => {
     getCategories()
       .then((data) => setCategories(data.content))
@@ -128,7 +135,7 @@ function App() {
         <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView token={token} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/mis-compras" element={user ? <MyPurchasesView token={token} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/mis-compras/:id" element={user ? <OrderDetailView token={token} onLogout={handleLogout} /> : loginOrLoading} />
-        <Route path="/perfil" element={user ? <ProfileView user={user} onLogout={handleLogout} /> : loginOrLoading} />
+        <Route path="/perfil" element={user ? <ProfileView user={user} token={token} onUserChange={setUser} onTokenChange={handleTokenChange} onLogout={handleLogout} /> : loginOrLoading} />
 
         <Route path="/vendedor/productos" element={isVendor ? <MyProductsView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
         <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView title="Nuevo producto" user={user} token={token} categories={categories} onLogout={handleLogout} /> : catalogOrLoading} />
