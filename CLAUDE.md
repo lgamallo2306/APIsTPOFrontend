@@ -107,6 +107,7 @@ Vive en `App.jsx` y se pasa por props:
 - `onCartChange(cart, product)`: las vistas que modifican el carrito (detalle, carrito) le pasan a `App` el carrito que devuelve el back, así el contador del Header se actualiza sin otro GET. Desde el detalle también pasa el producto, que se suma a `cartProducts`.
 - `categories`: `GET /categories` una sola vez al montar (`useEffect` con `[]`); se pasa a las vistas que la usan.
 - `handleLogin(token)` / `handleLogout()`: se pasan a las vistas y al Header.
+- Perfil: `setUser` baja como `onUserChange` (editar nombre). `handleTokenChange(token)` se usa al cambiar el email, porque el back devuelve un token nuevo: guarda el token sin borrar `user`, y el `useEffect` de `[token]` trae el usuario actualizado.
 - Un `useEffect` con `[token]` trae usuario y carrito cada vez que cambia el token.
 - `loadingUser`: mientras llega `GET /users/me`, las rutas protegidas muestran `PageLoading` en vez del login.
 - Si un visitante tuvo que loguearse en medio de una acción (por ejemplo, agregar al carrito), después del login vuelve a donde estaba (`navigate(-1)`), no al inicio.

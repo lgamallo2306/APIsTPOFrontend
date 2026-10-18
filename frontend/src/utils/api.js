@@ -37,6 +37,38 @@ export const register = (data) =>
  export const getMe = (token) =>
     fetch(`${URL}/users/me`, { headers: authHeaders(token) }).then(handle)
 
+// data = { name, surname }
+export const updateMe = (token, data) =>
+  fetch(`${URL}/users/me`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+// data = { newEmail, currentPassword }. Devuelve un token nuevo (el token lleva el email)
+export const changeEmail = (token, data) =>
+  fetch(`${URL}/users/me/email`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+// data = { currentPassword, newPassword }
+export const changePassword = (token, data) =>
+  fetch(`${URL}/users/me/password`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
+// data = { password }
+export const deactivateMe = (token, data) =>
+  fetch(`${URL}/users/me`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  }).then(handle)
+
 
 export const getCart = (token) =>
   fetch(`${URL}/cart`, { headers: authHeaders(token) }).then(handle)
