@@ -14,7 +14,7 @@ function RegisterView({ onLogin }) {
 
   const handleRegister = (data) => {
     if(data.firstname.trim() === '' || data.lastname.trim() === '' || data.email.trim() === '' || data.password === ''){
-      setError('Completa todos los campos')
+      setError('Completá todos los campos.')
       return
     }
 

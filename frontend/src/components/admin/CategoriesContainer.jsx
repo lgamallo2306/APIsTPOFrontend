@@ -46,7 +46,7 @@ function CategoriesContainer({ token, onLogout, onCategorySaved, onCategoryDelet
         ? data.content.map((item) => (item.id === saved.id ? saved : item))
         : [...data.content, saved],
     })
-    onCategorySaved(saved)
+    onCategorySaved(saved, wasEdit)
   }
 
   const handleDeleted = (id) => {

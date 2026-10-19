@@ -41,14 +41,13 @@ function App() {
   }
 
   // el panel admin pide su propia página; App mantiene la lista del catálogo al día con cada cambio
-  const handleCategorySaved = (saved) => {
-    setCategories((prev) => (prev.some((item) => item.id === saved.id)
-      ? prev.map((item) => (item.id === saved.id ? saved : item))
-      : [...prev, saved]))
+  const handleCategorySaved = (saved, wasEdit) => {
+    if (wasEdit) setCategories(categories.map((item) => (item.id === saved.id ? saved : item)))
+    else setCategories([...categories, saved])
   }
 
   const handleCategoryDeleted = (id) => {
-    setCategories((prev) => prev.filter((item) => item.id !== id))
+    setCategories(categories.filter((item) => item.id !== id))
   }
 
   const handleLogout = () => {
