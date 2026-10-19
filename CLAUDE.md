@@ -47,7 +47,7 @@ frontend/src/
 - Usar etiquetas semánticas (`header`, `nav`, `main`, `section`, `form`).
 
 **Estado y datos**
-- Solo `useState`, `useEffect` y los hooks de `react-router-dom` (`useNavigate`, `useLocation`).
+- Solo `useState`, `useEffect` y los hooks de `react-router-dom` (`useNavigate`, `useLocation`, `useParams`).
 - No usar `useContext`, `useReducer`, `useRef`, `useMemo`, `useCallback` ni hooks propios. Hasta la tercera entrega solo hay estado local; el estado global llega ahí (probablemente con Redux).
 - El padre guarda el estado y lo pasa por props (desestructuradas en los parámetros). El hijo recibe el evento y le avisa al padre con una función recibida por props; el padre ejecuta la lógica.
 - Listas con `.map(...)` y `key={item.id}` (si los datos no vienen de la base y no tienen id, se puede usar el index). No usar `forEach` ni modificar arrays del estado: copiar con spread (`[...arr]`, `{ ...obj }`).
@@ -64,9 +64,9 @@ frontend/src/
 **Código simple y explicable**
 - Todo el equipo tiene que poder explicar cada línea. Ante dos soluciones, elegir la más directa aunque sea más larga.
 - Estados explícitos en vez de valores deducidos con trucos. Por ejemplo, la carga se maneja con un estado `loading` (`setLoading(true)` antes del fetch, `setLoading(false)` en `.then` y `.catch`), no comparando strings.
-- La regla de ESLint `react-hooks/set-state-in-effect` está desactivada a propósito (en `eslint.config.js`): se permite `setLoading(true)` y `setError('')` al inicio de un `useEffect`, antes del `fetch`. Para sincronizar un formulario con la URL se usa un `useEffect` con los campos como dependencias (ver `CatalogProducts` y `CatalogFilters`). No usar el patrón de guardar el valor anterior en un estado (`lastQuery`).
+- La regla de ESLint `react-hooks/set-state-in-effect` está desactivada a propósito (en `eslint.config.js`): se permite `setLoading(true)` y `setError('')` al inicio de un `useEffect`, antes del `fetch`. Para sincronizar un formulario con la URL se usa un `useEffect` con los campos como dependencias (ver `CatalogProducts` y `CatalogFilters`). Al reintentar o cambiar de página, el reseteo de `loading` y `error` se hace en el handler que dispara la carga. Si la carga cambia por un parámetro de la URL sin pasar por un handler, se guarda el valor anterior en un estado y se compara antes del `return` (ver `lastId` en `OrderDetailContainer`).
 - Usar `children` para componentes que son marcos o layouts: el componente arma la estructura fija y recibe el contenido entre sus etiquetas (`Modal`, `CatalogSidebar`, `SellerLayout`, `AuthLayout`). Los componentes que muestran datos con forma fija (`ProductCard`, `PriceTag`, `Pagination`) usan props normales.
-- Evitar, salvo acuerdo del equipo: `key` para forzar el reinicio de un componente, `??` y `?.`, desestructuración dentro de callbacks (`([, value]) =>`), `Object.entries` / `reduce` encadenados, y hooks de librerías que no estén en esta lista (`useSearchParams`, `useParams`, etc.).
+- Evitar, salvo acuerdo del equipo: `key` para forzar el reinicio de un componente, `??` y `?.`, desestructuración dentro de callbacks (`([, value]) =>`), `Object.entries` / `reduce` encadenados, hooks de librerías que no estén en esta lista (`useSearchParams`, etc.) y el updater funcional (`setX((prev) => ...)`): se usa el estado directo (`setCategories(categories.filter(...))`).
 
 **Prohibido**
 - TypeScript y componentes de clase.
@@ -167,5 +167,5 @@ El backend real manda sobre el handoff:
 
 ## Decisiones pendientes
 
-- `/productos/:id` lee el id con `useLocation().pathname.split('/')[2]` para no usar `useParams`. Si la cátedra lo permite, se puede cambiar.
+- `/productos/:id` lee el id con `useLocation().pathname.split('/')[2]`, mientras que `/mis-compras/:id` usa `useParams`. Se podría unificar todo con `useParams`.
 - Modo oscuro: se haría con un estado en `App` que agrega la clase `dark` a `.app`. Baja prioridad.
