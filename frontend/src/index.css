@@ -20,3 +20,15 @@
 .app .sheet {
   position: fixed;
 }
+
+.app {
+  --toastify-font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --toastify-icon-color-success: var(--success);
+  --toastify-icon-color-error: var(--danger);
+  --toastify-color-progress-success: var(--success);
+  --toastify-color-progress-error: var(--danger);
+  --toastify-toast-bd-radius: 12px;
+  --toastify-color-light: var(--surface);
+  --toastify-text-color-light: var(--text);
+  --toastify-toast-shadow: var(--shadow-lg);
+}

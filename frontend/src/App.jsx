@@ -22,6 +22,7 @@ import UsersView from './views/admin/UsersView'
 import OrderConfirmationView from './views/OrderConfirmationView'
 import HomeView from './views/HomeView'
 import Footer from './components/layout/Footer'
+import { ToastContainer } from 'react-toastify'
 
 
 function App() {
@@ -147,6 +148,7 @@ function App() {
         
       </Routes>
       <Footer />
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   )
 }

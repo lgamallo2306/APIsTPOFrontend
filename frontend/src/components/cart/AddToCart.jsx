@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { addCartItem } from '../../utils/api'
 import QuantityStepper from '../ui/QuantityStepper'
 import './AddToCart.css'
@@ -8,8 +9,6 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
   const navigate = useNavigate()
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(false)
-  const [added, setAdded] = useState(false)
-  const [error, setError] = useState('')
 
   const handleClick = () => {
     if (!token) {
@@ -17,13 +16,12 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
       return
     }
     setLoading(true)
-    setAdded(false)
-    setError('')
     addCartItem(token, { productId: product.id, quantity })
       .then((cart) => {
         onCartChange(cart, product)
-        setAdded(true)
         setLoading(false)
+        // el aviso puede llevar JSX: así incluye el link al carrito
+        toast.success(<span>Agregado al carrito. <Link to="/carrito">Ver carrito</Link></span>)
       })
       .catch((err) => {
         setLoading(false)
@@ -32,7 +30,7 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
           navigate('/login')
           return
         }
-        setError(err.message)
+        toast.error(err.message)
       })
   }
 
@@ -47,8 +45,6 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
       <button type="button" className="btn btn-primary btn-lg" disabled={product.stock === 0 || loading} onClick={handleClick}>
         {loading ? 'Agregando…' : 'Agregar al carrito'}
       </button>
-      {added && <p className="alert-info">Agregado al carrito. <Link to="/carrito">Ver carrito</Link></p>}
-      {error && <p className="alert-err">{error}</p>}
     </div>
   )
 }
