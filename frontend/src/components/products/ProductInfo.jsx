@@ -12,13 +12,19 @@ function ProductInfo({ product, token, onCartChange, onLogout }) {
         {image && <img src={image} alt={product.name} />}
       </div>
       <div className="product-info-text">
-        <span className="eyebrow">{product.categoryName}</span>
-        <h1 className="h1">{product.name}</h1>
-        <p className="small muted">Vendido por {product.sellerName}</p>
-        <PriceTag price={product.price} discount={product.discount} />
-        <StockBadge stock={product.stock} />
-        <p className="product-info-description">{product.description}</p>
+        <div className="product-info-tags">
+          <span className="badge product-info-category">{product.categoryName}</span>
+          <StockBadge stock={product.stock} />
+        </div>
+        <h1 className="h1 product-info-title">{product.name}</h1>
+        <p className="small muted">Vendido por <strong>{product.sellerName}</strong></p>
+        <PriceTag price={product.price} discount={product.discount} large />
+        <div className="divider" />
         <AddToCart product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+        <div className="product-info-description">
+          <h2 className="h3">Descripción</h2>
+          <p>{product.description}</p>
+        </div>
       </div>
     </>
   )

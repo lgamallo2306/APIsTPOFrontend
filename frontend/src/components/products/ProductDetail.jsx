@@ -35,16 +35,26 @@ function ProductDetail({ token, user, onCartChange, onLogout }) {
     setRetry(retry + 1)
   }
 
-  if (loading) return <section className="product-detail"><div className="skel product-detail-skeleton" /></section>
+  if (loading) {
+    return (
+      <section className="product-detail">
+        <div className="product-detail-main">
+          <div className="skel product-detail-skeleton" />
+        </div>
+      </section>
+    )
+  }
 
   if (error) return <EmptyState title="No pudimos cargar el producto" text={error} actionLabel="Reintentar" onAction={handleRetry} />
 
   return (
     <section className="product-detail">
-      <div style={{ marginBottom: '16px' }}>
+      <div>
         <BackButton />
       </div>
-      <ProductInfo product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+      <div className="product-detail-main">
+        <ProductInfo product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+      </div>
       <ProductReviews product={product} token={token} user={user} onLogout={onLogout} />
     </section>
   )

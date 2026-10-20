@@ -36,7 +36,7 @@ function Reviews({ title, type, id, token, user, onLogout }) {
 
   return (
     <section className="reviews">
-      <h2 className="h3">{title}</h2>
+      <h2 className="h2">{title}</h2>
       <ReviewsPanel
         token={token}
         user={user}

@@ -1,10 +1,17 @@
 .product-detail {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   padding: 2rem 2.5rem;
   max-width: 75rem;
   margin: 0 auto;
+}
+.product-detail-main {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 3rem;
+  width: 100%;
 }
 .product-detail-skeleton {
   aspect-ratio: 1 / 1;
@@ -13,8 +20,11 @@
 
 @media (max-width: 43.75rem) {
   .product-detail {
-    grid-template-columns: 1fr;
     gap: 1.25rem;
     padding: 1rem;
+  }
+  .product-detail-main {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
