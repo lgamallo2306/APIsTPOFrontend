@@ -4,15 +4,17 @@ import { toast } from 'react-toastify'
 import { addCartItem } from '../../utils/api'
 import QuantityStepper from '../ui/QuantityStepper'
 import './AddToCart.css'
+import LoginRequiredModal from '../auth/LoginRequiredModal'
 
 function AddToCart({ product, token, onCartChange, onLogout }) {
   const navigate = useNavigate()
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [askLogin, setAskLogin] = useState(false)
 
   const handleClick = () => {
     if (!token) {
-      navigate('/login', { state: { from: `/productos/${product.id}` } })
+      setAskLogin(true)
       return
     }
     setLoading(true)
@@ -45,6 +47,7 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
       <button type="button" className="btn btn-primary btn-lg" disabled={product.stock === 0 || loading} onClick={handleClick}>
         {loading ? 'Agregando…' : 'Agregar al carrito'}
       </button>
+      {askLogin && <LoginRequiredModal from={`/productos/${product.id}`} onClose={() => setAskLogin(false)} />}
     </div>
   )
 }

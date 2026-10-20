@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { register } from '../../utils/api'
 import RegisterForm from './RegisterForm'
@@ -9,6 +9,8 @@ function Register({ onLogin }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state && location.state.from ? location.state.from : '/'
 
   const handleRegister = (data) => {
     if (data.firstname.trim() === '' || data.lastname.trim() === '' || data.email.trim() === '' || data.password === '') {
@@ -23,7 +25,7 @@ function Register({ onLogin }) {
         onLogin(res.access_token)
         toast.success('¡Cuenta creada con éxito!')
         setLoading(false)
-        navigate('/')
+        navigate(from)
       })
       .catch((err) => {
         setError(err.message)

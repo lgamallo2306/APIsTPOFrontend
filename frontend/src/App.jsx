@@ -23,6 +23,7 @@ import OrderConfirmationView from './views/OrderConfirmationView'
 import HomeView from './views/HomeView'
 import Footer from './components/layout/Footer'
 import { ToastContainer, toast } from 'react-toastify'
+import LoginRequired from './components/auth/LoginRequired'
 
 
 function App() {
@@ -118,7 +119,7 @@ function App() {
   const cartCount = cart ? countUnits(cart.items) : 0
 
   
-  const loginOrLoading = loadingUser ? <PageLoading /> : <LoginView onLogin={handleLogin} />
+  const loginOrLoading = loadingUser ? <PageLoading /> : <LoginRequired />
   const catalogOrLoading = loadingUser ? <PageLoading /> : <CatalogView categories={categories} />
 
   const isVendor = user && (user.roles.includes('VENDOR') || user.roles.includes('ADMIN'))
