@@ -22,7 +22,7 @@ import UsersView from './views/admin/UsersView'
 import OrderConfirmationView from './views/OrderConfirmationView'
 import HomeView from './views/HomeView'
 import Footer from './components/layout/Footer'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
 
 function App() {
@@ -81,7 +81,10 @@ function App() {
         setUser(data)
         setLoadingUser(false)
       })
-      .catch(() => handleLogout())
+      .catch(() => {
+        handleLogout()
+        toast.error('Tu sesión venció. Ingresá de nuevo.')
+      })
     getCart(token)
       .then((data) => {
         setCart(data)

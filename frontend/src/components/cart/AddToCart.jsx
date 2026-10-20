@@ -12,7 +12,7 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
 
   const handleClick = () => {
     if (!token) {
-      navigate('/login')
+      navigate('/login', { state: { from: `/productos/${product.id}` } })
       return
     }
     setLoading(true)
@@ -27,7 +27,7 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
         setLoading(false)
         if (err.status === 401 || err.status === 403) {
           onLogout()
-          navigate('/login')
+          navigate('/login', { state: { from: `/productos/${product.id}` } })
           return
         }
         toast.error(err.message)

@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './UserDropdown.css'
 
 function UserDropdown({ user, initials, onLogout, onClose }) {
@@ -9,6 +10,7 @@ function UserDropdown({ user, initials, onLogout, onClose }) {
   const handleLogout = () => {
     onClose()
     onLogout()
+    toast.info('Cerraste sesión')
     navigate('/')
   }
 

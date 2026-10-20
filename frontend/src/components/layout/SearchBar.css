@@ -16,3 +16,12 @@
   background: var(--surface-2);
   border-color: transparent;
 }
+
+@media (max-width: 43.75rem){
+  .search{
+    min-width: 0;
+  }
+  .search-label{
+    display: none;
+  }
+}

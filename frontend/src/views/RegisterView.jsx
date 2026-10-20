@@ -5,6 +5,7 @@ import AuthPanel from "../components/auth/AuthPanel"
 import RegisterForm from "../components/auth/RegisterForm"
 import './AuthView.css'
 import { useState } from "react"
+import { toast } from 'react-toastify'
 
 
 function RegisterView({ onLogin }) {
@@ -23,6 +24,7 @@ function RegisterView({ onLogin }) {
     register(data)
       .then((res) => {
         onLogin(res.access_token)
+        toast.success('¡Cuenta creada con éxito!')
         setLoading(false)
         navigate('/')
 

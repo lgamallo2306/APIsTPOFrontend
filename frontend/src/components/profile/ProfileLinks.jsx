@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-// Accesos según los roles del usuario y el botón para cerrar sesión
+
 function ProfileLinks({ roles, onLogout }) {
   const navigate = useNavigate()
   const isVendor = roles.includes('VENDOR') || roles.includes('ADMIN')
@@ -8,6 +9,7 @@ function ProfileLinks({ roles, onLogout }) {
 
   const handleLogout = () => {
     onLogout()
+    toast.info('Cerraste sesión')
     navigate('/')
   }
 
