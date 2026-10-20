@@ -1,0 +1,12 @@
+.stars {
+  display: inline-flex;
+  gap: 0.125rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+.stars-on {
+  color: var(--warn);
+}
+.stars-off {
+  color: var(--border-strong);
+}

@@ -30,7 +30,7 @@ frontend/src/
     api.js          URL base y una función por endpoint.
     format.js       formatPrice, finalPrice, formatDate.
   components/       Componentes reutilizables, agrupados por dominio
-    ui/  layout/  auth/  catalog/  products/  cart/  orders/  seller/  admin/
+    ui/  layout/  auth/  catalog/  products/  cart/  orders/  reviews/  seller/  admin/
   views/            Una vista por URL (admin/ para las de administrador).
   assets/           Solo imágenes fijas (logo, banners). Las de productos vienen del back.
 ```
@@ -159,6 +159,8 @@ El backend real manda sobre el handoff:
 | `GET /users` | existe, paginado (ADMIN) |
 | `GET /categories` | devuelve una página (`Page`): la lista está en `data.content` |
 | `GET /products/{id}`, `/products/mine` | el producto trae `categoryName` (no el id) e `imageUrls` (sin id de imagen). Para quitar una imagen se hace `PUT /products/{id}` con `imageUrls` sin esa url; si el `PUT` no manda `imageUrls`, las imágenes no se tocan |
+| `GET/POST /reviews/products/{id}`, `GET/POST /reviews/sellers/{id}` | reseñas (no están en el handoff). GET público, devuelve lista. POST body `{ rating, comment }`; 409 si no compró o ya reseñó |
+| `GET /orders`, `GET /orders/{id}` | cada ítem trae `sellerId` y `sellerName` |
 
 - Sin token, el back responde **403** (no 401).
 - CORS configurado en el back para `http://localhost:5173` (si el front levanta en otro puerto, las llamadas fallan).

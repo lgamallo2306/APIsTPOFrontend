@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { getOrder } from '../../utils/api'
 import EmptyState from '../ui/EmptyState'
 import OrderDetail from './OrderDetail'
+import ReviewModal from '../reviews/ReviewModal'
 
 const ERROR_CARGA = 'No pudimos traer la compra. Revisá tu conexión e intentá de nuevo.'
 
@@ -14,6 +15,7 @@ function OrderDetailContainer({ token, onLogout }) {
   const [expired, setExpired] = useState(false)
   const [retry, setRetry] = useState(0)
   const [lastId, setLastId] = useState(id)
+  const [reviewTarget, setReviewTarget] = useState(null)
 
   // si cambia el id desde la URL, se vuelve a cargar (patrón de guardar el valor anterior antes del return)
   if (id !== lastId) {
@@ -46,7 +48,14 @@ function OrderDetailContainer({ token, onLogout }) {
 
   if (error) return <EmptyState title="No pudimos cargar la compra" text={error} actionLabel="Reintentar" onAction={handleRetry} />
 
-  return <OrderDetail order={order} />
+  return (
+    <>
+      <OrderDetail order={order} onReview={setReviewTarget} />
+      {reviewTarget && (
+        <ReviewModal token={token} target={reviewTarget} onClose={() => setReviewTarget(null)} onLogout={onLogout} />
+      )}
+    </>
+  )
 }
 
 export default OrderDetailContainer

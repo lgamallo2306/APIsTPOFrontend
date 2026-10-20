@@ -223,3 +223,23 @@ export const assignRole = (token, userId, role) =>
 
 export const removeRole = (token, userId, role) =>
   fetch(`${URL}/users/${userId}/roles/${role}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
+
+export const getProductReviews = (productId) =>
+  fetch(`${URL}/reviews/products/${productId}`).then(handle)
+
+export const getSellerReviews = (sellerId) =>
+  fetch(`${URL}/reviews/sellers/${sellerId}`).then(handle)
+
+export const createProductReview = (token, productId, review) =>
+  fetch(`${URL}/reviews/products/${productId}`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(review),
+  }).then(handle)
+
+export const createSellerReview = (token, sellerId, review) =>
+  fetch(`${URL}/reviews/sellers/${sellerId}`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(review),
+  }).then(handle)

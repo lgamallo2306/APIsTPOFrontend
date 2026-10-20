@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import { formatPrice, formatDate } from '../../utils/format'
+import OrderDetailItem from './OrderDetailItem'
 import './OrderDetail.css'
 
-function OrderDetail({ order }) {
+function OrderDetail({ order, onReview }) {
   return (
     <section className="order-detail">
       <Link to="/mis-compras" className="btn btn-ghost btn-sm order-detail-back">← Volver a mis compras</Link>
@@ -11,10 +12,7 @@ function OrderDetail({ order }) {
         <p className="muted">{formatDate(order.date)}</p>
         <ul className="order-detail-items">
           {order.items.map((item) => (
-            <li key={item.productId} className="kv">
-              <span>{item.quantity} × {item.productName}</span>
-              <span>{formatPrice(item.subtotal)}</span>
-            </li>
+            <OrderDetailItem key={item.productId} item={item} onReview={onReview} />
           ))}
         </ul>
         <div className="divider" />

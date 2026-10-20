@@ -4,6 +4,7 @@ import { getProduct } from '../../utils/api'
 import EmptyState from '../ui/EmptyState'
 import BackButton from '../layout/BackButton'
 import ProductInfo from './ProductInfo'
+import ProductReviews from '../reviews/ProductReviews'
 import './ProductDetail.css'
 
 const ERROR_CARGA = 'No pudimos traer el producto. Revisá tu conexión e intentá de nuevo.'
@@ -44,6 +45,7 @@ function ProductDetail({ token, onCartChange, onLogout }) {
         <BackButton />
       </div>
       <ProductInfo product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+      <ProductReviews product={product} />
     </section>
   )
 }

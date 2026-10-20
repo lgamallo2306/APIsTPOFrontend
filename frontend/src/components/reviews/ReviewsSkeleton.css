@@ -1,0 +1,18 @@
+.reviews-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.reviews-skeleton-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.reviews-skeleton-stars {
+  height: 1rem;
+  width: 6rem;
+}
+.reviews-skeleton-text {
+  height: 0.875rem;
+  width: 80%;
+}

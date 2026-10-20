@@ -1,0 +1,10 @@
+.order-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.order-detail-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
