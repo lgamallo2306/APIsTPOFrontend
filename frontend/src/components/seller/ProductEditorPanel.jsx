@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createProduct, updateProduct, uploadProductImage } from '../../utils/api'
-import Toast from '../ui/Toast'
+import { toast } from 'react-toastify'
 import ProductDataForm from './ProductDataForm'
 import ProductImageUploader from './ProductImageUploader'
 
-// si el back falla sin mensaje (por ejemplo, un 500), se muestra este
+
 const ERROR_GENERICO = 'No pudimos completar la operación. Intentá de nuevo en unos segundos.'
 
 // Guarda los datos y maneja las imágenes. El alta es en 2 pasos: primero los datos y, con el id, las imágenes
@@ -15,7 +15,6 @@ function ProductEditorPanel({ token, categories, onLogout, product, suggestedPri
   const [saveError, setSaveError] = useState('')
   const [uploading, setUploading] = useState(false)
   const [imageError, setImageError] = useState('')
-  const [toast, setToast] = useState('')
 
   const checkSession = (err) => {
     if (err.status === 401 || err.status === 403) onLogout()
@@ -31,12 +30,12 @@ function ProductEditorPanel({ token, categories, onLogout, product, suggestedPri
         setSaving(false)
         if (product) {
           onProductChange(saved)
-          setToast('Cambios guardados')
+          toast.success('Cambios guardados')
           return
         }
         // con el id nuevo la URL pasa a ser la de edición y se habilitan las imágenes
         navigate(`/vendedor/productos/${saved.id}`, { state: { product: saved } })
-        setToast('Producto creado. Ahora podés agregar imágenes.')
+        toast.success('Producto creado. Ahora podés agregar imágenes.')
       })
       .catch((err) => {
         checkSession(err)
@@ -97,7 +96,6 @@ function ProductEditorPanel({ token, categories, onLogout, product, suggestedPri
         onUpload={handleUpload}
         onRemove={handleRemoveImage}
       />
-      {toast !== '' && <Toast message={toast} onClose={() => setToast('')} />}
     </div>
   )
 }

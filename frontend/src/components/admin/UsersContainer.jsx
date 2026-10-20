@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { getUserByEmail, assignRole, removeRole } from '../../utils/api'
 import EmptyState from '../ui/EmptyState'
-import Toast from '../ui/Toast'
+import { toast } from 'react-toastify'
 import UserSearchForm from './UserSearchForm'
 import UserRoleCard from './UserRoleCard'
 import './UsersContainer.css'
@@ -11,7 +11,7 @@ function UsersContainer({ token, onLogout }) {
   const [searching, setSearching] = useState(false)
   const [searchError, setSearchError] = useState('')
   const [roleError, setRoleError] = useState('')
-  const [toast, setToast] = useState('')
+
 
   const handleSearch = (email) => {
     setSearching(true)
@@ -36,7 +36,7 @@ function UsersContainer({ token, onLogout }) {
       .then(() => {
         setUser({ ...user, roles: [...user.roles, role] })
         setRoleError('')
-        setToast(`Rol ${role} asignado`)
+        toast.success(`Rol ${role} asignado`)
       })
       .catch((err) => {
         if (err.status === 401 || err.status === 403) onLogout()
@@ -49,7 +49,7 @@ function UsersContainer({ token, onLogout }) {
       .then(() => {
         setUser({ ...user, roles: user.roles.filter((item) => item !== role) })
         setRoleError('')
-        setToast(`Rol ${role} quitado`)
+        toast.success(`Rol ${role} quitado`)
       })
       .catch((err) => {
         if (err.status === 401 || err.status === 403) onLogout()
@@ -67,7 +67,7 @@ function UsersContainer({ token, onLogout }) {
       <h1 className="h1">Usuarios</h1>
       <UserSearchForm onSearch={handleSearch} />
       {result}
-      {toast !== '' && <Toast message={toast} onClose={() => setToast('')} />}
+      
     </section>
   )
 }

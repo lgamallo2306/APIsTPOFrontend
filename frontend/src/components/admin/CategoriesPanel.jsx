@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createCategory, updateCategory, deleteCategory } from '../../utils/api'
-import Toast from '../ui/Toast'
+import { toast } from 'react-toastify'
 import CategoriesBody from './CategoriesBody'
 import CategoryModal from './CategoryModal'
 import CategoryDeleteModal from './CategoryDeleteModal'
@@ -11,7 +11,7 @@ function CategoriesPanel({ token, onLogout, loading, error, data, onPageChange, 
   const [selected, setSelected] = useState(null)
   const [saveError, setSaveError] = useState('')
   const [deleteError, setDeleteError] = useState('')
-  const [toast, setToast] = useState('')
+
 
   const closeModal = () => {
     setModal(null)
@@ -42,7 +42,7 @@ function CategoriesPanel({ token, onLogout, loading, error, data, onPageChange, 
     request
       .then((saved) => {
         onSaved(saved, wasEdit)
-        setToast(wasEdit ? 'Categoría actualizada' : 'Categoría creada')
+        toast.success(wasEdit ? 'Categoría actualizada' : 'Categoría creada')
         closeModal()
       })
       .catch((err) => {
@@ -56,7 +56,7 @@ function CategoriesPanel({ token, onLogout, loading, error, data, onPageChange, 
     deleteCategory(token, selected.id)
       .then(() => {
         onDeleted(selected.id)
-        setToast('Categoría eliminada')
+        toast.success('Categoría eliminada')
         closeModal()
       })
       .catch((err) => {
@@ -85,7 +85,6 @@ function CategoriesPanel({ token, onLogout, loading, error, data, onPageChange, 
 
       {modal === 'form' && <CategoryModal category={selected} error={saveError} onSave={handleSave} onClose={closeModal} />}
       {modal === 'delete' && <CategoryDeleteModal category={selected} error={deleteError} onConfirm={handleDelete} onClose={closeModal} />}
-      {toast !== '' && <Toast message={toast} onClose={() => setToast('')} />}
     </section>
   )
 }

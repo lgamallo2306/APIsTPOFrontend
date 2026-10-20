@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { updateStock, updateDiscount, deleteProduct } from '../../utils/api'
-import Toast from '../ui/Toast'
+import { toast } from 'react-toastify'
 import MyProductsResults from './MyProductsResults'
 import StockModal from './StockModal'
 import DiscountModal from './DiscountModal'
@@ -15,7 +15,7 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
   const [modal, setModal] = useState(null) // null | 'stock' | 'discount' | 'delete'
   const [selected, setSelected] = useState(null)
   const [actionError, setActionError] = useState('')
-  const [toast, setToast] = useState('')
+  
 
   const openModal = (name, product) => {
     setSelected(product)
@@ -38,7 +38,7 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
     updateStock(token, selected.id, newStock - selected.stock)
       .then((updated) => {
         onUpdated(updated)
-        setToast('Stock actualizado')
+        toast.success('Stock actualizado')
         closeModal()
       })
       .catch(handleError)
@@ -48,7 +48,7 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
     updateDiscount(token, selected.id, discount)
       .then((updated) => {
         onUpdated(updated)
-        setToast('Descuento aplicado')
+        toast.success('Descuento aplicado')
         closeModal()
       })
       .catch(handleError)
@@ -58,7 +58,7 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
     deleteProduct(token, selected.id)
       .then(() => {
         onDeleted(selected.id)
-        setToast('Producto eliminado')
+        toast.success('Producto eliminado')
         closeModal()
       })
       .catch(handleError)
@@ -83,7 +83,6 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
       {modal === 'stock' && <StockModal product={selected} error={actionError} onSave={handleStock} onClose={closeModal} />}
       {modal === 'discount' && <DiscountModal product={selected} error={actionError} onSave={handleDiscount} onClose={closeModal} />}
       {modal === 'delete' && <ProductDeleteModal product={selected} error={actionError} onConfirm={handleDelete} onClose={closeModal} />}
-      {toast !== '' && <Toast message={toast} onClose={() => setToast('')} />}
     </section>
   )
 }

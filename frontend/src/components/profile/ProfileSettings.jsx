@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { updateMe, changeEmail, changePassword, deactivateMe } from '../../utils/api'
-import Toast from '../ui/Toast'
+import { toast } from 'react-toastify'
 import ProfileActions from './ProfileActions'
 import ProfileNameModal from './ProfileNameModal'
 import ProfileEmailModal from './ProfileEmailModal'
@@ -13,7 +13,6 @@ function ProfileSettings({ user, token, onUserChange, onTokenChange, onLogout })
   const navigate = useNavigate()
   const [modal, setModal] = useState(null) // null | 'name' | 'email' | 'password' | 'deactivate'
   const [error, setError] = useState('')
-  const [toast, setToast] = useState('')
 
   const openModal = (name) => {
     setError('')
@@ -27,7 +26,7 @@ function ProfileSettings({ user, token, onUserChange, onTokenChange, onLogout })
   }
 
   const handleSuccess = (message) => {
-    setToast(message)
+    toast.success(message)
     setModal(null)
   }
 
@@ -73,7 +72,6 @@ function ProfileSettings({ user, token, onUserChange, onTokenChange, onLogout })
       {modal === 'email' && <ProfileEmailModal error={error} onSave={handleEmail} onClose={closeModal} />}
       {modal === 'password' && <ProfilePasswordModal error={error} onSave={handlePassword} onClose={closeModal} />}
       {modal === 'deactivate' && <ProfileDeactivateModal error={error} onConfirm={handleDeactivate} onClose={closeModal} />}
-      {toast !== '' && <Toast message={toast} onClose={() => setToast('')} />}
     </>
   )
 }
