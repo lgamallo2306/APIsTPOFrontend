@@ -5,7 +5,7 @@ import './MyProducts.css'
 
 const ERROR_CARGA = 'No pudimos traer tus productos. Revisá tu conexión e intentá de nuevo.'
 
-// data es la página que devuelve el back: content, number, totalPages, totalElements, first, last
+
 function MyProducts({ token, onLogout }) {
   const [data, setData] = useState(null)
   const [page, setPage] = useState(0)
