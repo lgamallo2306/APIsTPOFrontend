@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { getProductReviews, getSellerReviews } from '../../utils/api'
-import ReviewsResults from './ReviewsResults'
+import ReviewsPanel from './ReviewsPanel'
 import './Reviews.css'
 
 const ERROR_CARGA = 'No pudimos traer las reseñas. Revisá tu conexión e intentá de nuevo en unos segundos.'
 
-function Reviews({ title, type, id }) {
+function Reviews({ title, type, id, token, user, onLogout }) {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -30,10 +30,23 @@ function Reviews({ title, type, id }) {
     setRetry(retry + 1)
   }
 
+  const handleDeleted = (reviewId) => {
+    setReviews(reviews.filter((review) => review.id !== reviewId))
+  }
+
   return (
     <section className="reviews">
       <h2 className="h3">{title}</h2>
-      <ReviewsResults loading={loading} error={error} reviews={reviews} onRetry={handleRetry} />
+      <ReviewsPanel
+        token={token}
+        user={user}
+        onLogout={onLogout}
+        loading={loading}
+        error={error}
+        reviews={reviews}
+        onRetry={handleRetry}
+        onDeleted={handleDeleted}
+      />
     </section>
   )
 }

@@ -9,7 +9,7 @@ import './ProductDetail.css'
 
 const ERROR_CARGA = 'No pudimos traer el producto. Revisá tu conexión e intentá de nuevo.'
 
-function ProductDetail({ token, onCartChange, onLogout }) {
+function ProductDetail({ token, user, onCartChange, onLogout }) {
   const location = useLocation()
   const id = location.pathname.split('/')[2] // "/productos/5" → "5"
   const [product, setProduct] = useState(null)
@@ -45,7 +45,7 @@ function ProductDetail({ token, onCartChange, onLogout }) {
         <BackButton />
       </div>
       <ProductInfo product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
-      <ProductReviews product={product} />
+      <ProductReviews product={product} token={token} user={user} onLogout={onLogout} />
     </section>
   )
 }
