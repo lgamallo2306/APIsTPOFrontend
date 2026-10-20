@@ -3,7 +3,9 @@ import ReviewsSkeleton from './ReviewsSkeleton'
 import ReviewSummary from './ReviewSummary'
 import ReviewItem from './ReviewItem'
 
-function ReviewsResults({ loading, error, reviews, onRetry }) {
+function ReviewsResults({ loading, error, reviews, user, onRetry, onDelete }) {
+  const canDelete = (review) => user !== null && (user.roles.includes('ADMIN') || review.authorId === user.id)
+
   if (loading) return <ReviewsSkeleton />
 
   if (error) {
@@ -18,7 +20,7 @@ function ReviewsResults({ loading, error, reviews, onRetry }) {
     <>
       <ReviewSummary reviews={reviews} />
       {reviews.map((review) => (
-        <ReviewItem key={review.id} review={review} />
+        <ReviewItem key={review.id} review={review} canDelete={canDelete(review)} onDelete={onDelete} />
       ))}
     </>
   )

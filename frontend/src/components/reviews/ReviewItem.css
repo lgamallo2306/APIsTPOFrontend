@@ -11,3 +11,7 @@
   align-items: center;
   gap: 0.75rem;
 }
+.review-item-delete {
+  margin-left: auto;
+  color: var(--danger) !important;
+}

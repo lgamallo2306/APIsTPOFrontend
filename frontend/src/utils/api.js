@@ -243,3 +243,6 @@ export const createSellerReview = (token, sellerId, review) =>
     headers: authHeaders(token),
     body: JSON.stringify(review),
   }).then(handle)
+
+export const deleteReview = (token, reviewId) =>
+  fetch(`${URL}/reviews/${reviewId}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)

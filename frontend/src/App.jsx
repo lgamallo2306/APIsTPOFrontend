@@ -131,7 +131,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomeView categories={categories} user={user} />} />
         <Route path='/catalogo' element={<CatalogView categories={categories} />} />
-        <Route path="/productos/:id" element={<ProductDetailView token={token} onCartChange={handleCartChange} onLogout={handleLogout} />} />
+        <Route path="/productos/:id" element={<ProductDetailView token={token} user={user} onCartChange={handleCartChange} onLogout={handleLogout} />} />
         <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
         <Route path="/registro" element={<RegisterView onLogin={handleLogin} />} />
 
