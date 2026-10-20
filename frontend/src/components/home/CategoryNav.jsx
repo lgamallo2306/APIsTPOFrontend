@@ -45,7 +45,6 @@ function CategoryNav({ categories }) {
           </svg>
           Ofertas
         </Link>
-        <Link to="/catalogo?sort=id,desc" className="category-nav-link">Novedades</Link>
         <Link to="/mis-compras" className="category-nav-link">Mis compras</Link>
       </div>
     </nav>

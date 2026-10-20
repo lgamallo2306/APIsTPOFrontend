@@ -21,7 +21,17 @@ function Catalog({ categories }) {
   }
   const pageNumber = params.get('page') || '0'
 
-  const search = (values) => navigate(`/catalogo?${new URLSearchParams(values)}`)
+  const search = (values) => {
+    const query = new URLSearchParams()
+    if (values.name !== '') query.set('name', values.name)
+    if (values.categoryId !== '') query.set('categoryId', values.categoryId)
+    if (values.minPrice !== '') query.set('minPrice', values.minPrice)
+    if (values.maxPrice !== '') query.set('maxPrice', values.maxPrice)
+    if (values.sort !== 'price,asc') query.set('sort', values.sort)
+    if (Number(values.page) > 0) query.set('page', values.page)
+    const text = query.toString()
+    navigate(text !== '' ? `/catalogo?${text}` : '/catalogo')
+  }
 
   const handleApply = (form) => {
     if (form.minPrice !== '' && form.maxPrice !== '' && Number(form.minPrice) > Number(form.maxPrice)) {

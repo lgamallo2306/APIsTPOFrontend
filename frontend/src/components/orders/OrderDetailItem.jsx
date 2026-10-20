@@ -1,11 +1,12 @@
 import { formatPrice } from '../../utils/format'
+import OrderItemName from './OrderItemName'
 import './OrderDetailItem.css'
 
 function OrderDetailItem({ item, onReview }) {
   return (
     <li className="order-detail-item">
       <div className="kv">
-        <span>{item.quantity} × {item.productName}</span>
+        <OrderItemName item={item} />
         <span>{formatPrice(item.subtotal)}</span>
       </div>
       <div className="order-detail-item-actions">

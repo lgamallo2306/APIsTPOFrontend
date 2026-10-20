@@ -11,7 +11,12 @@ function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFil
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
 
-  const query = `${new URLSearchParams({ ...filters, page: pageNumber })}`
+  const params = new URLSearchParams({ sort: filters.sort, page: pageNumber })
+  if (filters.name !== '') params.set('name', filters.name)
+  if (filters.categoryId !== '') params.set('categoryId', filters.categoryId)
+  if (filters.minPrice !== '') params.set('minPrice', filters.minPrice)
+  if (filters.maxPrice !== '') params.set('maxPrice', filters.maxPrice)
+  const query = params.toString()
 
   useEffect(() => {
     setLoading(true)

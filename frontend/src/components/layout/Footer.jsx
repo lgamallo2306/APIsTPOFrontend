@@ -8,7 +8,6 @@ const COLUMNAS = [
     links: [
       { to: '/catalogo', label: 'Catálogo' },
       { to: '/catalogo?sort=discount,desc', label: 'Ofertas' },
-      { to: '/catalogo?sort=id,desc', label: 'Novedades' },
     ],
   },
   {

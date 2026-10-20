@@ -21,12 +21,6 @@ function HomeView({ categories, user }) {
         />
         <PromoBanners categories={categories}/>
         <ProductRow
-            title="Novedades"
-            subtitle="Recién publicados por los makers"
-            query="sort=id,desc"
-            moreLink="/catalogo?sort=id,desc"
-        />
-        <ProductRow
             title="Menos de $ 5.000"
             subtitle="Piezas útiles a buen precio"
             query="maxPrice=5000&sort=price,asc"

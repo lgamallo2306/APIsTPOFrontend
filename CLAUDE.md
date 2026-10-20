@@ -161,7 +161,7 @@ El backend real manda sobre el handoff:
 | `GET /products/{id}`, `/products/mine` | el producto trae `categoryName` (no el id) e `imageUrls` (sin id de imagen). Para quitar una imagen se hace `PUT /products/{id}` con `imageUrls` sin esa url; si el `PUT` no manda `imageUrls`, las imágenes no se tocan |
 | `GET/POST /reviews/products/{id}`, `GET/POST /reviews/sellers/{id}` | reseñas (no están en el handoff). GET público, devuelve lista. POST body `{ rating, comment }`; 409 si no compró o ya reseñó |
 | `DELETE /reviews/{id}` | el autor borra la suya y ADMIN cualquiera (204); otro usuario recibe 403. La reseña trae `authorId` para saber cuáles son del usuario. En el detalle del producto, "Eliminar" aparece en las reseñas propias (o en todas si es admin) y se confirma con un modal |
-| `GET /orders`, `GET /orders/{id}` | cada ítem trae `sellerId` y `sellerName` |
+| `GET /orders`, `GET /orders/{id}` | cada ítem trae `sellerId`, `sellerName` y `productActive` (si el producto sigue publicado: el nombre linkea a `/productos/{id}`; si no, se muestra "ya no está publicado") |
 
 - Sin token, el back responde **403** (no 401).
 - CORS configurado en el back para `http://localhost:5173` (si el front levanta en otro puerto, las llamadas fallan).

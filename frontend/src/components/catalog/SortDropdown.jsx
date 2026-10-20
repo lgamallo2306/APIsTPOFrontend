@@ -4,7 +4,6 @@ const OPTIONS = [
   { id: 'name,asc', label: 'Nombre: A–Z' },
   { id: 'name,desc', label: 'Nombre: Z–A' },
   { id: 'discount,desc', label: 'Mayor descuento' },
-  { id: 'id,desc', label: 'Más nuevos' },
 ]
 
 function SortDropdown({ value, onChange }) {
