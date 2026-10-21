@@ -17,7 +17,7 @@ function OrderDetailContainer({ token, onLogout }) {
   const [lastId, setLastId] = useState(id)
   const [reviewTarget, setReviewTarget] = useState(null)
 
-  // si cambia el id desde la URL, se vuelve a cargar (patrón de guardar el valor anterior antes del return)
+  
   if (id !== lastId) {
     setLastId(id)
     setLoading(true)

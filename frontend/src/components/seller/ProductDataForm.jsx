@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import ProductBasicFields from './ProductBasicFields'
 import ProductPriceFields from './ProductPriceFields'
 
-// Pasa el producto del back a los valores del formulario (los inputs siempre trabajan con strings)
+
 const productToForm = (product, categories, suggestedPrice) => {
   if (!product) {
     return { name: '', description: '', price: suggestedPrice ? String(suggestedPrice) : '', stock: '', discount: '0', categoryId: '' }
   }
-  // el producto trae el nombre de la categoría, no el id: se busca en la lista
+  
   const category = categories.find((item) => item.description === product.categoryName)
   return {
     name: product.name,

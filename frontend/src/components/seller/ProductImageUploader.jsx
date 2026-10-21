@@ -1,7 +1,7 @@
 import ProductImageTile from './ProductImageTile'
 import './ProductImageUploader.css'
 
-// Antes de crear el producto no hay id, así que no se pueden subir imágenes todavía
+
 function ProductImageUploader({ product, uploading, error, onUpload, onRemove }) {
   if (!product) {
     return (

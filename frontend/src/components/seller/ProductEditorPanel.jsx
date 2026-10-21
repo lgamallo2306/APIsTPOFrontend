@@ -8,7 +8,7 @@ import ProductImageUploader from './ProductImageUploader'
 
 const ERROR_GENERICO = 'No pudimos completar la operación. Intentá de nuevo en unos segundos.'
 
-// Guarda los datos y maneja las imágenes. El alta es en 2 pasos: primero los datos y, con el id, las imágenes
+
 function ProductEditorPanel({ token, categories, onLogout, product, suggestedPrice, onProductChange }) {
   const navigate = useNavigate()
   const [saving, setSaving] = useState(false)
@@ -59,7 +59,7 @@ function ProductEditorPanel({ token, categories, onLogout, product, suggestedPri
       })
   }
 
-  // la respuesta del back no trae el id de cada imagen: para quitar una se manda el producto con la lista sin esa url
+  
   const handleRemoveImage = (url) => {
     const category = categories.find((item) => item.description === product.categoryName)
     setImageError('')

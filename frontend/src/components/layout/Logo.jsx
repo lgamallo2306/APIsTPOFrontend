@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import './Logo.css'
 
-// Logo de 3d: tres "capas" de impresión + el nombre. Lleva al catálogo.
+
 function Logo() {
   return (
     <Link to="/" className="logo">

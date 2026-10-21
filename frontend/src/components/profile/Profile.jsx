@@ -3,7 +3,7 @@ import ProfileLinks from './ProfileLinks'
 import ProfileSettings from './ProfileSettings'
 import './Profile.css'
 
-// Los datos ya están en App (GET /users/me): el perfil los muestra sin otro pedido al back.
+
 // Los cambios de la cuenta salen de ProfileSettings
 function Profile({ user, token, onUserChange, onTokenChange, onLogout }) {
   return (

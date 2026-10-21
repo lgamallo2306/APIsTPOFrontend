@@ -4,10 +4,7 @@
 /* Sistema de diseño: variables (claro/oscuro) y clases base. No editar: se reemplaza entero si cambia el diseño. */
 @import './styles/tokens.css';
 
-/* ---------- Estilos globales de la app ---------- */
 
-/* El div.app ocupa toda la pantalla y es una columna:
-   arriba el header, abajo la vista, que ocupa el resto. */
 .app {
   min-height: 100vh;
   display: flex;

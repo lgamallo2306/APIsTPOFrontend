@@ -1,6 +1,6 @@
 import Modal from '../ui/Modal'
 
-// Si el back rechaza el borrado, solo se muestra el mensaje y "Entendido"
+
 function ProductDeleteModal({ product, error, onConfirm, onClose }) {
   if (error) {
     return (

@@ -1,4 +1,3 @@
-/* Layout de las vistas de login y registro: panel a la izquierda, formulario a la derecha */
 .auth-page {
   flex: 1;
   display: flex;

@@ -36,7 +36,7 @@ function PurchasesContainer({ token, onLogout }) {
 
   if (loading) return <section className="purchases"><div className="skel purchases-skeleton" /></section>
 
-  // sesión vencida: App muestra el login en esta misma URL
+  
   if (expired) return <EmptyState title="Tu sesión venció" text="Ingresá de nuevo para ver tus compras." actionLabel="Ingresar" onAction={onLogout} />
 
   if (error) return <EmptyState title="No pudimos cargar tus compras" text={error} actionLabel="Reintentar" onAction={handleRetry} />

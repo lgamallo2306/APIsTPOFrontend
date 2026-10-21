@@ -33,7 +33,7 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
     setActionError(err.message ? err.message : ERROR_GENERICO)
   }
 
-  // el back suma la cantidad al stock actual: se manda la diferencia entre el valor nuevo y el actual
+  
   const handleStock = (newStock) => {
     updateStock(token, selected.id, newStock - selected.stock)
       .then((updated) => {

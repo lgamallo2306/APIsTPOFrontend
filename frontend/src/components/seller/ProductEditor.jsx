@@ -12,11 +12,8 @@ function ProductEditor({ user, token, categories, onLogout }) {
   const location = useLocation()
   const id = location.pathname.split('/')[3] // "/vendedor/productos/5" → "5" · "/vendedor/productos/nuevo" → "nuevo"
   const isNew = id === 'nuevo'
-  // desde "Mis productos" el producto llega en location.state; si se entra por URL o se recarga, se pide al back
   const productFromList = location.state && location.state.product ? location.state.product : null
-  // desde la calculadora llega el precio sugerido
   const suggestedPrice = location.state && location.state.price ? location.state.price : null
-
   const [product, setProduct] = useState(productFromList)
   const [loading, setLoading] = useState(!isNew && productFromList === null)
   const [error, setError] = useState('')
@@ -52,7 +49,7 @@ function ProductEditor({ user, token, categories, onLogout }) {
     return <EmptyState title="No pudimos cargar el producto" text={error} actionLabel="Reintentar" onAction={() => setRetry(retry + 1)} />
   }
 
-  // el back rechaza con 403 editar un producto ajeno: se avisa antes, así no se cierra la sesión por error
+  
   if (product && product.sellerId !== user.id && !user.roles.includes('ADMIN')) {
     return <EmptyState title="Este producto no es tuyo" text="Solo podés editar los productos que publicaste vos." />
   }

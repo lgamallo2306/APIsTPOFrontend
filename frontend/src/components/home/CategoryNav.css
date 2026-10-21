@@ -9,7 +9,7 @@
   border-bottom: 1px solid var(--border);
 }
 
-/* el botón "Categorías" y su menú desplegable */
+
 .category-nav-menu {
   position: relative;
   flex-shrink: 0;
