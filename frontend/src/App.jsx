@@ -19,6 +19,7 @@ import PriceCalculatorView from './views/PriceCalculatorView'
 import MySalesView from './views/MySalesView'
 import CategoriesView from './views/admin/CategoriesView'
 import UsersView from './views/admin/UsersView'
+import NotFoundView from './views/NotFoundView'
 import OrderConfirmationView from './views/OrderConfirmationView'
 import HomeView from './views/HomeView'
 import Footer from './components/layout/Footer'
@@ -149,6 +150,8 @@ function App() {
 
         <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} onCategorySaved={handleCategorySaved} onCategoryDeleted={handleCategoryDeleted} onLogout={handleLogout} /> : catalogOrLoading} />
         <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
+
+        <Route path="*" element={<NotFoundView />} />
         
       </Routes>
       <Footer />

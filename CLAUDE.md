@@ -130,6 +130,7 @@ Rutas protegidas con renderizado condicional en `element` (no se usan `Navigate`
 | `/vendedor/productos`, `/vendedor/productos/nuevo`, `/vendedor/productos/:id` | VENDOR / ADMIN | MyProductsView, ProductFormView |
 | `/vendedor/calculadora`, `/vendedor/ventas` | VENDOR / ADMIN | PriceCalculatorView, MySalesView |
 | `/admin/categorias`, `/admin/usuarios` | ADMIN | CategoriesView, UsersView |
+| `*` (cualquier otra) | público | NotFoundView (página 404); va última en `Routes` |
 
 Los filtros del catálogo viven en la query string (`/?name=maceta&categoryId=3&page=0`). Se leen con `useLocation().search` + `URLSearchParams` y se escriben con `navigate`. Así sobreviven a ir al login y volver, a recargar y a los botones atrás/adelante, algo que un `useState` en la vista no puede hacer porque se pierde al desmontarla.
 
