@@ -110,11 +110,6 @@ export const updateCartItem = (token, item) =>
 export const checkout = (token) =>
   fetch(`${URL}/orders/checkout`, { method: 'POST', headers: authHeaders(token) }).then(handle)
 
-// los ítems del carrito no traen imagen: se pide cada producto.
-// Promise.all espera todas las promesas y devuelve un array con los productos en el mismo orden
-export const getCartProducts = (items) =>
-  Promise.all(items.map((item) => getProduct(item.productId)))
-
 export const clearCart = (token) =>
   fetch(`${URL}/cart`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
 

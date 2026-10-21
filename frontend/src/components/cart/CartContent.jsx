@@ -4,7 +4,7 @@ import CartItemList from './CartItemList'
 import CartSummary from './CartSummary'
 import './CartContent.css'
 
-function CartContent({ cart, products, error, updating, onRetry, onQuantity, onClear, onCheckout }) {
+function CartContent({ cart, error, updating, onRetry, onQuantity, onClear, onCheckout }) {
   const navigate = useNavigate()
 
   if (error) return <EmptyState title="No pudimos cargar el carrito" text={error} actionLabel="Reintentar" onAction={onRetry} />
@@ -18,7 +18,7 @@ function CartContent({ cart, products, error, updating, onRetry, onQuantity, onC
 
   return (
     <div className="cart-content">
-      <CartItemList items={cart.items} products={products} disabled={updating} onQuantity={onQuantity} />
+      <CartItemList items={cart.items} disabled={updating} onQuantity={onQuantity} />
       <CartSummary total={cart.total} disabled={updating} onClear={onClear} onCheckout={onCheckout} />
     </div>
   )

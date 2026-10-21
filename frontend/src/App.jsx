@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
-import { getMe, getCart, getCartProducts, getCategories } from './utils/api'
+import { getMe, getCart, getCategories } from './utils/api'
 import { countUnits } from './utils/format'
 import PageLoading from './components/ui/PageLoading'
 
@@ -34,7 +34,6 @@ function App() {
   const [loadingUser, setLoadingUser] = useState(localStorage.getItem('token') !== null)
   const [cart, setCart] = useState(null)
   const [cartError, setCartError] = useState('')
-  const [cartProducts, setCartProducts] = useState([])
   const [categories, setCategories] = useState([])
 
   const handleLogin = (newToken) => {
@@ -60,7 +59,6 @@ function App() {
     setLoadingUser(false)
     setCart(null)
     setCartError('')
-    setCartProducts([])
   }
 
   // cambio de email: el back manda un token nuevo; el useEffect de [token] trae el usuario actualizado.
@@ -88,33 +86,20 @@ function App() {
         toast.error('Tu sesión venció. Ingresá de nuevo.')
       })
     getCart(token)
-      .then((data) => {
-        setCart(data)
-        getCartProducts(data.items)
-          .then((products) => setCartProducts(products))
-          .catch(() => setCartProducts([]))
-      })
+      .then((data) => setCart(data))
       .catch((error) => setCartError(error.message))
   }, [token])
 
   const handleRetryCart = () => {
     setCartError('')
     getCart(token)
-      .then((data) => {
-        setCart(data)
-        getCartProducts(data.items)
-          .then((products) => setCartProducts(products))
-          .catch(() => setCartProducts([]))
-      })
+      .then((data) => setCart(data))
       .catch((error) => setCartError(error.message))
   }
 
  
-  const handleCartChange = (newCart, product) => {
+  const handleCartChange = (newCart) => {
     setCart(newCart)
-    if (product && !cartProducts.some((saved) => saved.id === product.id)) {
-      setCartProducts([...cartProducts, product])
-    }
   }
 
   const cartCount = cart ? countUnits(cart.items) : 0
@@ -136,7 +121,7 @@ function App() {
         <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
         <Route path="/registro" element={<RegisterView onLogin={handleLogin} />} />
 
-        <Route path="/carrito" element={user ? <CartView cart={cart} products={cartProducts} error={cartError} onRetry={handleRetryCart} token={token} onCartChange={handleCartChange} onLogout={handleLogout} /> : loginOrLoading} />
+        <Route path="/carrito" element={user ? <CartView cart={cart} error={cartError} onRetry={handleRetryCart} token={token} onCartChange={handleCartChange} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView token={token} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/mis-compras" element={user ? <MyPurchasesView token={token} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/mis-compras/:id" element={user ? <OrderDetailView token={token} onLogout={handleLogout} /> : loginOrLoading} />

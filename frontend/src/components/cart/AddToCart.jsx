@@ -20,7 +20,7 @@ function AddToCart({ product, token, onCartChange, onLogout }) {
     setLoading(true)
     addCartItem(token, { productId: product.id, quantity })
       .then((cart) => {
-        onCartChange(cart, product)
+        onCartChange(cart)
         setLoading(false)
         // el aviso puede llevar JSX: así incluye el link al carrito
         toast.success(<span>Agregado al carrito. <Link to="/carrito">Ver carrito</Link></span>)

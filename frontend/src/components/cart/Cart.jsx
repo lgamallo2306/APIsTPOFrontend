@@ -5,7 +5,7 @@ import CartContent from './CartContent'
 import './Cart.css'
 import { toast } from 'react-toastify'
 
-function Cart({ cart, products, error, onRetry, token, onCartChange, onLogout }) {
+function Cart({ cart, error, onRetry, token, onCartChange, onLogout }) {
   const navigate = useNavigate()
   const [updating, setUpdating] = useState(false)
   
@@ -53,7 +53,7 @@ function Cart({ cart, products, error, onRetry, token, onCartChange, onLogout })
   return (
     <section className="cart">
       <h1 className="h1">Carrito</h1>
-      <CartContent cart={cart} products={products} error={error} updating={updating}
+      <CartContent cart={cart} error={error} updating={updating}
         onRetry={onRetry} onQuantity={handleQuantity} onClear={handleClear} onCheckout={handleCheckout} />
     </section>
   )

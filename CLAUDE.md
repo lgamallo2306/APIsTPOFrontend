@@ -102,9 +102,8 @@ Vive en `App.jsx` y se pasa por props:
 
 - `token`: se guarda en `localStorage` (es lo único que se persiste en el navegador).
 - `user`: respuesta de `GET /users/me`. `user.roles` es un array (`USER`, `VENDOR`, `ADMIN`).
-- `cart`: respuesta de `GET /cart` (se pide una sola vez por token y baja a `CartView`). `cartCount` se calcula sumando `quantity` de `cart.items`.
-- `cartProducts`: los productos de los ítems del carrito (los ítems no traen imagen ni stock). Se piden con `GET /products/{id}` una vez, junto con el carrito.
-- `onCartChange(cart, product)`: las vistas que modifican el carrito (detalle, carrito) le pasan a `App` el carrito que devuelve el back, así el contador del Header se actualiza sin otro GET. Desde el detalle también pasa el producto, que se suma a `cartProducts`.
+- `cart`: respuesta de `GET /cart` (se pide una sola vez por token y baja a `CartView`). Cada ítem trae `imageUrl` y `stock`, así que no hace falta pedir los productos. `cartCount` se calcula sumando `quantity` de `cart.items`.
+- `onCartChange(cart)`: las vistas que modifican el carrito (detalle, carrito) le pasan a `App` el carrito que devuelve el back, así el contador del Header se actualiza sin otro GET.
 - `categories`: `GET /categories` una sola vez al montar (`useEffect` con `[]`); se pasa a las vistas que la usan.
 - `handleLogin(token)` / `handleLogout()`: se pasan a las vistas y al Header.
 - Perfil: `setUser` baja como `onUserChange` (editar nombre). `handleTokenChange(token)` se usa al cambiar el email, porque el back devuelve un token nuevo: guarda el token sin borrar `user`, y el `useEffect` de `[token]` trae el usuario actualizado.
@@ -155,6 +154,7 @@ El backend real manda sobre el handoff:
 | --- | --- |
 | `POST /api/v1/auth/register` | `{ firstname, lastname, email, password, role }` |
 | `PUT /cart/items` | body `{ productId, quantity }` (`quantity: 0` elimina el ítem) |
+| `GET /cart` y respuestas del carrito | cada ítem trae `imageUrl` (la primera imagen, o `null`) y `stock` del producto |
 | `PATCH /products/{id}/stock` | body `{ quantity }`: **se suma** al stock actual (negativo resta). El front pide el valor nuevo y manda la diferencia |
 | `PATCH /products/{id}/discount` | body `{ discount }` |
 | `GET /users` | existe, paginado (ADMIN) |
