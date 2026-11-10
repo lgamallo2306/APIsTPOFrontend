@@ -1,27 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getProductRow } from '../../utils/api'
 import ProductCard from '../products/ProductCard'
 import './ProductRow.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProductRow } from '../../Redux/productSlice'
 
 const SKELETONS = [1, 2, 3, 4, 5]
 
 
 function ProductRow({ title, subtitle, query, moreLink }) {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  const row = useSelector((state) => state.products.rows[query])
+
 
   useEffect(() => {
-    getProductRow(query)
-      .then((data) => {
-        setProducts(data.content)
-        setLoading(false)
-      })
-      .catch(() => {
-        setProducts([])
-        setLoading(false)
-      })
-  }, [query])
+   if(!row) dispatch(fetchProductRow(query)) 
+  }, [dispatch, query, row])
+
+  const loading = !row || row.loading
+  const products = row ? row.items : []
 
   if (!loading && products.length === 0) return null
 

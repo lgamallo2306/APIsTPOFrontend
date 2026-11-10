@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { getProducts } from '../../utils/api'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProducts } from '../../Redux/productSlice'
 import CatalogResults from './CatalogResults'
 import './CatalogProducts.css'
 
-const ERROR_CARGA = 'No pudimos traer los productos. Revisá tu conexión e intentá de nuevo en unos segundos.'
 
 function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFilter, onPageChange }) {
-  const [products, setProducts] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
+
+  const dispatch = useDispatch()
+  const catalog = useSelector((state) => state.products.catalog)
+
 
   const params = new URLSearchParams({ sort: filters.sort, page: pageNumber })
   if (filters.name !== '') params.set('name', filters.name)
@@ -18,32 +18,25 @@ function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFil
   if (filters.maxPrice !== '') params.set('maxPrice', filters.maxPrice)
   const query = params.toString()
 
+ 
   useEffect(() => {
-    setLoading(true)
-    setError('')
-    getProducts(query)
-      .then((data) => {
-        setProducts(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.status && err.message ? err.message : ERROR_CARGA)
-        setLoading(false)
-      })
-  }, [query, retry])
+    if(catalog.query !== query) dispatch(fetchProducts(query))
+  }, [dispatch, query, catalog.query])
 
-  const handleRetry = () => {
-    setRetry(retry + 1)
+    const handleRetry = () => {
+    dispatch(fetchProducts(query))
   }
 
+  const loading = catalog.query !== query || catalog.loading
+  
   const hasFilters = filters.name !== '' || filters.categoryId !== '' || filters.minPrice !== '' || filters.maxPrice !== ''
 
   return (
     <section className="catalog-products">
       <CatalogResults
         loading={loading}
-        error={error}
-        products={products}
+        error={catalog.error}
+        products={catalog.page}
         filters={filters}
         hasFilters={hasFilters}
         categories={categories}

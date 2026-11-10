@@ -1,20 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { URL } from './apiConfig'
+import { URL } from './apiconfig'
 
-// catálogo: query = filtros de la URL (name, categoryId, page...)
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (query) => {
   const { data } = await axios.get(`${URL}/products?size=12&${query}`)
   return data
 })
 
-// filas de la Home: cada fila se guarda con su query como clave
+
 export const fetchProductRow = createAsyncThunk('products/fetchProductRow', async (query) => {
   const { data } = await axios.get(`${URL}/products?size=5&${query}`)
   return data.content
 })
 
-// detalle de un producto
+
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (id) => {
   const { data } = await axios.get(`${URL}/products/${id}`)
   return data
@@ -23,33 +22,28 @@ export const fetchProduct = createAsyncThunk('products/fetchProduct', async (id)
 const productSlice = createSlice({
   name: 'products',
   initialState: {
-    items: [],
-    totalPages: 0,
-    loading: false,
-    error: null,
-    rows: {},
-    selectedProduct: null,
-    selectedLoading: false,
-    selectedError: null,
-  },
+  catalog: { query: null, page: null, loading: false, error: null },
+  rows: {},
+  detail: { id: null, product: null, loading: false, error: null },
+},
   reducers: {},
   extraReducers: (builder) => {
     builder
+    
       // catálogo
-      .addCase(fetchProducts.pending, (state) => {
-        state.loading = true
-        state.error = null
+      .addCase(fetchProducts.pending, (state, action) => {
+        state.catalog = {query: action.meta.arg, page: null, loading: true, error: null }
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = false
-        state.items = action.payload.content
-        state.totalPages = action.payload.totalPages
+        state.catalog.loading = false
+        state.catalog.page = action.payload
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.error.message
+        state.catalog.loading = false
+        state.catalog.error = action.error.message
       })
-      // filas de la Home
+
+      // filas de Home
       .addCase(fetchProductRow.pending, (state, action) => {
         state.rows[action.meta.arg] = { items: [], loading: true, error: null }
       })
@@ -59,18 +53,18 @@ const productSlice = createSlice({
       .addCase(fetchProductRow.rejected, (state, action) => {
         state.rows[action.meta.arg] = { items: [], loading: false, error: action.error.message }
       })
+
       // detalle
-      .addCase(fetchProduct.pending, (state) => {
-        state.selectedLoading = true
-        state.selectedError = null
+      .addCase(fetchProduct.pending, (state, action) => {
+        state.detail = {id: action.meta.arg, product: null, loading: true, error: null}
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
-        state.selectedLoading = false
-        state.selectedProduct = action.payload
+        state.detail.loading = false
+        state.detail.product = action.payload
       })
       .addCase(fetchProduct.rejected, (state, action) => {
-        state.selectedLoading = false
-        state.selectedError = action.error.message
+        state.detail.loading = false
+        state.detail.error = action.error.message
       })
   },
 })
