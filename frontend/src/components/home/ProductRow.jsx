@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import ProductCard from '../products/ProductCard'
 import './ProductRow.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProductRow } from '../../Redux/productSlice'
+import { fetchProductRow } from '../../redux/productSlice'
 
 const SKELETONS = [1, 2, 3, 4, 5]
 

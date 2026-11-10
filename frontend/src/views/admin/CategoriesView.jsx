@@ -1,14 +1,9 @@
 import CategoriesContainer from '../../components/admin/CategoriesContainer'
 
-function CategoriesView({ token, onCategorySaved, onCategoryDeleted, onLogout }) {
+function CategoriesView({ token }) {
   return (
     <main>
-      <CategoriesContainer
-        token={token}
-        onCategorySaved={onCategorySaved}
-        onCategoryDeleted={onCategoryDeleted}
-        onLogout={onLogout}
-      />
+      <CategoriesContainer token={token} />
     </main>
   )
 }

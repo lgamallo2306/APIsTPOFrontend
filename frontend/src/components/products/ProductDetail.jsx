@@ -1,39 +1,31 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { getProduct } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProduct } from '../../redux/productSlice'
 import EmptyState from '../ui/EmptyState'
 import BackButton from '../layout/BackButton'
 import ProductInfo from './ProductInfo'
 import ProductReviews from '../reviews/ProductReviews'
 import './ProductDetail.css'
 
-const ERROR_CARGA = 'No pudimos traer el producto. Revisá tu conexión e intentá de nuevo.'
-
 function ProductDetail({ token, user, onCartChange, onLogout }) {
   const location = useLocation()
   const id = location.pathname.split('/')[2] // "/productos/5" → "5"
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
+  const dispatch = useDispatch()
+  const detail = useSelector((state) => state.products.detail)
 
   useEffect(() => {
-    getProduct(id)
-      .then((data) => {
-        setProduct(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.status ? err.message : ERROR_CARGA)
-        setLoading(false)
-      })
-  }, [id, retry])
+    if(detail.id !== id) dispatch(fetchProduct(id))
+  }, [dispatch, id, detail.id])
 
   const handleRetry = () => {
-    setLoading(true)
-    setError('')
-    setRetry(retry + 1)
+    dispatch(fetchProduct(id))
   }
+
+  const loading = detail.id !== id || detail.loading
+  const error = detail.error
+  const product = detail.product
+
 
   if (loading) {
     return (

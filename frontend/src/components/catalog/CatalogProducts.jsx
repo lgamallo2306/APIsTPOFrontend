@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts } from '../../Redux/productSlice'
+import { fetchProducts } from '../../redux/productSlice'
 import CatalogResults from './CatalogResults'
 import './CatalogProducts.css'
 

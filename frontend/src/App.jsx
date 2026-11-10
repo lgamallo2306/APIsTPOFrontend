@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
-import { getMe, getCart, getCategories } from './utils/api'
+import { getMe, getCart } from './utils/api'
 import { countUnits } from './utils/format'
 import PageLoading from './components/ui/PageLoading'
 
@@ -25,16 +25,19 @@ import HomeView from './views/HomeView'
 import Footer from './components/layout/Footer'
 import { ToastContainer, toast } from 'react-toastify'
 import LoginRequired from './components/auth/LoginRequired'
+import { fetchCategories } from './redux/categoriesSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [user, setUser] = useState(null)
-  // con token guardado, el usuario tarda en llegar: mientras tanto no se muestra el login
   const [loadingUser, setLoadingUser] = useState(localStorage.getItem('token') !== null)
   const [cart, setCart] = useState(null)
   const [cartError, setCartError] = useState('')
-  const [categories, setCategories] = useState([])
+  const dispatch = useDispatch()
+  const categories = useSelector((state) => state.categories.items)
 
   const handleLogin = (newToken) => {
     localStorage.setItem('token', newToken)
@@ -42,15 +45,6 @@ function App() {
     setToken(newToken)
   }
 
-  // el panel admin pide su propia página; App mantiene la lista del catálogo al día con cada cambio
-  const handleCategorySaved = (saved, wasEdit) => {
-    if (wasEdit) setCategories(categories.map((item) => (item.id === saved.id ? saved : item)))
-    else setCategories([...categories, saved])
-  }
-
-  const handleCategoryDeleted = (id) => {
-    setCategories(categories.filter((item) => item.id !== id))
-  }
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -61,18 +55,15 @@ function App() {
     setCartError('')
   }
 
-  // cambio de email: el back manda un token nuevo; el useEffect de [token] trae el usuario actualizado.
-  // A diferencia de handleLogin, user no se borra, así el perfil sigue en pantalla
+
   const handleTokenChange = (newToken) => {
     localStorage.setItem('token', newToken)
     setToken(newToken)
   }
 
   useEffect(() => {
-    getCategories()
-      .then((data) => setCategories(data.content))
-      .catch(() => setCategories([]))
-  }, [])
+    dispatch(fetchCategories())
+  }, [dispatch]) 
 
   useEffect(() => {
     if (!token) return
@@ -133,7 +124,7 @@ function App() {
         <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView token={token} /> : catalogOrLoading} />
         <Route path="/vendedor/ventas" element={isVendor ? <MySalesView token={token} /> : catalogOrLoading} />
 
-        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} onCategorySaved={handleCategorySaved} onCategoryDeleted={handleCategoryDeleted} onLogout={handleLogout} /> : catalogOrLoading} />
+        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} /> : catalogOrLoading} />
         <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
 
         <Route path="*" element={<NotFoundView />} />

@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { createCategory, updateCategory, deleteCategory } from '../../utils/api'
+import { useDispatch } from 'react-redux'
+import { createCategory, updateCategory, deleteCategory } from '../../redux/categoriesSlice'
 import { toast } from 'react-toastify'
 import CategoriesBody from './CategoriesBody'
 import CategoryModal from './CategoryModal'
 import CategoryDeleteModal from './CategoryDeleteModal'
 
-// Encabezado, lista, modales y avisos. Las llamadas de alta, edición y baja salen de acá; el contenedor actualiza los datos
-function CategoriesPanel({ token, onLogout, loading, error, data, onPageChange, onRetry, onSaved, onDeleted }) {
+// Encabezado, lista, modales y avisos. Alta, edición y baja se despachan acá; el slice actualiza los datos
+function CategoriesPanel({ token, loading, error, data, onPageChange, onRetry }) {
+  const dispatch = useDispatch()
   const [modal, setModal] = useState(null) // null | 'form' | 'delete'
   const [selected, setSelected] = useState(null)
   const [saveError, setSaveError] = useState('')
@@ -36,33 +38,32 @@ function CategoriesPanel({ token, onLogout, loading, error, data, onPageChange, 
     setModal('delete')
   }
 
+  // dispatch devuelve una promesa con la acción final (fulfilled o rejected)
   const handleSave = (form) => {
     const wasEdit = selected !== null
-    const request = wasEdit ? updateCategory(token, selected.id, form) : createCategory(token, form)
-    request
-      .then((saved) => {
-        onSaved(saved, wasEdit)
-        toast.success(wasEdit ? 'Categoría actualizada' : 'Categoría creada')
-        closeModal()
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setSaveError(err.message)
-      })
+    const action = wasEdit
+      ? updateCategory({ token, id: selected.id, category: form })
+      : createCategory({ token, category: form })
+    dispatch(action).then((result) => {
+      if (result.error) {
+        setSaveError(result.error.message)
+        return
+      }
+      toast.success(wasEdit ? 'Categoría actualizada' : 'Categoría creada')
+      closeModal()
+    })
   }
 
   // un 409 (la categoría tiene productos) llega como error y el modal lo muestra con "Entendido"
   const handleDelete = () => {
-    deleteCategory(token, selected.id)
-      .then(() => {
-        onDeleted(selected.id)
-        toast.success('Categoría eliminada')
-        closeModal()
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setDeleteError(err.message)
-      })
+    dispatch(deleteCategory({ token, id: selected.id })).then((result) => {
+      if (result.error) {
+        setDeleteError(result.error.message)
+        return
+      }
+      toast.success('Categoría eliminada')
+      closeModal()
+    })
   }
 
   return (
