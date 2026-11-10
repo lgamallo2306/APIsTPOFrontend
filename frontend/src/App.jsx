@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
-import { getMe, getCart } from './utils/api'
-import { countUnits } from './utils/format'
+import { getMe } from './utils/api'
 import PageLoading from './components/ui/PageLoading'
 
 import CatalogView from './views/CatalogView'
@@ -26,6 +25,7 @@ import Footer from './components/layout/Footer'
 import { ToastContainer, toast } from 'react-toastify'
 import LoginRequired from './components/auth/LoginRequired'
 import { fetchCategories } from './redux/categoriesSlice'
+import { fetchCart, resetCart } from './redux/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -34,8 +34,6 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [user, setUser] = useState(null)
   const [loadingUser, setLoadingUser] = useState(localStorage.getItem('token') !== null)
-  const [cart, setCart] = useState(null)
-  const [cartError, setCartError] = useState('')
   const dispatch = useDispatch()
   const categories = useSelector((state) => state.categories.items)
 
@@ -51,8 +49,7 @@ function App() {
     setToken(null)
     setUser(null)
     setLoadingUser(false)
-    setCart(null)
-    setCartError('')
+    dispatch(resetCart())
   }
 
 
@@ -76,24 +73,8 @@ function App() {
         handleLogout()
         toast.error('Tu sesión venció. Ingresá de nuevo.')
       })
-    getCart(token)
-      .then((data) => setCart(data))
-      .catch((error) => setCartError(error.message))
-  }, [token])
-
-  const handleRetryCart = () => {
-    setCartError('')
-    getCart(token)
-      .then((data) => setCart(data))
-      .catch((error) => setCartError(error.message))
-  }
-
- 
-  const handleCartChange = (newCart) => {
-    setCart(newCart)
-  }
-
-  const cartCount = cart ? countUnits(cart.items) : 0
+    dispatch(fetchCart(token))
+  }, [token, dispatch])
 
   
   const loginOrLoading = loadingUser ? <PageLoading /> : <LoginRequired />
@@ -104,15 +85,15 @@ function App() {
 
   return (
     <div className='app'>
-      <Header user={user} cartCount={cartCount} onLogout={handleLogout} />
+      <Header user={user} onLogout={handleLogout} />
       <Routes>
         <Route path='/' element={<HomeView categories={categories} user={user} />} />
         <Route path='/catalogo' element={<CatalogView categories={categories} />} />
-        <Route path="/productos/:id" element={<ProductDetailView token={token} user={user} onCartChange={handleCartChange} onLogout={handleLogout} />} />
+        <Route path="/productos/:id" element={<ProductDetailView token={token} user={user} />} />
         <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
         <Route path="/registro" element={<RegisterView onLogin={handleLogin} />} />
 
-        <Route path="/carrito" element={user ? <CartView cart={cart} error={cartError} onRetry={handleRetryCart} token={token} onCartChange={handleCartChange} onLogout={handleLogout} /> : loginOrLoading} />
+        <Route path="/carrito" element={user ? <CartView token={token} /> : loginOrLoading} />
         <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView token={token} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/mis-compras" element={user ? <MyPurchasesView token={token} onLogout={handleLogout} /> : loginOrLoading} />
         <Route path="/mis-compras/:id" element={user ? <OrderDetailView token={token} onLogout={handleLogout} /> : loginOrLoading} />

@@ -8,7 +8,7 @@ import ProductInfo from './ProductInfo'
 import ProductReviews from '../reviews/ProductReviews'
 import './ProductDetail.css'
 
-function ProductDetail({ token, user, onCartChange, onLogout }) {
+function ProductDetail({ token, user }) {
   const location = useLocation()
   const id = location.pathname.split('/')[2] // "/productos/5" → "5"
   const dispatch = useDispatch()
@@ -45,9 +45,9 @@ function ProductDetail({ token, user, onCartChange, onLogout }) {
         <BackButton />
       </div>
       <div className="product-detail-main">
-        <ProductInfo product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+        <ProductInfo product={product} token={token} />
       </div>
-      <ProductReviews product={product} token={token} user={user} onLogout={onLogout} />
+      <ProductReviews product={product} token={token} user={user} />
     </section>
   )
 }

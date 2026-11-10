@@ -1,60 +1,61 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { updateCartItem, clearCart, checkout } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCart, updateCartItem, clearCart, checkout } from '../../redux/cartSlice'
 import CartContent from './CartContent'
 import './Cart.css'
 import { toast } from 'react-toastify'
 
-function Cart({ cart, error, onRetry, token, onCartChange, onLogout }) {
+// el carrito lo pide App una vez por token; acá solo se lee del slice y se despachan los cambios
+function Cart({ token }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { cart, loading, error } = useSelector((state) => state.cart)
   const [updating, setUpdating] = useState(false)
-  
 
-
-  const handleFail = (err) => {
-    setUpdating(false)
-    if (err.status === 401 || err.status === 403) onLogout()
-    toast.error(err.message)
+  const handleRetry = () => {
+    dispatch(fetchCart(token))
   }
-
 
   const handleQuantity = (productId, quantity) => {
     setUpdating(true)
-    updateCartItem(token, { productId, quantity })
-      .then((data) => {
-        onCartChange(data)
-        setUpdating(false)
-      })
-      .catch(handleFail)
+    dispatch(updateCartItem({ token, item: { productId, quantity } })).then((result) => {
+      setUpdating(false)
+      if (result.error) toast.error(result.error.message)
+    })
   }
-
 
   const handleClear = () => {
-    clearCart(token)
-      .then(() => {
-        onCartChange({ ...cart, items: [], total: 0 })
-        setUpdating(false)
-        toast.info('Vaciaste el carrito')
-      })
-      .catch(handleFail)
+    setUpdating(true)
+    dispatch(clearCart(token)).then((result) => {
+      setUpdating(false)
+      if (result.error) {
+        toast.error(result.error.message)
+        return
+      }
+      toast.info('Vaciaste el carrito')
+    })
   }
 
-  
+  // la orden creada llega en result.payload: se pasa a la confirmación para no pedirla de nuevo
   const handleCheckout = () => {
     setUpdating(true)
-    checkout(token)
-      .then((order) => {
-        onCartChange({ ...cart, items: [], total: 0 })
-        navigate(`/compra/${order.id}/confirmada`, { state: { order } })
-      })
-      .catch(handleFail)
+    dispatch(checkout(token)).then((result) => {
+      setUpdating(false)
+      if (result.error) {
+        toast.error(result.error.message)
+        return
+      }
+      const order = result.payload
+      navigate(`/compra/${order.id}/confirmada`, { state: { order } })
+    })
   }
 
   return (
     <section className="cart">
       <h1 className="h1">Carrito</h1>
-      <CartContent cart={cart} error={error} updating={updating}
-        onRetry={onRetry} onQuantity={handleQuantity} onClear={handleClear} onCheckout={handleCheckout} />
+      <CartContent cart={cart} loading={loading} error={error} updating={updating}
+        onRetry={handleRetry} onQuantity={handleQuantity} onClear={handleClear} onCheckout={handleCheckout} />
     </section>
   )
 }

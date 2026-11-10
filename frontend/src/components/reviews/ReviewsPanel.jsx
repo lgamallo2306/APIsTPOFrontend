@@ -1,12 +1,12 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-import { deleteReview } from '../../utils/api'
+import { deleteReview } from '../../redux/reviewsSlice'
 import ReviewsResults from './ReviewsResults'
 import ReviewDeleteModal from './ReviewDeleteModal'
 
-const ERROR_GENERICO = 'No pudimos eliminar la reseña. Intentá de nuevo en unos segundos.'
-
-function ReviewsPanel({ token, user, onLogout, loading, error, reviews, onRetry, onDeleted }) {
+function ReviewsPanel({ token, user, loading, error, reviews, onRetry }) {
+  const dispatch = useDispatch()
   const [selected, setSelected] = useState(null)
   const [deleteError, setDeleteError] = useState('')
 
@@ -19,17 +19,16 @@ function ReviewsPanel({ token, user, onLogout, loading, error, reviews, onRetry,
     setSelected(null)
   }
 
+  // el slice saca la reseña de la lista; acá solo se muestra el resultado
   const handleDelete = () => {
-    deleteReview(token, selected.id)
-      .then(() => {
-        onDeleted(selected.id)
-        toast.success('Reseña eliminada')
-        closeModal()
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setDeleteError(err.status && err.message ? err.message : ERROR_GENERICO)
-      })
+    dispatch(deleteReview({ token, id: selected.id })).then((result) => {
+      if (result.error) {
+        setDeleteError(result.error.message)
+        return
+      }
+      toast.success('Reseña eliminada')
+      closeModal()
+    })
   }
 
   return (

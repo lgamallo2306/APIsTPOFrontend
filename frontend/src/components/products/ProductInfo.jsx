@@ -3,7 +3,7 @@ import StockBadge from './StockBadge'
 import AddToCart from '../cart/AddToCart'
 import './ProductInfo.css'
 
-function ProductInfo({ product, token, onCartChange, onLogout }) {
+function ProductInfo({ product, token }) {
   const image = product.imageUrls.length > 0 ? product.imageUrls[0] : null
 
   return (
@@ -20,7 +20,7 @@ function ProductInfo({ product, token, onCartChange, onLogout }) {
         <p className="small muted">Vendido por <strong>{product.sellerName}</strong></p>
         <PriceTag price={product.price} discount={product.discount} large />
         <div className="divider" />
-        <AddToCart product={product} token={token} onCartChange={onCartChange} onLogout={onLogout} />
+        <AddToCart product={product} token={token} />
         <div className="product-info-description">
           <h2 className="h3">Descripción</h2>
           <p>{product.description}</p>

@@ -1,38 +1,24 @@
-import { useState, useEffect } from 'react'
-import { getProductReviews, getSellerReviews } from '../../utils/api'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProductReviews, getSellerReviews } from '../../redux/reviewsSlice'
 import ReviewsPanel from './ReviewsPanel'
 import './Reviews.css'
 
-const ERROR_CARGA = 'No pudimos traer las reseñas. Revisá tu conexión e intentá de nuevo en unos segundos.'
-
-function Reviews({ title, type, id, token, user, onLogout }) {
-  const [reviews, setReviews] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
-
-  useEffect(() => {
-    setLoading(true)
-    setError('')
-    const request = type === 'product' ? getProductReviews(id) : getSellerReviews(id)
-    request
-      .then((data) => {
-        setReviews(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.status && err.message ? err.message : ERROR_CARGA)
-        setLoading(false)
-      })
-  }, [type, id, retry])
+// type es 'product' o 'seller': elige el thunk y la parte del slice (state.reviews.product / .seller)
+function Reviews({ title, type, id, token, user }) {
+  const dispatch = useDispatch()
+  const data = useSelector((state) => state.reviews[type])
 
   const handleRetry = () => {
-    setRetry(retry + 1)
+    dispatch(type === 'product' ? getProductReviews(id) : getSellerReviews(id))
   }
 
-  const handleDeleted = (reviewId) => {
-    setReviews(reviews.filter((review) => review.id !== reviewId))
-  }
+  // solo se piden si las guardadas no son de este producto / vendedor
+  useEffect(() => {
+    if (data.id !== id) dispatch(type === 'product' ? getProductReviews(id) : getSellerReviews(id))
+  }, [dispatch, type, id, data.id])
+
+  const loading = data.id !== id || data.loading
 
   return (
     <section className="reviews">
@@ -40,12 +26,10 @@ function Reviews({ title, type, id, token, user, onLogout }) {
       <ReviewsPanel
         token={token}
         user={user}
-        onLogout={onLogout}
         loading={loading}
-        error={error}
-        reviews={reviews}
+        error={data.error}
+        reviews={data.items}
         onRetry={handleRetry}
-        onDeleted={handleDeleted}
       />
     </section>
   )

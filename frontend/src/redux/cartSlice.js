@@ -23,6 +23,12 @@ export const clearCart = createAsyncThunk('cart/clearCart', async (token) => {
   await axios.delete(`${URL}/cart`, authConfig(token))
 })
 
+// devuelve la orden creada: el componente la usa para navegar a la confirmación
+export const checkout = createAsyncThunk('cart/checkout', async (token) => {
+  const { data } = await axios.post(`${URL}/orders/checkout`, null, authConfig(token))
+  return data
+})
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
@@ -50,7 +56,7 @@ const cartSlice = createSlice({
         state.loading = false
         state.error = action.error.message
       })
-     
+
       .addCase(addCartItem.fulfilled, (state, action) => {
         state.cart = action.payload
       })
@@ -58,6 +64,10 @@ const cartSlice = createSlice({
         state.cart = action.payload
       })
       .addCase(clearCart.fulfilled, (state) => {
+        state.cart.items = []
+        state.cart.total = 0
+      })
+      .addCase(checkout.fulfilled, (state) => {
         state.cart.items = []
         state.cart.total = 0
       })

@@ -1,39 +1,34 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-import { addCartItem } from '../../utils/api'
+import { addCartItem } from '../../redux/cartSlice'
 import QuantityStepper from '../ui/QuantityStepper'
 import './AddToCart.css'
 import LoginRequiredModal from '../auth/LoginRequiredModal'
 
-function AddToCart({ product, token, onCartChange, onLogout }) {
-  const navigate = useNavigate()
+function AddToCart({ product, token }) {
+  const dispatch = useDispatch()
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(false)
   const [askLogin, setAskLogin] = useState(false)
 
+  // el slice guarda el carrito que devuelve el back, así el contador del Header se actualiza solo
   const handleClick = () => {
     if (!token) {
       setAskLogin(true)
       return
     }
     setLoading(true)
-    addCartItem(token, { productId: product.id, quantity })
-      .then((cart) => {
-        onCartChange(cart)
-        setLoading(false)
-        // el aviso puede llevar JSX: así incluye el link al carrito
-        toast.success(<span>Agregado al carrito. <Link to="/carrito">Ver carrito</Link></span>)
-      })
-      .catch((err) => {
-        setLoading(false)
-        if (err.status === 401 || err.status === 403) {
-          onLogout()
-          navigate('/login', { state: { from: `/productos/${product.id}` } })
-          return
-        }
-        toast.error(err.message)
-      })
+    dispatch(addCartItem({ token, item: { productId: product.id, quantity } })).then((result) => {
+      setLoading(false)
+      if (result.error) {
+        toast.error(result.error.message)
+        return
+      }
+      // el aviso puede llevar JSX: así incluye el link al carrito
+      toast.success(<span>Agregado al carrito. <Link to="/carrito">Ver carrito</Link></span>)
+    })
   }
 
   return (

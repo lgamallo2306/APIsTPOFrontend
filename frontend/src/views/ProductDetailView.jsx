@@ -1,9 +1,9 @@
 import ProductDetail from '../components/products/ProductDetail'
 
-function ProductDetailView({ token, user, onCartChange, onLogout }) {
+function ProductDetailView({ token, user }) {
   return (
     <main>
-      <ProductDetail token={token} user={user} onCartChange={onCartChange} onLogout={onLogout} />
+      <ProductDetail token={token} user={user} />
     </main>
   )
 }

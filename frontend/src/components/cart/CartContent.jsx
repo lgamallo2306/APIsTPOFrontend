@@ -4,12 +4,12 @@ import CartItemList from './CartItemList'
 import CartSummary from './CartSummary'
 import './CartContent.css'
 
-function CartContent({ cart, error, updating, onRetry, onQuantity, onClear, onCheckout }) {
+function CartContent({ cart, loading, error, updating, onRetry, onQuantity, onClear, onCheckout }) {
   const navigate = useNavigate()
 
   if (error) return <EmptyState title="No pudimos cargar el carrito" text={error} actionLabel="Reintentar" onAction={onRetry} />
 
-  if (!cart) return <div className="skel cart-content-skeleton" />
+  if (loading || !cart) return <div className="skel cart-content-skeleton" />
 
   if (cart.items.length === 0) {
     return <EmptyState title="Tu carrito está vacío" text="Agregá productos desde el catálogo."

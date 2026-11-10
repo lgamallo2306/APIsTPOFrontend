@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { createProductReview, createSellerReview } from '../../utils/api'
+import { useDispatch } from 'react-redux'
+import { createProductReview, createSellerReview } from '../../redux/reviewsSlice'
 import Modal from '../ui/Modal'
 import ReviewForm from './ReviewForm'
 import ReviewSent from './ReviewSent'
 
-function ReviewModal({ token, target, onClose, onLogout }) {
+function ReviewModal({ token, target, onClose }) {
+  const dispatch = useDispatch()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
@@ -18,19 +20,18 @@ function ReviewModal({ token, target, onClose, onLogout }) {
     const review = { rating: Number(form.rating), comment: form.comment.trim() }
     setError('')
     setLoading(true)
-    const request = target.type === 'product'
-      ? createProductReview(token, target.id, review)
-      : createSellerReview(token, target.id, review)
-    request
-      .then(() => {
-        setLoading(false)
-        setSent(true)
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setError(err.message)
-        setLoading(false)
-      })
+    const action = target.type === 'product'
+      ? createProductReview({ token, id: target.id, review })
+      : createSellerReview({ token, id: target.id, review })
+    // un 409 (no compró o ya reseñó) llega como error y se muestra en el formulario
+    dispatch(action).then((result) => {
+      setLoading(false)
+      if (result.error) {
+        setError(result.error.message)
+        return
+      }
+      setSent(true)
+    })
   }
 
   const title = target.type === 'product' ? `Reseñar ${target.name}` : `Reseñar a ${target.name}`

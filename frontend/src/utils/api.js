@@ -70,8 +70,6 @@ export const deactivateMe = (token, data) =>
   }).then(handle)
 
 
-export const getCart = (token) =>
-  fetch(`${URL}/cart`, { headers: authHeaders(token) }).then(handle)
 
 
 export const getCategories = () =>
@@ -91,27 +89,9 @@ export const getProductRow = (query) =>
 export const getProduct = (id) =>
   fetch(`${URL}/products/${id}`).then(handle)
 
-// item = { productId, quantity }
-export const addCartItem = (token, item) =>
-  fetch(`${URL}/cart/items`, {
-    method: 'POST',
-    headers: authHeaders(token),
-    body: JSON.stringify(item),
-  }).then(handle)
 
-// item = { productId, quantity }; quantity 0 elimina el ítem
-export const updateCartItem = (token, item) =>
-  fetch(`${URL}/cart/items`, {
-    method: 'PUT',
-    headers: authHeaders(token),
-    body: JSON.stringify(item),
-  }).then(handle)
 
-export const checkout = (token) =>
-  fetch(`${URL}/orders/checkout`, { method: 'POST', headers: authHeaders(token) }).then(handle)
 
-export const clearCart = (token) =>
-  fetch(`${URL}/cart`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
 
 export const getOrder = (token, id) =>
   fetch(`${URL}/orders/${id}`, { headers: authHeaders(token) }).then(handle)
@@ -219,25 +199,7 @@ export const assignRole = (token, userId, role) =>
 export const removeRole = (token, userId, role) =>
   fetch(`${URL}/users/${userId}/roles/${role}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
 
-export const getProductReviews = (productId) =>
-  fetch(`${URL}/reviews/products/${productId}`).then(handle)
 
-export const getSellerReviews = (sellerId) =>
-  fetch(`${URL}/reviews/sellers/${sellerId}`).then(handle)
 
-export const createProductReview = (token, productId, review) =>
-  fetch(`${URL}/reviews/products/${productId}`, {
-    method: 'POST',
-    headers: authHeaders(token),
-    body: JSON.stringify(review),
-  }).then(handle)
 
-export const createSellerReview = (token, sellerId, review) =>
-  fetch(`${URL}/reviews/sellers/${sellerId}`, {
-    method: 'POST',
-    headers: authHeaders(token),
-    body: JSON.stringify(review),
-  }).then(handle)
 
-export const deleteReview = (token, reviewId) =>
-  fetch(`${URL}/reviews/${reviewId}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
