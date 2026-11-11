@@ -6,7 +6,7 @@ import UserSearchForm from './UserSearchForm'
 import UserRoleCard from './UserRoleCard'
 import './UsersContainer.css'
 
-function UsersContainer({ token, onLogout }) {
+function UsersContainer({ token, currentUser, onLogout }) {
   const [user, setUser] = useState(null)
   const [searching, setSearching] = useState(false)
   const [searchError, setSearchError] = useState('')
@@ -60,7 +60,7 @@ function UsersContainer({ token, onLogout }) {
   let result = <EmptyState title="Buscá un usuario" text="Ingresá su email para ver y cambiar sus roles." />
   if (searching) result = <div className="skel users-skeleton" />
   else if (searchError) result = <p className="alert-err">{searchError}</p>
-  else if (user) result = <UserRoleCard user={user} roleError={roleError} onAssign={handleAssign} onRemove={handleRemove} />
+  else if (user) result = <UserRoleCard user={user} currentUser={currentUser} roleError={roleError} onAssign={handleAssign} onRemove={handleRemove} />
 
   return (
     <section className="users-admin">

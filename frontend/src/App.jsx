@@ -125,7 +125,7 @@ function App() {
         <Route path="/vendedor/ventas" element={isVendor ? <MySalesView token={token} /> : catalogOrLoading} />
 
         <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} /> : catalogOrLoading} />
-        <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
+        <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} currentUser={user} onLogout={handleLogout} /> : catalogOrLoading} />
 
         <Route path="*" element={<NotFoundView />} />
         
