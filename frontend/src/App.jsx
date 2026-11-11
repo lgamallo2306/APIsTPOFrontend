@@ -121,7 +121,7 @@ function App() {
         <Route path="/vendedor/ventas" element={isVendor ? <MySalesView token={token} /> : <CatalogView categories={categories} />} />
 
         <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} onCategorySaved={handleCategorySaved} onCategoryDeleted={handleCategoryDeleted} onLogout={handleLogout} /> : <CatalogView categories={categories} />} />
-        <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} onLogout={handleLogout} /> : <CatalogView categories={categories} />} />
+        <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} currentUser={user} onLogout={handleLogout} /> : <CatalogView categories={categories} />} />
       </Routes>
     </div>
   )
