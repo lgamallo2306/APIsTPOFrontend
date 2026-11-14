@@ -13,6 +13,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     reviews: reviewsReducer,
   },
+  devTools: import.meta.env.DEV,
 })
 
 export default store

@@ -1,9 +1,9 @@
 import UsersContainer from '../../components/admin/UsersContainer'
 
-function UsersView({ token, onLogout }) {
+function UsersView({ token, currentUser, onLogout }) {
   return (
     <main>
-      <UsersContainer token={token} onLogout={onLogout} />
+      <UsersContainer token={token} currentUser={currentUser} onLogout={onLogout} />
     </main>
   )
 }
