@@ -1,62 +1,41 @@
 import { useState, useEffect } from 'react'
-import { getSellerProducts } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchMyProducts } from '../../redux/sellerSlice'
 import MyProductsPanel from './MyProductsPanel'
 import './MyProducts.css'
 
-const ERROR_CARGA = 'No pudimos traer tus productos. Revisá tu conexión e intentá de nuevo.'
 
 
-function MyProducts({ token, onLogout }) {
-  const [data, setData] = useState(null)
+function MyProducts({ token }) {
+  const dispatch = useDispatch()
+  const sellerPage = useSelector((state) => state.seller.page)
   const [page, setPage] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
+  
 
-  useEffect(() => {
-    setLoading(true)
-    setError('')
-    getSellerProducts(token, page)
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.status && err.message ? err.message : ERROR_CARGA)
-        setLoading(false)
-      })
-  }, [token, page, retry])
+ useEffect(() => {
+  if (sellerPage.number !== page) {
+    dispatch(fetchMyProducts({ token, page }))
+  } else if (sellerPage.data && sellerPage.data.content.length === 0 && page > 0) {
+    setPage(page - 1)
+  }
+}, [dispatch, token, page, sellerPage.number, sellerPage.data])
 
   const handleRetry = () => {
-    setRetry(retry + 1)
+    dispatch(fetchMyProducts({token, page}))
   }
 
-  // stock y descuento devuelven el producto actualizado: se reemplaza en la página, sin otro GET
-  const handleUpdated = (updated) => {
-    setData({ ...data, content: data.content.map((item) => (item.id === updated.id ? updated : item)) })
-  }
-
-  const handleDeleted = (id) => {
-    const remaining = data.content.filter((item) => item.id !== id)
-    // si se vació una página que no es la primera, se vuelve a la anterior
-    if (remaining.length === 0 && page > 0) {
-      setPage(page - 1)
-      return
-    }
-    setData({ ...data, content: remaining, totalElements: data.totalElements - 1 })
-  }
+    const loading = sellerPage.number !== page || sellerPage.loading
+    const data = sellerPage.data
+    const error = sellerPage.error
 
   return (
     <MyProductsPanel
       token={token}
-      onLogout={onLogout}
       loading={loading}
       error={error}
       data={data}
       onRetry={handleRetry}
       onPageChange={(number) => setPage(number)}
-      onUpdated={handleUpdated}
-      onDeleted={handleDeleted}
     />
   )
 }

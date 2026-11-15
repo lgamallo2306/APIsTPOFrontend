@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { updateStock, updateDiscount, deleteProduct } from '../../utils/api'
+import { useDispatch } from 'react-redux'
+import { updateStock, updateDiscount, deleteProduct } from '../../redux/sellerSlice'
 import { toast } from 'react-toastify'
 import MyProductsResults from './MyProductsResults'
 import StockModal from './StockModal'
@@ -11,10 +12,11 @@ import ProductDeleteModal from './ProductDeleteModal'
 const ERROR_GENERICO = 'No pudimos completar la operación. Intentá de nuevo en unos segundos.'
 
 // Botones de arriba, tabla, modales y avisos. Las llamadas de stock, descuento y baja salen de acá
-function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPageChange, onUpdated, onDeleted }) {
+function MyProductsPanel({ token, loading, error, data, onRetry, onPageChange }) {
   const [modal, setModal] = useState(null) // null | 'stock' | 'discount' | 'delete'
   const [selected, setSelected] = useState(null)
   const [actionError, setActionError] = useState('')
+  const dispatch = useDispatch()
   
 
   const openModal = (name, product) => {
@@ -28,41 +30,42 @@ function MyProductsPanel({ token, onLogout, loading, error, data, onRetry, onPag
     setSelected(null)
   }
 
-  const handleError = (err) => {
-    if (err.status === 401 || err.status === 403) onLogout()
-    setActionError(err.message ? err.message : ERROR_GENERICO)
+  const handleError = (message) => {
+    setActionError(message ? message : ERROR_GENERICO)
   }
 
   
-  const handleStock = (newStock) => {
-    updateStock(token, selected.id, newStock - selected.stock)
-      .then((updated) => {
-        onUpdated(updated)
-        toast.success('Stock actualizado')
-        closeModal()
-      })
-      .catch(handleError)
-  }
-
   const handleDiscount = (discount) => {
-    updateDiscount(token, selected.id, discount)
-      .then((updated) => {
-        onUpdated(updated)
-        toast.success('Descuento aplicado')
-        closeModal()
-      })
-      .catch(handleError)
-  }
+  dispatch(updateDiscount({ token, id: selected.id, discount })).then((result) => {
+    if (result.error) {
+      handleError(result.error.message)
+      return
+    }
+    toast.success('Descuento aplicado')
+    closeModal()
+  })
+}
 
-  const handleDelete = () => {
-    deleteProduct(token, selected.id)
-      .then(() => {
-        onDeleted(selected.id)
-        toast.success('Producto eliminado')
-        closeModal()
-      })
-      .catch(handleError)
-  }
+ const handleStock = (newStock) => {
+  dispatch(updateStock({ token, id: selected.id, quantity: newStock - selected.stock })).then((result) => {
+    if (result.error) {
+      handleError(result.error.message)
+      return
+    }
+    toast.success('Stock actualizado')
+    closeModal()
+  })
+}
+ const handleDelete = () => {
+  dispatch(deleteProduct({ token, id: selected.id })).then((result) => {
+    if (result.error) {
+      handleError(result.error.message)
+      return
+    }
+    toast.success('Producto eliminado')
+    closeModal()
+  })
+}
 
   return (
     <section className="my-products">

@@ -4,6 +4,7 @@ import cartReducer from './cartSlice'
 import authReducer from './authSlice'
 import categoriesReducer from './categoriesSlice'
 import reviewsReducer from './reviewsSlice'
+import sellerReducer from './sellerSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authReducer,
     categories: categoriesReducer,
     reviews: reviewsReducer,
+    seller: sellerReducer,
   },
   devTools: import.meta.env.DEV,
 })
