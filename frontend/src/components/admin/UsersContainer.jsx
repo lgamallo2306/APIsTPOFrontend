@@ -1,73 +1,45 @@
-import { useState } from 'react'
-import { getUserByEmail, assignRole, removeRole } from '../../utils/api'
-import EmptyState from '../ui/EmptyState'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { fetchUserByEmail, assignRole, removeRole } from '../../redux/adminSlice'
+import EmptyState from '../ui/EmptyState'
 import UserSearchForm from './UserSearchForm'
 import UserRoleCard from './UserRoleCard'
 import './UsersContainer.css'
 
-function UsersContainer({ token, currentUser, onLogout }) {
-  const [user, setUser] = useState(null)
-  const [searching, setSearching] = useState(false)
-  const [searchError, setSearchError] = useState('')
-  const [roleError, setRoleError] = useState('')
-
+// Panel de usuarios: la búsqueda, el usuario y los errores viven en el store (adminSlice)
+function UsersContainer({ token, currentUser }) {
+  const dispatch = useDispatch()
+  const admin = useSelector((state) => state.admin)
 
   const handleSearch = (email) => {
-    setSearching(true)
-    setSearchError('')
-    setRoleError('')
-    setUser(null)
-    getUserByEmail(token, email)
-      .then((data) => {
-        setUser(data)
-        setSearching(false)
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setSearchError(err.message)
-        setSearching(false)
-      })
+    dispatch(fetchUserByEmail({ token, email }))
   }
 
-  // el back no devuelve el usuario al cambiar un rol: se actualiza el estado local con el cambio
+  // dispatch devuelve la acción final: si falló, no se muestra el aviso de éxito
   const handleAssign = (role) => {
-    assignRole(token, user.id, role)
-      .then(() => {
-        setUser({ ...user, roles: [...user.roles, role] })
-        setRoleError('')
-        toast.success(`Rol ${role} asignado`)
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setRoleError(err.message)
-      })
+    dispatch(assignRole({ token, userId: admin.user.id, role })).then((action) => {
+      if (action.error) return
+      toast.success(`Rol ${role} asignado`)
+    })
   }
 
   const handleRemove = (role) => {
-    removeRole(token, user.id, role)
-      .then(() => {
-        setUser({ ...user, roles: user.roles.filter((item) => item !== role) })
-        setRoleError('')
-        toast.success(`Rol ${role} quitado`)
-      })
-      .catch((err) => {
-        if (err.status === 401 || err.status === 403) onLogout()
-        setRoleError(err.message)
-      })
+    dispatch(removeRole({ token, userId: admin.user.id, role })).then((action) => {
+      if (action.error) return
+      toast.success(`Rol ${role} quitado`)
+    })
   }
 
   let result = <EmptyState title="Buscá un usuario" text="Ingresá su email para ver y cambiar sus roles." />
-  if (searching) result = <div className="skel users-skeleton" />
-  else if (searchError) result = <p className="alert-err">{searchError}</p>
-  else if (user) result = <UserRoleCard user={user} currentUser={currentUser} roleError={roleError} onAssign={handleAssign} onRemove={handleRemove} />
+  if (admin.loading) result = <div className="skel users-skeleton" />
+  else if (admin.error) result = <p className="alert-err">{admin.error}</p>
+  else if (admin.user) result = <UserRoleCard user={admin.user} currentUser={currentUser} roleError={admin.roleError} onAssign={handleAssign} onRemove={handleRemove} />
 
   return (
     <section className="users-admin">
       <h1 className="h1">Usuarios</h1>
       <UserSearchForm onSearch={handleSearch} />
       {result}
-      
     </section>
   )
 }

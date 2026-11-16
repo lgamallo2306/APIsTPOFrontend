@@ -93,8 +93,6 @@ export const getProduct = (id) =>
 
 
 
-export const getOrder = (token, id) =>
-  fetch(`${URL}/orders/${id}`, { headers: authHeaders(token) }).then(handle)
 export const getMaterials = () =>
   fetch(`${URL}/products/materials`).then(handle)
 
@@ -108,8 +106,6 @@ export const estimatePrice = (token, data) =>
 export const getSales = (token) =>
   fetch(`${URL}/orders/sales`, { headers: authHeaders(token) }).then(handle)
 
-export const getOrders = (token) =>
-  fetch(`${URL}/orders`, { headers: authHeaders(token) }).then(handle)
 
 // ---------- Productos del vendedor ----------
 
@@ -188,16 +184,6 @@ export const updateCategory = (token, id, data) =>
 export const deleteCategory = (token, id) =>
   fetch(`${URL}/categories/${id}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
 
-// ---------- Admin: usuarios ----------
-export const getUserByEmail = (token, email) =>
-  fetch(`${URL}/users/email/${encodeURIComponent(email)}`, { headers: authHeaders(token) }).then(handle)
-
-// role = 'USER' | 'VENDOR' | 'ADMIN'
-export const assignRole = (token, userId, role) =>
-  fetch(`${URL}/users/${userId}/roles/${role}`, { method: 'POST', headers: authHeaders(token) }).then(handle)
-
-export const removeRole = (token, userId, role) =>
-  fetch(`${URL}/users/${userId}/roles/${role}`, { method: 'DELETE', headers: authHeaders(token) }).then(handle)
 
 
 
