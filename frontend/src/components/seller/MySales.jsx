@@ -1,35 +1,26 @@
-import { useState, useEffect } from 'react'
-import { getSales } from '../../utils/api'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSales } from '../../redux/salesSlice'
 import SalesResults from './SalesResults'
 import './MySales.css'
 
 function MySales({ token }) {
-  const [sales, setSales] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
+  const dispatch = useDispatch()
+  const sales = useSelector((state) => state.sales.sales)
 
   useEffect(() => {
-    setLoading(true)
-    setError('')
-    getSales(token)
-      .then((data) => {
-        setSales(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.message)
-        setLoading(false)
-      })
-  }, [token, retry])
+    if (sales.token !== token) dispatch(getSales(token))
+  }, [dispatch, token, sales.token])
 
   const handleRetry = () => {
-    setRetry(retry + 1)
+    dispatch(getSales(token))
   }
+
+  const loading = sales.token !== token || sales.loading
 
   return (
     <section className="my-sales">
-      <SalesResults loading={loading} error={error} sales={sales} onRetry={handleRetry} />
+      <SalesResults loading={loading} error={sales.error} sales={sales.items} onRetry={handleRetry} />
     </section>
   )
 }

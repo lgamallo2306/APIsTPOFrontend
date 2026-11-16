@@ -1,54 +1,36 @@
-import { useState, useEffect } from 'react'
-import { getMaterials, estimatePrice } from '../../utils/api'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getMaterials, estimatePrice } from '../../redux/salesSlice'
 import CalculatorForm from './CalculatorForm'
 import CalculatorResultCard from './CalculatorResultCard'
 import './PriceCalculator.css'
 
 function PriceCalculator({ token }) {
-  const [materials, setMaterials] = useState([])
-  const [loadingMaterials, setLoadingMaterials] = useState(true)
-  const [materialsError, setMaterialsError] = useState('')
-  const [result, setResult] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const dispatch = useDispatch()
+  const materials = useSelector((state) => state.sales.materials)
+  const estimate = useSelector((state) => state.sales.estimate)
 
   useEffect(() => {
-    getMaterials()
-      .then((data) => {
-        setMaterials(data)
-        setLoadingMaterials(false)
-      })
-      .catch((err) => {
-        setMaterialsError(err.message)
-        setLoadingMaterials(false)
-      })
-  }, [])
+    if (materials.items.length === 0) dispatch(getMaterials())
+  }, [dispatch, materials.items.length])
 
-  // el formulario ya validó los datos: acá solo se arma el body y se llama al back
   const handleCalculate = (form) => {
-    setError('')
-    setLoading(true)
-    estimatePrice(token, {
-      material: form.material,
-      weightGrams: Number(form.weightGrams),
-      printHours: form.printHours === '' ? null : Number(form.printHours),
-      marginPercentage: form.marginPercentage === '' ? null : Number(form.marginPercentage),
-    })
-      .then((data) => {
-        setResult(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.message)
-        setLoading(false)
-      })
+    dispatch(estimatePrice({
+      token,
+      estimate: {
+        material: form.material,
+        weightGrams: Number(form.weightGrams),
+        printHours: form.printHours === '' ? null : Number(form.printHours),
+        marginPercentage: form.marginPercentage === '' ? null : Number(form.marginPercentage),
+      },
+    }))
   }
 
   return (
     <div className="price-calculator">
-      <CalculatorForm materials={materials} loadingMaterials={loadingMaterials} materialsError={materialsError}
-        error={error} loading={loading} onSubmit={handleCalculate} />
-      <CalculatorResultCard result={result} />
+      <CalculatorForm materials={materials.items} loadingMaterials={materials.loading} materialsError={materials.error}
+        error={estimate.error} loading={estimate.loading} onSubmit={handleCalculate} />
+      <CalculatorResultCard result={estimate.result} />
     </div>
   )
 }

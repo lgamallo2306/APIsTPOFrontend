@@ -93,19 +93,6 @@ export const getProduct = (id) =>
 
 
 
-export const getMaterials = () =>
-  fetch(`${URL}/products/materials`).then(handle)
-
-export const estimatePrice = (token, data) =>
-  fetch(`${URL}/products/estimate-price`, {
-    method: 'POST',
-    headers: authHeaders(token),
-    body: JSON.stringify(data),
-  }).then(handle)
-
-export const getSales = (token) =>
-  fetch(`${URL}/orders/sales`, { headers: authHeaders(token) }).then(handle)
-
 
 // ---------- Productos del vendedor ----------
 

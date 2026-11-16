@@ -7,6 +7,7 @@ import reviewsReducer from './reviewsSlice'
 import sellerReducer from './sellerSlice'
 import ordersReducer from './ordersSlice'
 import adminReducer from './adminSlice'
+import salesReducer from './salesSlice'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     seller: sellerReducer,
     orders: ordersReducer,
     admin: adminReducer,
+    sales: salesReducer,
   },
   devTools: import.meta.env.DEV,
 })

@@ -163,7 +163,7 @@ dispatch(createCategory({ token, category: form })).then((result) => {
 | reviews | Reviews, ReviewModal, ReviewsPanel | Pato | Pendiente |
 | orders | PurchasesContainer, OrderDetailContainer, OrderConfirmation | Franco | Pendiente |
 | admin | UsersContainer | Franco | Pendiente |
-| sales | MySales, PriceCalculator | Lucho | Pendiente |
+| sales | MySales, PriceCalculator | Lucho | Hecho |
 | auth | Login, Register, ProfileSettings, App | Lauti | Pendiente, va último. El `authSlice.js` actual tiene `state.loading = error` (rompe el lint) y `localStorage` en los reducers: se rehace con thunks |
 
 - `store.js`: cada uno agrega su línea. `App.jsx`: primero carrito, después auth.
