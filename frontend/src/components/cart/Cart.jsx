@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCart, updateCartItem, clearCart, checkout } from '../../redux/cartSlice'
+import { fetchCart, updateCartItem, clearCart } from '../../redux/cartSlice'
 import CartContent from './CartContent'
 import './Cart.css'
 import { toast } from 'react-toastify'
@@ -38,18 +38,9 @@ function Cart() {
     })
   }
 
-  // la orden creada llega en result.payload: se pasa a la confirmación para no pedirla de nuevo
+  // la compra se confirma en la pantalla de pago (simulado), que es la que hace el checkout
   const handleCheckout = () => {
-    setUpdating(true)
-    dispatch(checkout(token)).then((result) => {
-      setUpdating(false)
-      if (result.error) {
-        toast.error(result.error.message)
-        return
-      }
-      const order = result.payload
-      navigate(`/compra/${order.id}/confirmada`, { state: { order } })
-    })
+    navigate('/pago')
   }
 
   return (

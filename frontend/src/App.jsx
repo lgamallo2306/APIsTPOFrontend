@@ -8,6 +8,7 @@ import ProductDetailView from './views/ProductDetailView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import CartView from './views/CartView'
+import PaymentView from './views/PaymentView'
 import MyPurchasesView from './views/MyPurchasesView'
 import OrderDetailView from './views/OrderDetailView'
 import ProfileView from './views/ProfileView'
@@ -71,6 +72,7 @@ function App() {
         <Route path="/registro" element={<RegisterView />} />
 
         <Route path="/carrito" element={user ? <CartView /> : loginOrLoading} />
+        <Route path="/pago" element={user ? <PaymentView /> : loginOrLoading} />
         <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView /> : loginOrLoading} />
         <Route path="/mis-compras" element={user ? <MyPurchasesView /> : loginOrLoading} />
         <Route path="/mis-compras/:id" element={user ? <OrderDetailView /> : loginOrLoading} />
@@ -94,4 +96,4 @@ function App() {
   )
 }
 
-export default App
+export default App

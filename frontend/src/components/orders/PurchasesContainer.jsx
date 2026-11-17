@@ -6,7 +6,7 @@ import EmptyState from '../ui/EmptyState'
 import PurchaseRow from './PurchaseRow'
 import './PurchasesContainer.css'
 
-// Historial de compras: lee la lista del store y la pide solo si todavía no se cargó
+
 function PurchasesContainer() {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token)

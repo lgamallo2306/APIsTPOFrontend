@@ -11,7 +11,7 @@ function CartSummary({ total, disabled, onClear, onCheckout }) {
         <span className="price cart-summary-total">{formatPrice(total)}</span>
       </div>
       <button type="button" className="btn btn-primary btn-lg" disabled={disabled} onClick={onCheckout}>
-        {disabled ? 'Procesando…' : 'Confirmar compra'}
+        {disabled ? 'Actualizando…' : 'Ir a pagar'}
       </button>
       <button type="button" className="btn btn-ghost" disabled={disabled} onClick={onClear}>Vaciar carrito</button>
     </aside>
