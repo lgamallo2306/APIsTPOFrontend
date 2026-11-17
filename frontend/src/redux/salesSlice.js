@@ -18,19 +18,20 @@ export const estimatePrice = createAsyncThunk('sales/estimatePrice', async ({ to
   return data
 })
 
-const initialState = {
-  sales: { token: null, items: [], loading: false, error: null },
-  materials: { items: [], loading: false, error: null },
-  estimate: { result: null, loading: false, error: null },
-}
-
 const salesSlice = createSlice({
   name: 'sales',
-  initialState,
+  initialState: {
+    sales: { token: null, items: [], loading: false, error: null },
+    materials: { items: [], loading: false, error: null },
+    estimate: { result: null, loading: false, error: null },
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(logout, () => initialState)
+      .addCase(logout, (state) => {
+        state.sales = { token: null, items: [], loading: false, error: null }
+        state.estimate = { result: null, loading: false, error: null }
+      })
 
       .addCase(getSales.pending, (state, action) => {
         state.sales = { token: action.meta.arg, items: [], loading: true, error: null }

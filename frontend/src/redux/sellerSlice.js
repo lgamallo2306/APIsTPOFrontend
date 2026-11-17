@@ -40,18 +40,18 @@ export const deleteProduct = createAsyncThunk('seller/deleteProduct', async ({ t
   await axios.delete(`${URL}/products/${id}`, authConfig(token))
 })
 
-const initialState = {
-    // number = página pedida; data = la página que devuelve el back 
-    page: {number: null, data: null, loading: false, error: null},
-}
-
 const sellerSlice = createSlice({
     name: 'seller',
-    initialState,
+    initialState: {
+        // number = página pedida; data = la página que devuelve el back 
+        page: {number: null, data: null, loading: false, error: null},
+    },
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(logout, () => initialState)
+            .addCase(logout, (state) => {
+                state.page = {number: null, data: null, loading: false, error: null}
+            })
 
             .addCase(createProduct.fulfilled, (state, action) => {
                 if (state.page.data) {

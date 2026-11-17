@@ -13,6 +13,7 @@ function UserDropdown({ initials, onClose }) {
 
   const handleLogout = () => {
     onClose()
+    localStorage.removeItem('token')
     dispatch(logout())
     toast.info('Cerraste sesión')
     navigate('/')

@@ -5,12 +5,14 @@ import { URL, authConfig } from './apiconfig'
 // credentials = { email, password }. El back devuelve { access_token }
 export const login = createAsyncThunk('auth/login', async (credentials) => {
   const { data } = await axios.post(`${URL}/api/v1/auth/authenticate`, credentials)
+  localStorage.setItem('token', data.access_token)
   return data.access_token
 })
 
 // userData = { firstname, lastname, email, password, role }
 export const register = createAsyncThunk('auth/register', async (userData) => {
   const { data } = await axios.post(`${URL}/api/v1/auth/register`, userData)
+  localStorage.setItem('token', data.access_token)
   return data.access_token
 })
 
@@ -29,6 +31,7 @@ export const updateMe = createAsyncThunk('auth/updateMe', async ({ token, update
 // emailData = { newEmail, currentPassword }. Devuelve un token nuevo (el token lleva el email)
 export const changeEmail = createAsyncThunk('auth/changeEmail', async ({ token, emailData }) => {
   const { data } = await axios.patch(`${URL}/users/me/email`, emailData, authConfig(token))
+  localStorage.setItem('token', data.access_token)
   return data.access_token
 })
 
@@ -40,6 +43,7 @@ export const changePassword = createAsyncThunk('auth/changePassword', async ({ t
 // passwordData = { password }. En un DELETE de axios el body va dentro de la config, en data
 export const deactivateMe = createAsyncThunk('auth/deactivateMe', async ({ token, passwordData }) => {
   await axios.delete(`${URL}/users/me`, { headers: authConfig(token).headers, data: passwordData })
+  localStorage.removeItem('token')
 })
 
 const authSlice = createSlice({
@@ -53,6 +57,7 @@ const authSlice = createSlice({
     error: null,
   },
   reducers: {
+    // el localStorage.removeItem('token') lo hace el componente antes de despachar
     logout: (state) => {
       state.token = null
       state.user = null

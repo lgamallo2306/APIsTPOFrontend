@@ -16,18 +16,19 @@ export const fetchOrder = createAsyncThunk('orders/fetchOrder', async ({ token, 
   return data
 })
 
-const initialState = {
-  list: { items: [], loaded: false, loading: false, error: null },
-  detail: { id: null, order: null, loading: false, error: null },
-}
-
 const ordersSlice = createSlice({
   name: 'orders',
-  initialState,
+  initialState: {
+    list: { items: [], loaded: false, loading: false, error: null },
+    detail: { id: null, order: null, loading: false, error: null },
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(logout, () => initialState)
+      .addCase(logout, (state) => {
+        state.list = { items: [], loaded: false, loading: false, error: null }
+        state.detail = { id: null, order: null, loading: false, error: null }
+      })
 
       .addCase(checkout.fulfilled, (state, action) => {
         if (state.list.loaded) {

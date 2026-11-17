@@ -172,7 +172,7 @@ dispatch(createCategory({ token, category: form })).then((result) => {
 
 Vive en Redux. Ningún componente la recibe por props: cada uno la lee con `useSelector`.
 
-- `state.auth.token`: el `authSlice` lo lee de `localStorage` al arrancar, y un `useEffect` de `App` con `[token]` lo guarda o lo borra cada vez que cambia (es lo único que se persiste en el navegador; los reducers no tocan `localStorage`).
+- `state.auth.token`: el `authSlice` lo lee de `localStorage` al arrancar. Los thunks `login`, `register` y `changeEmail` lo guardan y `deactivateMe` lo borra; antes de despachar `logout()` lo borra el componente (`localStorage.removeItem('token')`). Es lo único que se persiste en el navegador; los reducers no tocan `localStorage`.
 - `state.auth.user`: respuesta de `GET /users/me` (thunk `getMe`). `user.roles` es un array (`USER`, `VENDOR`, `ADMIN`).
 - `state.auth.loadingUser`: mientras llega `getMe`, las rutas protegidas muestran `PageLoading` en vez del login.
 - `state.cart.cart`: respuesta de `GET /cart` (se pide una vez por token). Cada ítem trae `imageUrl` y `stock`. El Header calcula el contador sumando `quantity` de `cart.items`.

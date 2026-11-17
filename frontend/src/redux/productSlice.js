@@ -72,16 +72,24 @@ const productSlice = createSlice({
         state.detail = { id: String(action.payload.id), product: action.payload, loading: false, error: null }
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        if (state.detail.id === String(action.payload.id)) state.detail.product = action.payload
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
       })
       .addCase(uploadProductImage.fulfilled, (state, action) => {
-        if (state.detail.id === String(action.payload.id)) state.detail.product = action.payload
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
       })
       .addCase(updateStock.fulfilled, (state, action) => {
-        if (state.detail.id === String(action.payload.id)) state.detail.product = action.payload
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
       })
       .addCase(updateDiscount.fulfilled, (state, action) => {
-        if (state.detail.id === String(action.payload.id)) state.detail.product = action.payload
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         if (state.detail.id === String(action.meta.arg.id)) {

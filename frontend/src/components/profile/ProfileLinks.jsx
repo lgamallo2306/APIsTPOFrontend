@@ -11,6 +11,7 @@ function ProfileLinks({ roles }) {
   const isAdmin = roles.includes('ADMIN')
 
   const handleLogout = () => {
+    localStorage.removeItem('token')
     dispatch(logout())
     toast.info('Cerraste sesión')
     navigate('/')

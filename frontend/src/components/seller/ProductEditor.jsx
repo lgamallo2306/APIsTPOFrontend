@@ -23,10 +23,14 @@ function ProductEditor() {
     if (needsFetch && detail.id !== id) dispatch(fetchProduct(id))
   }, [dispatch, id, needsFetch, detail.id])
 
+  const handleRetry = () => {
+    dispatch(fetchProduct(id))
+  }
+
   if (needsFetch && (detail.id !== id || detail.loading)) return <div className="skel product-editor-skeleton" />
 
   if (needsFetch && detail.error) {
-    return <EmptyState title="No pudimos cargar el producto" text={detail.error} actionLabel="Reintentar" onAction={() => dispatch(fetchProduct(id))} />
+    return <EmptyState title="No pudimos cargar el producto" text={detail.error} actionLabel="Reintentar" onAction={handleRetry} />
   }
 
   let product = null

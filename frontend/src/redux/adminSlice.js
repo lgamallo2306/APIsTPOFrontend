@@ -18,15 +18,17 @@ export const removeRole = createAsyncThunk('admin/removeRole', async ({ token, u
   await axios.delete(`${URL}/users/${userId}/roles/${role}`, authConfig(token))
 })
 
-const initialState = { user: null, loading: false, error: null, roleError: null }
-
 const adminSlice = createSlice({
   name: 'admin',
-  initialState,
+  initialState: { user: null, loading: false, error: null, roleError: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(logout, () => initialState)
+      .addCase(logout, (state) => {
+        state.user = null
+        state.error = null
+        state.roleError = null
+      })
 
       // búsqueda
       .addCase(fetchUserByEmail.pending, (state) => {

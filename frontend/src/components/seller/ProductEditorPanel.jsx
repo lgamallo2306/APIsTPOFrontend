@@ -48,7 +48,9 @@ function ProductEditorPanel({ product, suggestedPrice }) {
     setImageError('')
     dispatch(uploadProductImage({ token, id: product.id, file })).then((result) => {
       setUploading(false)
-      if (result.error) setImageError(result.error.message ? result.error.message : ERROR_GENERICO)
+      if (result.error) {
+        setImageError(result.error.message ? result.error.message : ERROR_GENERICO)
+      }
     })
   }
 
@@ -69,7 +71,9 @@ function ProductEditorPanel({ product, suggestedPrice }) {
         imageUrls: product.imageUrls.filter((imageUrl) => imageUrl !== url),
       },
     })).then((result) => {
-      if (result.error) setImageError(result.error.message ? result.error.message : ERROR_GENERICO)
+      if (result.error) {
+        setImageError(result.error.message ? result.error.message : ERROR_GENERICO)
+      }
     })
   }
 

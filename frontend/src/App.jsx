@@ -41,14 +41,10 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    if (token) localStorage.setItem('token', token)
-    else localStorage.removeItem('token')
-  }, [token])
-
-  useEffect(() => {
     if (!token) return
     dispatch(getMe(token)).then((result) => {
       if (result.error) {
+        localStorage.removeItem('token')
         dispatch(logout())
         toast.error('Tu sesión venció. Ingresá de nuevo.')
       }
