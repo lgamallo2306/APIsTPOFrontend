@@ -1,69 +1,42 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { getProduct } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProduct } from '../../redux/productSlice'
 import EmptyState from '../ui/EmptyState'
 import ProductEditorPanel from './ProductEditorPanel'
 import './ProductEditor.css'
 
-const ERROR_CARGA = 'No pudimos traer el producto. Revisá tu conexión e intentá de nuevo.'
-
 // Lee la URL y consigue el producto a editar. En el alta no hay producto
-function ProductEditor({ user, token, categories, onLogout }) {
+function ProductEditor() {
   const location = useLocation()
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.user)
+  const sellerPage = useSelector((state) => state.seller.page)
+  const detail = useSelector((state) => state.products.detail)
   const id = location.pathname.split('/')[3] // "/vendedor/productos/5" → "5" · "/vendedor/productos/nuevo" → "nuevo"
   const isNew = id === 'nuevo'
-  const productFromList = location.state && location.state.product ? location.state.product : null
   const suggestedPrice = location.state && location.state.price ? location.state.price : null
-  const [product, setProduct] = useState(productFromList)
-  const [loading, setLoading] = useState(!isNew && productFromList === null)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
+  const productFromList = sellerPage.data ? sellerPage.data.content.find((item) => String(item.id) === id) : undefined
+  const needsFetch = !isNew && productFromList === undefined
 
   useEffect(() => {
-    if (isNew) {
-      setProduct(null)
-      setLoading(false)
-      return
-    }
-    if (productFromList !== null) {
-      setProduct(productFromList)
-      setLoading(false)
-      return
-    }
-    setLoading(true)
-    setError('')
-    getProduct(id)
-      .then((data) => {
-        setProduct(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.status ? err.message : ERROR_CARGA)
-        setLoading(false)
-      })
-  }, [id, isNew, productFromList, retry])
+    if (needsFetch && detail.id !== id) dispatch(fetchProduct(id))
+  }, [dispatch, id, needsFetch, detail.id])
 
-  if (loading) return <div className="skel product-editor-skeleton" />
+  if (needsFetch && (detail.id !== id || detail.loading)) return <div className="skel product-editor-skeleton" />
 
-  if (error) {
-    return <EmptyState title="No pudimos cargar el producto" text={error} actionLabel="Reintentar" onAction={() => setRetry(retry + 1)} />
+  if (needsFetch && detail.error) {
+    return <EmptyState title="No pudimos cargar el producto" text={detail.error} actionLabel="Reintentar" onAction={() => dispatch(fetchProduct(id))} />
   }
 
-  
+  let product = null
+  if (!isNew) product = productFromList !== undefined ? productFromList : detail.product
+
   if (product && product.sellerId !== user.id && !user.roles.includes('ADMIN')) {
     return <EmptyState title="Este producto no es tuyo" text="Solo podés editar los productos que publicaste vos." />
   }
 
-  return (
-    <ProductEditorPanel
-      token={token}
-      categories={categories}
-      onLogout={onLogout}
-      product={product}
-      suggestedPrice={isNew ? suggestedPrice : null}
-      onProductChange={(updated) => setProduct(updated)}
-    />
-  )
+  return <ProductEditorPanel product={product} suggestedPrice={isNew ? suggestedPrice : null} />
 }
 
 export default ProductEditor

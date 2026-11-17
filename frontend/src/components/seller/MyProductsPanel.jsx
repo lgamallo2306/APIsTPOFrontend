@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateStock, updateDiscount, deleteProduct } from '../../redux/sellerSlice'
 import { toast } from 'react-toastify'
 import MyProductsResults from './MyProductsResults'
@@ -12,11 +12,12 @@ import ProductDeleteModal from './ProductDeleteModal'
 const ERROR_GENERICO = 'No pudimos completar la operación. Intentá de nuevo en unos segundos.'
 
 // Botones de arriba, tabla, modales y avisos. Las llamadas de stock, descuento y baja salen de acá
-function MyProductsPanel({ token, loading, error, data, onRetry, onPageChange }) {
+function MyProductsPanel({ loading, error, data, onRetry, onPageChange }) {
   const [modal, setModal] = useState(null) // null | 'stock' | 'discount' | 'delete'
   const [selected, setSelected] = useState(null)
   const [actionError, setActionError] = useState('')
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   
 
   const openModal = (name, product) => {

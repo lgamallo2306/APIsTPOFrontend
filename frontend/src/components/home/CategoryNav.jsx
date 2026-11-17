@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import './CategoryNav.css'
 
-function CategoryNav({ categories }) {
+function CategoryNav() {
+  const categories = useSelector((state) => state.categories.items)
   const [open, setOpen] = useState(false)
 
   return (

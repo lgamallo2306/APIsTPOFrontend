@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL, authConfig } from './apiconfig'
+import { logout } from './authSlice'
 
 // busca un usuario exacto por email
 export const fetchUserByEmail = createAsyncThunk('admin/fetchUserByEmail', async ({ token, email }) => {
@@ -17,12 +18,16 @@ export const removeRole = createAsyncThunk('admin/removeRole', async ({ token, u
   await axios.delete(`${URL}/users/${userId}/roles/${role}`, authConfig(token))
 })
 
+const initialState = { user: null, loading: false, error: null, roleError: null }
+
 const adminSlice = createSlice({
   name: 'admin',
-  initialState: { user: null, loading: false, error: null, roleError: null },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logout, () => initialState)
+
       // búsqueda
       .addCase(fetchUserByEmail.pending, (state) => {
         state.user = null

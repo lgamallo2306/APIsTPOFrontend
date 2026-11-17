@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createCategory, updateCategory, deleteCategory } from '../../redux/categoriesSlice'
 import { toast } from 'react-toastify'
 import CategoriesBody from './CategoriesBody'
@@ -7,8 +7,9 @@ import CategoryModal from './CategoryModal'
 import CategoryDeleteModal from './CategoryDeleteModal'
 
 // Encabezado, lista, modales y avisos. Alta, edición y baja se despachan acá; el slice actualiza los datos
-function CategoriesPanel({ token, loading, error, data, onPageChange, onRetry }) {
+function CategoriesPanel({ loading, error, data, onPageChange, onRetry }) {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const [modal, setModal] = useState(null) // null | 'form' | 'delete'
   const [selected, setSelected] = useState(null)
   const [saveError, setSaveError] = useState('')

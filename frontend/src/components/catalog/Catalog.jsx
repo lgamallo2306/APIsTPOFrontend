@@ -5,7 +5,7 @@ import CatalogFilters from './CatalogFilters'
 import CatalogProducts from './CatalogProducts'
 import './Catalog.css'
 
-function Catalog({ categories }) {
+function Catalog() {
   const location = useLocation()
   const navigate = useNavigate()
   const [filterError, setFilterError] = useState('')
@@ -53,7 +53,6 @@ function Catalog({ categories }) {
     <div className="catalog">
       <CatalogSidebar open={showFilters} onToggle={() => setShowFilters(!showFilters)}>
         <CatalogFilters
-          categories={categories}
           filters={filters}
           error={filterError}
           onApply={handleApply}
@@ -63,7 +62,6 @@ function Catalog({ categories }) {
       <CatalogProducts
         filters={filters}
         pageNumber={pageNumber}
-        categories={categories}
         onClear={handleClear}
         onRemoveFilter={(field) => search({ ...filters, [field]: '' })}
         onPageChange={(number) => search({ ...filters, page: number })}

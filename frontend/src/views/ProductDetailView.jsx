@@ -1,9 +1,9 @@
 import ProductDetail from '../components/products/ProductDetail'
 
-function ProductDetailView({ token, user }) {
+function ProductDetailView() {
   return (
     <main>
-      <ProductDetail token={token} user={user} />
+      <ProductDetail />
     </main>
   )
 }

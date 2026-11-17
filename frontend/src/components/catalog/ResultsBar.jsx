@@ -1,7 +1,9 @@
+import { useSelector } from 'react-redux'
 import { formatPrice } from '../../utils/format'
 import './ResultsBar.css'
 
-function ResultsBar({ total, filters, categories, onRemoveFilter }) {
+function ResultsBar({ total, filters, onRemoveFilter }) {
+  const categories = useSelector((state) => state.categories.items)
   const category = categories.find((c) => String(c.id) === filters.categoryId)
   const chips = [
     filters.name !== '' && { id: 'name', label: `nombre: ${filters.name}` },

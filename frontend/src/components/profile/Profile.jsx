@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import ProfileData from './ProfileData'
 import ProfileLinks from './ProfileLinks'
 import ProfileSettings from './ProfileSettings'
@@ -5,7 +6,8 @@ import './Profile.css'
 
 
 // Los cambios de la cuenta salen de ProfileSettings
-function Profile({ user, token, onUserChange, onTokenChange, onLogout }) {
+function Profile() {
+  const user = useSelector((state) => state.auth.user)
   return (
     <div className="profile">
       <div className="profile-main">
@@ -17,9 +19,9 @@ function Profile({ user, token, onUserChange, onTokenChange, onLogout }) {
           </div>
         </div>
         <ProfileData user={user} />
-        <ProfileSettings user={user} token={token} onUserChange={onUserChange} onTokenChange={onTokenChange} onLogout={onLogout} />
+        <ProfileSettings />
       </div>
-      <ProfileLinks roles={user.roles} onLogout={onLogout} />
+      <ProfileLinks roles={user.roles} />
     </div>
   )
 }

@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createProductReview, createSellerReview } from '../../redux/reviewsSlice'
 import Modal from '../ui/Modal'
 import ReviewForm from './ReviewForm'
 import ReviewSent from './ReviewSent'
 
-function ReviewModal({ token, target, onClose }) {
+function ReviewModal({ target, onClose }) {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)

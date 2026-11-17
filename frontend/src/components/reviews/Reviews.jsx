@@ -5,7 +5,7 @@ import ReviewsPanel from './ReviewsPanel'
 import './Reviews.css'
 
 // type es 'product' o 'seller': elige el thunk y la parte del slice (state.reviews.product / .seller)
-function Reviews({ title, type, id, token, user }) {
+function Reviews({ title, type, id }) {
   const dispatch = useDispatch()
   const data = useSelector((state) => state.reviews[type])
 
@@ -24,8 +24,6 @@ function Reviews({ title, type, id, token, user }) {
     <section className="reviews">
       <h2 className="h2">{title}</h2>
       <ReviewsPanel
-        token={token}
-        user={user}
         loading={loading}
         error={data.error}
         reviews={data.items}

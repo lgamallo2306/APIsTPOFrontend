@@ -1,9 +1,9 @@
 import OrderDetailContainer from '../components/orders/OrderDetailContainer'
 
-function OrderDetailView({ token, onLogout }) {
+function OrderDetailView() {
   return (
     <main>
-      <OrderDetailContainer token={token} onLogout={onLogout} />
+      <OrderDetailContainer />
     </main>
   )
 }

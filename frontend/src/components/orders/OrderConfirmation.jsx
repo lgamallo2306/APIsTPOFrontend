@@ -7,8 +7,9 @@ import OrderSummary from './OrderSummary'
 import './OrderConfirmation.css'
 
 // Confirmación: si viene del checkout, la orden llega en location.state; si no, se pide al back
-function OrderConfirmation({ token }) {
+function OrderConfirmation() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const location = useLocation()
   const id = location.pathname.split('/')[2] // "/compra/12/confirmada" → "12"
   const orderFromCheckout = location.state ? location.state.order : null

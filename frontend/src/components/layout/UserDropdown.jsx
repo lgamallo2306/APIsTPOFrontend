@@ -1,15 +1,19 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { logout } from '../../redux/authSlice'
 import './UserDropdown.css'
 
-function UserDropdown({ user, initials, onLogout, onClose }) {
+function UserDropdown({ initials, onClose }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.user)
   const isVendor = user.roles.includes('VENDOR') || user.roles.includes('ADMIN')
   const isAdmin = user.roles.includes('ADMIN')
 
   const handleLogout = () => {
     onClose()
-    onLogout()
+    dispatch(logout())
     toast.info('Cerraste sesión')
     navigate('/')
   }

@@ -6,8 +6,9 @@ import './MyProducts.css'
 
 
 
-function MyProducts({ token }) {
+function MyProducts() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const sellerPage = useSelector((state) => state.seller.page)
   const [page, setPage] = useState(0)
   
@@ -30,7 +31,6 @@ function MyProducts({ token }) {
 
   return (
     <MyProductsPanel
-      token={token}
       loading={loading}
       error={error}
       data={data}

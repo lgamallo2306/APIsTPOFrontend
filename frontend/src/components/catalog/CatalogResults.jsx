@@ -4,7 +4,7 @@ import EmptyState from '../ui/EmptyState'
 import Pagination from '../ui/Pagination'
 import ResultsBar from './ResultsBar'
 
-function CatalogResults({ loading, error, products, filters, hasFilters, categories, onRetry, onClear, onRemoveFilter, onPageChange }) {
+function CatalogResults({ loading, error, products, filters, hasFilters, onRetry, onClear, onRemoveFilter, onPageChange }) {
   if (loading) return <ProductGridSkeleton />
 
   if (error) {
@@ -22,7 +22,7 @@ function CatalogResults({ loading, error, products, filters, hasFilters, categor
 
   return (
     <>
-      <ResultsBar total={products.totalElements} filters={filters} categories={categories} onRemoveFilter={onRemoveFilter} />
+      <ResultsBar total={products.totalElements} filters={filters} onRemoveFilter={onRemoveFilter} />
       <ProductGrid products={products.content} />
       <Pagination page={products} onChange={onPageChange} />
     </>

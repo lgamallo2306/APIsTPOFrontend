@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { deleteReview } from '../../redux/reviewsSlice'
 import ReviewsResults from './ReviewsResults'
 import ReviewDeleteModal from './ReviewDeleteModal'
 
-function ReviewsPanel({ token, user, loading, error, reviews, onRetry }) {
+function ReviewsPanel({ loading, error, reviews, onRetry }) {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
+  const user = useSelector((state) => state.auth.user)
   const [selected, setSelected] = useState(null)
   const [deleteError, setDeleteError] = useState('')
 

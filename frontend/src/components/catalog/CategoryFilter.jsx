@@ -1,6 +1,8 @@
+import { useSelector } from 'react-redux'
 import './CategoryFilter.css'
 
-function CategoryFilter({ categories, value, onChange }) {
+function CategoryFilter({ value, onChange }) {
+  const categories = useSelector((state) => state.categories.items)
   const options = [{ id: '', description: 'Todas' }, ...categories]
 
   return (

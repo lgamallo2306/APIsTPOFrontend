@@ -5,7 +5,7 @@ import CatalogResults from './CatalogResults'
 import './CatalogProducts.css'
 
 
-function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFilter, onPageChange }) {
+function CatalogProducts({ filters, pageNumber, onClear, onRemoveFilter, onPageChange }) {
 
   const dispatch = useDispatch()
   const catalog = useSelector((state) => state.products.catalog)
@@ -39,7 +39,6 @@ function CatalogProducts({ filters, pageNumber, categories, onClear, onRemoveFil
         products={catalog.page}
         filters={filters}
         hasFilters={hasFilters}
-        categories={categories}
         onRetry={handleRetry}
         onClear={onClear}
         onRemoveFilter={onRemoveFilter}

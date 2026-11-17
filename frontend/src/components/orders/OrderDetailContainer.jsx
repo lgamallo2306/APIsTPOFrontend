@@ -7,8 +7,9 @@ import OrderDetail from './OrderDetail'
 import ReviewModal from '../reviews/ReviewModal'
 
 // Detalle de una orden: el id sale de la URL. Pide la orden solo si la guardada no es esa
-function OrderDetailContainer({ token, onLogout }) {
+function OrderDetailContainer() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const { id } = useParams()
   const detail = useSelector((state) => state.orders.detail)
   const [reviewTarget, setReviewTarget] = useState(null)
@@ -27,7 +28,7 @@ function OrderDetailContainer({ token, onLogout }) {
     <>
       <OrderDetail order={detail.order} onReview={setReviewTarget} />
       {reviewTarget && (
-        <ReviewModal token={token} target={reviewTarget} onClose={() => setReviewTarget(null)} onLogout={onLogout} />
+        <ReviewModal target={reviewTarget} onClose={() => setReviewTarget(null)} />
       )}
     </>
   )

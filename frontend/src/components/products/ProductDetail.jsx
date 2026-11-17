@@ -8,7 +8,7 @@ import ProductInfo from './ProductInfo'
 import ProductReviews from '../reviews/ProductReviews'
 import './ProductDetail.css'
 
-function ProductDetail({ token, user }) {
+function ProductDetail() {
   const location = useLocation()
   const id = location.pathname.split('/')[2] // "/productos/5" → "5"
   const dispatch = useDispatch()
@@ -45,9 +45,9 @@ function ProductDetail({ token, user }) {
         <BackButton />
       </div>
       <div className="product-detail-main">
-        <ProductInfo product={product} token={token} />
+        <ProductInfo product={product} />
       </div>
-      <ProductReviews product={product} token={token} user={user} />
+      <ProductReviews product={product} />
     </section>
   )
 }

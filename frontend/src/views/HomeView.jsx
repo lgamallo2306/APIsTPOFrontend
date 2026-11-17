@@ -6,27 +6,27 @@ import MakersBanner from '../components/home/MakersBanner'
 import PromoBanners from '../components/home/PromoBanners'
 import CategoryNav from '../components/home/CategoryNav'
 
-function HomeView({ categories, user }) {
+function HomeView() {
   return (
     <>
-    <CategoryNav categories={categories}/>
+    <CategoryNav />
     <main className="home-view">
         <HomeHero />
-        <CategoryStrip categories={ categories} />
+        <CategoryStrip />
         <ProductRow
             title="Ofertas"
             subtitle="Los mayores descuentos del momento"
             query="sort=discount,desc"
             moreLink="/catalogo?sort=discount,desc"
         />
-        <PromoBanners categories={categories}/>
+        <PromoBanners />
         <ProductRow
             title="Menos de $ 5.000"
             subtitle="Piezas útiles a buen precio"
             query="maxPrice=5000&sort=price,asc"
             moreLink="/catalogo?maxPrice=5000"
         />
-        <MakersBanner user={user} />
+        <MakersBanner />
     </main>
     </>
   )

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import './PromoBanners.css'
 
-function PromoBanners({ categories }) {
+function PromoBanners() {
+  const categories = useSelector((state) => state.categories.items)
 
     const repuestos = categories.find((category) => category.description === 'Repuestos')
     const repuestosLink = repuestos ? `/catalogo?categoryId=${repuestos.id}` : '/catalogo'

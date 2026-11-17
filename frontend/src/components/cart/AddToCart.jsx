@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { addCartItem } from '../../redux/cartSlice'
 import QuantityStepper from '../ui/QuantityStepper'
 import './AddToCart.css'
 import LoginRequiredModal from '../auth/LoginRequiredModal'
 
-function AddToCart({ product, token }) {
+function AddToCart({ product }) {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(false)
   const [askLogin, setAskLogin] = useState(false)

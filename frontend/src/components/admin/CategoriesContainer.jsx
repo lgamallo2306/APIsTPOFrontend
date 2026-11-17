@@ -5,7 +5,7 @@ import CategoriesPanel from './CategoriesPanel'
 import './CategoriesContainer.css'
 
 // page = página que se quiere ver; categoriesPage = la que está en el store
-function CategoriesContainer({ token }) {
+function CategoriesContainer() {
   const dispatch = useDispatch()
   const categoriesPage = useSelector((state) => state.categories.page)
   const [page, setPage] = useState(0)
@@ -27,7 +27,6 @@ function CategoriesContainer({ token }) {
 
   return (
     <CategoriesPanel
-      token={token}
       loading={loading}
       error={categoriesPage.error}
       data={categoriesPage.data}

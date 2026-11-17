@@ -7,9 +7,10 @@ import './Cart.css'
 import { toast } from 'react-toastify'
 
 // el carrito lo pide App una vez por token; acá solo se lee del slice y se despachan los cambios
-function Cart({ token }) {
+function Cart() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const { cart, loading, error } = useSelector((state) => state.cart)
   const [updating, setUpdating] = useState(false)
 

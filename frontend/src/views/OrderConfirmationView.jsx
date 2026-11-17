@@ -1,9 +1,9 @@
 import OrderConfirmation from '../components/orders/OrderConfirmation'
 
-function OrderConfirmationView({ token, onLogout }) {
+function OrderConfirmationView() {
   return (
     <main>
-      <OrderConfirmation token={token} onLogout={onLogout} />
+      <OrderConfirmation />
     </main>
   )
 }

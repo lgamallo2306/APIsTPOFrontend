@@ -1,9 +1,9 @@
 import PurchasesContainer from '../components/orders/PurchasesContainer'
 
-function MyPurchasesView({ token, onLogout }) {
+function MyPurchasesView() {
   return (
     <main>
-      <PurchasesContainer token={token} onLogout={onLogout} />
+      <PurchasesContainer />
     </main>
   )
 }
