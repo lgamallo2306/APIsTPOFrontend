@@ -64,6 +64,9 @@ const authSlice = createSlice({
       state.loadingUser = false
       state.error = null
     },
+    clearError: (state) => {
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -113,12 +116,8 @@ const authSlice = createSlice({
       .addCase(changeEmail.fulfilled, (state, action) => {
         state.token = action.payload
       })
-      .addCase(deactivateMe.fulfilled, (state) => {
-        state.token = null
-        state.user = null
-      })
   },
 })
 
-export const { logout } = authSlice.actions
+export const { logout, clearError } = authSlice.actions
 export default authSlice.reducer

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL, authConfig } from './apiconfig'
+import { logout } from './authSlice'
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (token) => {
   const { data } = await axios.get(`${URL}/cart`, authConfig(token))
@@ -36,14 +37,14 @@ const cartSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {
-    resetCart: (state) => {
-      state.cart = null
-      state.error = null
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logout, (state) => {
+        state.cart = null
+        state.error = null
+      })
+
       .addCase(fetchCart.pending, (state) => {
         state.loading = true
         state.error = null
@@ -74,5 +75,4 @@ const cartSlice = createSlice({
   },
 })
 
-export const { resetCart } = cartSlice.actions
 export default cartSlice.reducer

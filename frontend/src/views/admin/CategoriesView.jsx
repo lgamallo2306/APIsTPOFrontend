@@ -1,9 +1,9 @@
 import CategoriesContainer from '../../components/admin/CategoriesContainer'
 
-function CategoriesView({ token }) {
+function CategoriesView() {
   return (
     <main>
-      <CategoriesContainer token={token} />
+      <CategoriesContainer />
     </main>
   )
 }

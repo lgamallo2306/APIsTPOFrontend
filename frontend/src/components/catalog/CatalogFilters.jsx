@@ -4,7 +4,7 @@ import PriceFilter from './PriceFilter'
 import SortDropdown from './SortDropdown'
 import './CatalogFilters.css'
 
-function CatalogFilters({ categories, filters, error, onApply, onClear }) {
+function CatalogFilters({ filters, error, onApply, onClear }) {
   const { name, categoryId, minPrice, maxPrice, sort } = filters
   const [form, setForm] = useState(filters)
 
@@ -28,7 +28,7 @@ function CatalogFilters({ categories, filters, error, onApply, onClear }) {
         <label className="label" htmlFor="filter-name">Nombre</label>
         <input id="filter-name" name="name" className="input" value={form.name} onChange={handleChange} />
       </div>
-      <CategoryFilter categories={categories} value={form.categoryId} onChange={handleChange} />
+      <CategoryFilter value={form.categoryId} onChange={handleChange} />
       <PriceFilter minPrice={form.minPrice} maxPrice={form.maxPrice} onChange={handleChange} />
       <SortDropdown value={form.sort} onChange={handleChange} />
       {error && <p className="alert-err">{error}</p>}

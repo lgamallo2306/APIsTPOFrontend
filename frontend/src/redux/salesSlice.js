@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL, authConfig } from './apiconfig'
+import { logout } from './authSlice'
 
 export const getSales = createAsyncThunk('sales/getSales', async (token) => {
   const { data } = await axios.get(`${URL}/orders/sales`, authConfig(token))
@@ -27,6 +28,11 @@ const salesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logout, (state) => {
+        state.sales = { token: null, items: [], loading: false, error: null }
+        state.estimate = { result: null, loading: false, error: null }
+      })
+
       .addCase(getSales.pending, (state, action) => {
         state.sales = { token: action.meta.arg, items: [], loading: true, error: null }
       })

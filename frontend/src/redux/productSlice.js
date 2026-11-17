@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL } from './apiconfig'
+import { createProduct, updateProduct, uploadProductImage, updateStock, updateDiscount, deleteProduct } from './sellerSlice'
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (query) => {
   const { data } = await axios.get(`${URL}/products?size=12&${query}`)
@@ -65,6 +66,35 @@ const productSlice = createSlice({
       .addCase(fetchProduct.rejected, (state, action) => {
         state.detail.loading = false
         state.detail.error = action.error.message
+      })
+
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.detail = { id: String(action.payload.id), product: action.payload, loading: false, error: null }
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
+      })
+      .addCase(uploadProductImage.fulfilled, (state, action) => {
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
+      })
+      .addCase(updateStock.fulfilled, (state, action) => {
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
+      })
+      .addCase(updateDiscount.fulfilled, (state, action) => {
+        if (state.detail.id === String(action.payload.id)) {
+          state.detail.product = action.payload
+        }
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        if (state.detail.id === String(action.meta.arg.id)) {
+          state.detail = { id: null, product: null, loading: false, error: null }
+        }
       })
   },
 })

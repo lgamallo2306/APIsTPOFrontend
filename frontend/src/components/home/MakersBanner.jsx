@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import './MakersBanner.css'
 
 const PASOS = [
@@ -7,7 +8,8 @@ const PASOS = [
   { titulo: 'Vendé y coordiná', texto: 'Ves cada venta en tu panel y coordinás la entrega con el comprador.' },
 ]
 
-function MakersBanner({ user }) {
+function MakersBanner() {
+  const user = useSelector((state) => state.auth.user)
   const isVendor = user && (user.roles.includes('VENDOR') || user.roles.includes('ADMIN'))
 
   return (

@@ -7,8 +7,10 @@ import UserRoleCard from './UserRoleCard'
 import './UsersContainer.css'
 
 // Panel de usuarios: la búsqueda, el usuario y los errores viven en el store (adminSlice)
-function UsersContainer({ token, currentUser }) {
+function UsersContainer() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
+  const currentUser = useSelector((state) => state.auth.user)
   const admin = useSelector((state) => state.admin)
 
   const handleSearch = (email) => {

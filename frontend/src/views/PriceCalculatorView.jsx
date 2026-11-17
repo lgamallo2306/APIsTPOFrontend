@@ -1,10 +1,10 @@
 import SellerLayout from '../components/seller/SellerLayout'
 import PriceCalculator from '../components/seller/PriceCalculator'
 
-function PriceCalculatorView({ token }) {
+function PriceCalculatorView() {
   return (
     <SellerLayout title="Calculadora de precio sugerido">
-      <PriceCalculator token={token} />
+      <PriceCalculator />
     </SellerLayout>
   )
 }

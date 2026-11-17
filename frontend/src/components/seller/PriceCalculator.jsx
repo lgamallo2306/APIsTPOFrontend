@@ -5,8 +5,9 @@ import CalculatorForm from './CalculatorForm'
 import CalculatorResultCard from './CalculatorResultCard'
 import './PriceCalculator.css'
 
-function PriceCalculator({ token }) {
+function PriceCalculator() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const materials = useSelector((state) => state.sales.materials)
   const estimate = useSelector((state) => state.sales.estimate)
 

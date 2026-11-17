@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL, authConfig } from './apiconfig'
+import { logout } from './authSlice'
+import { checkout } from './cartSlice'
 
 // historial de compras del usuario logueado
 export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (token) => {
@@ -23,6 +25,17 @@ const ordersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logout, (state) => {
+        state.list = { items: [], loaded: false, loading: false, error: null }
+        state.detail = { id: null, order: null, loading: false, error: null }
+      })
+
+      .addCase(checkout.fulfilled, (state, action) => {
+        if (state.list.loaded) {
+          state.list.items = [action.payload, ...state.list.items]
+        }
+      })
+
       // historial
       .addCase(fetchOrders.pending, (state) => {
         state.list.loading = true

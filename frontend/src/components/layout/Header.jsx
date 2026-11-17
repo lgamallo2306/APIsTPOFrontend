@@ -7,7 +7,8 @@ import UserMenu from './UserMenu'
 import AuthButtons from './AuthButtons'
 import './Header.css'
 
-function Header({ user, onLogout }) {
+function Header() {
+  const user = useSelector((state) => state.auth.user)
   const cart = useSelector((state) => state.cart.cart)
   const cartCount = cart ? countUnits(cart.items) : 0
 
@@ -17,7 +18,7 @@ function Header({ user, onLogout }) {
         <SearchBar />
         <div className='header-actions'>
             <CartIcon count={cartCount} />
-             {user ? <UserMenu user={user} onLogout={onLogout} /> : <AuthButtons />}
+             {user ? <UserMenu /> : <AuthButtons />}
         </div>
    
     </header>

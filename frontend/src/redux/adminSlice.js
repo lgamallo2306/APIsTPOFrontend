@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL, authConfig } from './apiconfig'
+import { logout } from './authSlice'
 
 // busca un usuario exacto por email
 export const fetchUserByEmail = createAsyncThunk('admin/fetchUserByEmail', async ({ token, email }) => {
@@ -23,6 +24,12 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logout, (state) => {
+        state.user = null
+        state.error = null
+        state.roleError = null
+      })
+
       // búsqueda
       .addCase(fetchUserByEmail.pending, (state) => {
         state.user = null

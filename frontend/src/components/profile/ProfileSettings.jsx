@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { updateMe, changeEmail, changePassword, deactivateMe } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateMe, changeEmail, changePassword, deactivateMe, logout } from '../../redux/authSlice'
 import { toast } from 'react-toastify'
 import ProfileActions from './ProfileActions'
 import ProfileNameModal from './ProfileNameModal'
@@ -8,9 +9,12 @@ import ProfileEmailModal from './ProfileEmailModal'
 import ProfilePasswordModal from './ProfilePasswordModal'
 import ProfileDeactivateModal from './ProfileDeactivateModal'
 
-// Botones, modales y avisos de la cuenta. Las llamadas salen de acá; App guarda el usuario y el token
-function ProfileSettings({ user, token, onUserChange, onTokenChange, onLogout }) {
+// Botones, modales y avisos de la cuenta. Las llamadas salen de acá; el slice guarda el usuario y el token
+function ProfileSettings() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
+  const user = useSelector((state) => state.auth.user)
   const [modal, setModal] = useState(null) // null | 'name' | 'email' | 'password' | 'deactivate'
   const [error, setError] = useState('')
 
@@ -19,48 +23,36 @@ function ProfileSettings({ user, token, onUserChange, onTokenChange, onLogout })
     setModal(name)
   }
 
-  // la contraseña incorrecta llega como 400, así que un 401/403 sí significa sesión vencida
-  const handleError = (err) => {
-    if (err.status === 401 || err.status === 403) onLogout()
-    setError(err.message)
-  }
-
-  const handleSuccess = (message) => {
+  const handleResult = (result, message) => {
+    if (result.error) {
+      setError(result.error.message)
+      return
+    }
     toast.success(message)
     setModal(null)
   }
 
   const handleName = (form) => {
-    updateMe(token, form)
-      .then((updated) => {
-        onUserChange(updated)
-        handleSuccess('Datos actualizados')
-      })
-      .catch(handleError)
+    dispatch(updateMe({ token, updateData: form })).then((result) => handleResult(result, 'Datos actualizados'))
   }
 
   const handleEmail = (form) => {
-    changeEmail(token, form)
-      .then((data) => {
-        onTokenChange(data.access_token)
-        handleSuccess('Email actualizado')
-      })
-      .catch(handleError)
+    dispatch(changeEmail({ token, emailData: form })).then((result) => handleResult(result, 'Email actualizado'))
   }
 
   const handlePassword = (form) => {
-    changePassword(token, form)
-      .then(() => handleSuccess('Contraseña actualizada'))
-      .catch(handleError)
+    dispatch(changePassword({ token, passwordData: form })).then((result) => handleResult(result, 'Contraseña actualizada'))
   }
 
   const handleDeactivate = (form) => {
-    deactivateMe(token, form)
-      .then(() => {
-        onLogout()
-        navigate('/')
-      })
-      .catch(handleError)
+    dispatch(deactivateMe({ token, passwordData: form })).then((result) => {
+      if (result.error) {
+        setError(result.error.message)
+        return
+      }
+      dispatch(logout())
+      navigate('/')
+    })
   }
 
   const closeModal = () => setModal(null)

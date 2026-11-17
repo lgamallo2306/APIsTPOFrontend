@@ -6,8 +6,9 @@ import EmptyState from '../ui/EmptyState'
 import ProductEditorPanel from './ProductEditorPanel'
 import './ProductEditor.css'
 
-function ProductEditor({ user, token, categories }) {
+function ProductEditor() {
   const location = useLocation()
+  const user = useSelector((state) => state.auth.user)
   const id = location.pathname.split('/')[3] // "/vendedor/productos/5" → "5" · "/vendedor/productos/nuevo" → "nuevo"
   const isNew = id === 'nuevo'
   const suggestedPrice = location.state && location.state.price ? location.state.price: null
@@ -35,8 +36,6 @@ function ProductEditor({ user, token, categories }) {
 
   return (
     <ProductEditorPanel
-      token={token}
-      categories={categories}
       product={product}
       suggestedPrice={isNew ? suggestedPrice : null}
     />

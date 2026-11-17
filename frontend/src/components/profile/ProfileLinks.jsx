@@ -1,14 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import { logout } from '../../redux/authSlice'
 
 
-function ProfileLinks({ roles, onLogout }) {
+function ProfileLinks({ roles }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const isVendor = roles.includes('VENDOR') || roles.includes('ADMIN')
   const isAdmin = roles.includes('ADMIN')
 
   const handleLogout = () => {
-    onLogout()
+    localStorage.removeItem('token')
+    dispatch(logout())
     toast.info('Cerraste sesión')
     navigate('/')
   }

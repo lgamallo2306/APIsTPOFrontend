@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import UserDropdown from './UserDropdown'
 import './UserMenu.css'
 
-function UserMenu({ user, onLogout }) {
+function UserMenu() {
+  const user = useSelector((state) => state.auth.user)
   const [open, setOpen] = useState(false)
   const initials = user.name[0] + user.surname[0]
 
@@ -15,7 +17,7 @@ function UserMenu({ user, onLogout }) {
           <path d="m6 9 6 6 6-6" />
         </svg>
       </button>
-      {open && <UserDropdown user={user} initials={initials} onLogout={onLogout} onClose={() => setOpen(false)} />}
+      {open && <UserDropdown initials={initials} onClose={() => setOpen(false)} />}
     </div>
   )
 }

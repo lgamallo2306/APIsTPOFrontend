@@ -4,8 +4,9 @@ import { getSales } from '../../redux/salesSlice'
 import SalesResults from './SalesResults'
 import './MySales.css'
 
-function MySales({ token }) {
+function MySales() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
   const sales = useSelector((state) => state.sales.sales)
 
   useEffect(() => {

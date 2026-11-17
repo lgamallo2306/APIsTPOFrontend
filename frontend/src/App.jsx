@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
-import { getMe } from './utils/api'
 import PageLoading from './components/ui/PageLoading'
 
 import CatalogView from './views/CatalogView'
@@ -25,88 +24,64 @@ import Footer from './components/layout/Footer'
 import { ToastContainer, toast } from 'react-toastify'
 import LoginRequired from './components/auth/LoginRequired'
 import { fetchCategories } from './redux/categoriesSlice'
-import { fetchCart, resetCart } from './redux/cartSlice'
+import { fetchCart } from './redux/cartSlice'
+import { getMe, logout } from './redux/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'))
-  const [user, setUser] = useState(null)
-  const [loadingUser, setLoadingUser] = useState(localStorage.getItem('token') !== null)
   const dispatch = useDispatch()
-  const categories = useSelector((state) => state.categories.items)
-
-  const handleLogin = (newToken) => {
-    localStorage.setItem('token', newToken)
-    setLoadingUser(true)
-    setToken(newToken)
-  }
-
-
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    setToken(null)
-    setUser(null)
-    setLoadingUser(false)
-    dispatch(resetCart())
-  }
-
-
-  const handleTokenChange = (newToken) => {
-    localStorage.setItem('token', newToken)
-    setToken(newToken)
-  }
+  const token = useSelector((state) => state.auth.token)
+  const user = useSelector((state) => state.auth.user)
+  const loadingUser = useSelector((state) => state.auth.loadingUser)
 
   useEffect(() => {
     dispatch(fetchCategories())
-  }, [dispatch]) 
+  }, [dispatch])
 
   useEffect(() => {
     if (!token) return
-    getMe(token)
-      .then((data) => {
-        setUser(data)
-        setLoadingUser(false)
-      })
-      .catch(() => {
-        handleLogout()
+    dispatch(getMe(token)).then((result) => {
+      if (result.error) {
+        localStorage.removeItem('token')
+        dispatch(logout())
         toast.error('Tu sesión venció. Ingresá de nuevo.')
-      })
+      }
+    })
     dispatch(fetchCart(token))
   }, [token, dispatch])
 
-  
   const loginOrLoading = loadingUser ? <PageLoading /> : <LoginRequired />
-  const catalogOrLoading = loadingUser ? <PageLoading /> : <CatalogView categories={categories} />
+  const catalogOrLoading = loadingUser ? <PageLoading /> : <CatalogView />
 
   const isVendor = user && (user.roles.includes('VENDOR') || user.roles.includes('ADMIN'))
   const isAdmin = user && user.roles.includes('ADMIN')
 
   return (
     <div className='app'>
-      <Header user={user} onLogout={handleLogout} />
+      <Header />
       <Routes>
-        <Route path='/' element={<HomeView categories={categories} user={user} />} />
-        <Route path='/catalogo' element={<CatalogView categories={categories} />} />
-        <Route path="/productos/:id" element={<ProductDetailView token={token} user={user} />} />
-        <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
-        <Route path="/registro" element={<RegisterView onLogin={handleLogin} />} />
+        <Route path='/' element={<HomeView />} />
+        <Route path='/catalogo' element={<CatalogView />} />
+        <Route path="/productos/:id" element={<ProductDetailView />} />
+        <Route path="/login" element={<LoginView />} />
+        <Route path="/registro" element={<RegisterView />} />
 
-        <Route path="/carrito" element={user ? <CartView token={token} /> : loginOrLoading} />
-        <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView token={token} onLogout={handleLogout} /> : loginOrLoading} />
-        <Route path="/mis-compras" element={user ? <MyPurchasesView token={token} onLogout={handleLogout} /> : loginOrLoading} />
-        <Route path="/mis-compras/:id" element={user ? <OrderDetailView token={token} onLogout={handleLogout} /> : loginOrLoading} />
-        <Route path="/perfil" element={user ? <ProfileView user={user} token={token} onUserChange={setUser} onTokenChange={handleTokenChange} onLogout={handleLogout} /> : loginOrLoading} />
+        <Route path="/carrito" element={user ? <CartView /> : loginOrLoading} />
+        <Route path="/compra/:id/confirmada" element={user ? <OrderConfirmationView /> : loginOrLoading} />
+        <Route path="/mis-compras" element={user ? <MyPurchasesView /> : loginOrLoading} />
+        <Route path="/mis-compras/:id" element={user ? <OrderDetailView /> : loginOrLoading} />
+        <Route path="/perfil" element={user ? <ProfileView /> : loginOrLoading} />
 
-        <Route path="/vendedor/productos" element={isVendor ? <MyProductsView token={token} onLogout={handleLogout} /> : catalogOrLoading} />
-        <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView title="Nuevo producto" user={user} token={token} categories={categories} onLogout={handleLogout} /> : catalogOrLoading} />
-        <Route path="/vendedor/productos/:id" element={isVendor ? <ProductFormView title="Editar producto" user={user} token={token} categories={categories} onLogout={handleLogout} /> : catalogOrLoading} />
-        <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView token={token} /> : catalogOrLoading} />
-        <Route path="/vendedor/ventas" element={isVendor ? <MySalesView token={token} /> : catalogOrLoading} />
+        <Route path="/vendedor/productos" element={isVendor ? <MyProductsView /> : catalogOrLoading} />
+        <Route path="/vendedor/productos/nuevo" element={isVendor ? <ProductFormView title="Nuevo producto" /> : catalogOrLoading} />
+        <Route path="/vendedor/productos/:id" element={isVendor ? <ProductFormView title="Editar producto" /> : catalogOrLoading} />
+        <Route path="/vendedor/calculadora" element={isVendor ? <PriceCalculatorView /> : catalogOrLoading} />
+        <Route path="/vendedor/ventas" element={isVendor ? <MySalesView /> : catalogOrLoading} />
 
-        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView token={token} /> : catalogOrLoading} />
-        <Route path="/admin/usuarios" element={isAdmin ? <UsersView token={token} currentUser={user} onLogout={handleLogout} /> : catalogOrLoading} />
+        <Route path="/admin/categorias" element={isAdmin ? <CategoriesView /> : catalogOrLoading} />
+        <Route path="/admin/usuarios" element={isAdmin ? <UsersView /> : catalogOrLoading} />
 
         <Route path="*" element={<NotFoundView />} />
         

@@ -1,10 +1,10 @@
 import SellerLayout from '../components/seller/SellerLayout'
 import MyProducts from '../components/seller/MyProducts'
 
-function MyProductsView({ token, onLogout }) {
+function MyProductsView() {
   return (
     <SellerLayout title="Mis productos">
-      <MyProducts token={token} onLogout={onLogout} />
+      <MyProducts />
     </SellerLayout>
   )
 }

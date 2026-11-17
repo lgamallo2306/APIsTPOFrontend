@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import './CategoryStrip.css'
 
 const COLORES = ['#c9cdf0', '#e6dcc7', '#f3c4a8', '#bfdcc8', '#ede0cc', '#f0d77a', '#d9c8ee', '#bfe0e6']
 
 
-function CategoryStrip({ categories }){
+function CategoryStrip(){
+  const categories = useSelector((state) => state.categories.items)
     if(categories.length === 0) return null
 
     return(

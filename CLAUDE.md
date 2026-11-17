@@ -15,7 +15,7 @@ npm run dev      # http://localhost:5173
 npm run lint     # tiene que quedar sin errores
 ```
 
-- El backend corre en `http://localhost:8080` (constante `URL` en `src/redux/apiconfig.js`; mientras dure la migración también está en `src/utils/api.js`).
+- El backend corre en `http://localhost:8080` (constante `URL` en `src/redux/apiconfig.js`).
 - `node_modules/` no se versiona y se borra al entregar (se reinstala con `npm install`). Front y back van en repos separados.
 
 ## Estructura
@@ -32,7 +32,6 @@ frontend/src/
   styles/
     tokens.css      Sistema de diseño (variables y clases base). No se edita.
   utils/
-    api.js          Llamadas con fetch que todavía no se migraron a Redux. Se borra al terminar la migración.
     format.js       formatPrice, finalPrice, formatDate.
   components/       Componentes reutilizables, agrupados por dominio
     ui/  layout/  auth/  catalog/  products/  cart/  orders/  reviews/  seller/  admin/
@@ -70,7 +69,7 @@ frontend/src/
 **Código simple y explicable**
 - Todo el equipo tiene que poder explicar cada línea. Ante dos soluciones, elegir la más directa aunque sea más larga.
 - Estados explícitos en vez de valores deducidos con trucos. Por ejemplo, la carga se maneja con un `loading` (en Redux: `true` en `pending`, `false` en `fulfilled` y `rejected`), no comparando strings.
-- La regla de ESLint `react-hooks/set-state-in-effect` está desactivada a propósito (en `eslint.config.js`): se permite `setLoading(true)` y `setError('')` al inicio de un `useEffect` en los componentes que todavía usan `api.js`, y `setPage(...)` en un efecto (ver `CategoriesContainer`). Para sincronizar un formulario con la URL se usa un `useEffect` con los campos como dependencias (ver `CatalogFilters`). Al reintentar o cambiar de página, el reseteo de `loading` y `error` se hace en el handler que dispara la carga. Si la carga cambia por un parámetro de la URL sin pasar por un handler, se guarda el valor anterior en un estado y se compara antes del `return` (ver `lastId` en `OrderDetailContainer`).
+- La regla de ESLint `react-hooks/set-state-in-effect` está desactivada a propósito (en `eslint.config.js`): se permite `setPage(...)` en un efecto (ver `CategoriesContainer`). Para sincronizar un formulario con la URL se usa un `useEffect` con los campos como dependencias (ver `CatalogFilters`). Al reintentar o cambiar de página, el reseteo de `loading` y `error` se hace en el handler que dispara la carga. Si la carga cambia por un parámetro de la URL sin pasar por un handler, se guarda el valor anterior en un estado y se compara antes del `return` (ver `lastId` en `OrderDetailContainer`).
 - Usar `children` para componentes que son marcos o layouts: el componente arma la estructura fija y recibe el contenido entre sus etiquetas (`Modal`, `CatalogSidebar`, `SellerLayout`, `AuthLayout`). Los componentes que muestran datos con forma fija (`ProductCard`, `PriceTag`, `Pagination`) usan props normales.
 - Evitar, salvo acuerdo del equipo: `key` para forzar el reinicio de un componente, `??` y `?.`, desestructuración dentro de callbacks (`([, value]) =>`), `Object.entries` / `reduce` encadenados, hooks de librerías que no estén en esta lista (`useSearchParams`, etc.) y el updater funcional (`setX((prev) => ...)`): se usa el estado directo (`setCategories(categories.filter(...))`).
 
@@ -78,7 +77,7 @@ frontend/src/
 - TypeScript y componentes de clase.
 - Acceder a `document` o `window` desde componentes (incluye `alert`, `confirm`, `getElementById`, `document.title`). La única excepción es `main.jsx`. Avisos y confirmaciones se hacen con componentes (`Modal`, `Toast`) mostrados con estado.
 - Llamadas al back dentro de componentes: van en los thunks de los slices (`src/redux/`).
-- `fetch` en código nuevo: se usa axios.
+- `fetch`: todas las llamadas usan axios.
 - `async/await` fuera de los thunks. En los componentes, si hace falta esperar algo, `.then`.
 - Efectos secundarios en los reducers (`localStorage`, llamadas, navegación): los reducers son funciones puras.
 - Repetir un GET para refrescar datos. La cátedra mira Network y Redux DevTools: un mismo GET no se repite al cambiar de pantalla y volver.
@@ -90,7 +89,7 @@ Patrón de la clase (Redux Toolkit + `createAsyncThunk`). Ejemplos de referencia
 **Slices**
 - Uno por dominio / service del back, no uno por entidad (las imágenes van con productos; el carrito con sus ítems).
 - Archivo `xxxSlice.js` en `src/redux/`, registrado en `store.js`: `categories: categoriesReducer`.
-- `reducers: {}` para acciones síncronas sin back (ej. `resetCart`); `extraReducers` con `builder.addCase` para los thunks.
+- `reducers: {}` para acciones síncronas sin back (ej. `logout`, `clearError`); `extraReducers` con `builder.addCase` para los thunks.
 
 **Thunks** (una por endpoint)
 ```javascript
@@ -103,7 +102,7 @@ export const fetchCategoriesPage = createAsyncThunk('categories/fetchCategoriesP
 - Más de un dato → un objeto: `async ({ token, id, category }) =>`.
 - `axios.get(url, config)` / `axios.delete(url, config)` / `axios.post|put|patch(url, body, config)`. Con login: `authConfig(token)` como config.
 - **Sin try/catch**: el interceptor de `apiconfig.js` transforma cualquier error en `new Error(mensaje del back)` (o un mensaje genérico de conexión si no hubo respuesta), así llega a `action.error.message` en el `rejected`.
-- Mientras no esté migrado auth, el token llega al componente por props y se le pasa al thunk.
+- El token no baja por props: el componente que despacha lo lee con `useSelector((state) => state.auth.token)` y se lo pasa al thunk.
 
 **Casos**
 - GET: `pending` (`loading = true`, `error = null`), `fulfilled` (guardar `action.payload`), `rejected` (`error = action.error.message`).
@@ -150,7 +149,7 @@ dispatch(createCategory({ token, category: form })).then((result) => {
 **Para consultar con la profe** (decisiones que no mostró en clase)
 - El interceptor de axios en vez de try/catch + `rejectWithValue` en cada thunk.
 - `dispatch(...).then(result)` para esperar el resultado.
-- Cerrar sesión ante 401/403: el interceptor no pasa el status. Hoy los containers migrados no cierran sesión; se resuelve con el slice de auth.
+- Cerrar sesión ante 401/403: el interceptor no pasa el status, así que los containers no cierran sesión. Solo `App` cierra sesión si falla `getMe`.
 
 ### Estado de la migración
 
@@ -158,34 +157,30 @@ dispatch(createCategory({ token, category: form })).then((result) => {
 | --- | --- | --- | --- |
 | products | ProductRow, CatalogProducts, ProductDetail | Mateo (revisa Pato) | Hecho |
 | categories | App, CategoriesContainer, CategoriesPanel | Mateo (revisa Franco) | Hecho |
-| seller | MyProducts, MyProductsPanel, ProductEditor, ProductEditorPanel | Mateo | Pendiente |
-| cart | AddToCart, Cart, Header, App (+ checkout) | Pato | Slice creado, falta conectar |
-| reviews | Reviews, ReviewModal, ReviewsPanel | Pato | Pendiente |
-| orders | PurchasesContainer, OrderDetailContainer, OrderConfirmation | Franco | Pendiente |
-| admin | UsersContainer | Franco | Pendiente |
+| seller | MyProducts, MyProductsPanel, ProductEditor, ProductEditorPanel | Mateo | Hecho. El editor toma el producto de `seller.page` si viene de la lista, si no de `products.detail` (`fetchProduct`). `products.detail` escucha los thunks de `seller` para no quedar desactualizado |
+| cart | AddToCart, Cart, Header, App (+ checkout) | Pato | Hecho |
+| reviews | Reviews, ReviewModal, ReviewsPanel | Pato | Hecho |
+| orders | PurchasesContainer, OrderDetailContainer, OrderConfirmation | Franco | Hecho |
+| admin | UsersContainer | Franco | Hecho |
 | sales | MySales, PriceCalculator | Lucho | Hecho |
-| auth | Login, Register, ProfileSettings, App | Lauti | Pendiente, va último. El `authSlice.js` actual tiene `state.loading = error` (rompe el lint) y `localStorage` en los reducers: se rehace con thunks |
+| auth | App, Header, Profile, Login, Register, ProfileSettings | Pato, Lauti | Hecho |
 
-- `store.js`: cada uno agrega su línea. `App.jsx`: primero carrito, después auth.
-- Al terminar: borrar `utils/api.js`.
-
-### Llamadas que todavía usan `utils/api.js`
-
-Hasta migrarlas siguen el formato viejo: cada función devuelve la promesa con `.then(handle)`; `handle` convierte la respuesta a JSON y, si `!res.ok`, lanza `{ status, message }`. Los endpoints protegidos usan `authHeaders(token)`. Si `status` es 401 o 403 con sesión iniciada, se cierra sesión.
+- `store.js`: cada uno agrega su línea.
+- Migración terminada: `utils/api.js` se borró y todas las llamadas están en los thunks de `src/redux/`.
 
 ## Sesión
 
-Vive en `App.jsx` y se pasa por props (hasta que se migre auth y carrito):
+Vive en Redux. Ningún componente la recibe por props: cada uno la lee con `useSelector`.
 
-- `token`: se guarda en `localStorage` (es lo único que se persiste en el navegador).
-- `user`: respuesta de `GET /users/me`. `user.roles` es un array (`USER`, `VENDOR`, `ADMIN`).
-- `cart`: respuesta de `GET /cart` (se pide una sola vez por token y baja a `CartView`). Cada ítem trae `imageUrl` y `stock`, así que no hace falta pedir los productos. `cartCount` se calcula sumando `quantity` de `cart.items`.
-- `onCartChange(cart)`: las vistas que modifican el carrito (detalle, carrito) le pasan a `App` el carrito que devuelve el back, así el contador del Header se actualiza sin otro GET.
-- `categories`: en Redux (`state.categories.items`). App hace `dispatch(fetchCategories())` una sola vez y por ahora la sigue pasando por props a Home, catálogo y formulario de producto. El panel admin actualiza la lista desde el slice (ya no hay `onCategorySaved` / `onCategoryDeleted`).
-- `handleLogin(token)` / `handleLogout()`: se pasan a las vistas y al Header.
-- Perfil: `setUser` baja como `onUserChange` (editar nombre). `handleTokenChange(token)` se usa al cambiar el email, porque el back devuelve un token nuevo: guarda el token sin borrar `user`, y el `useEffect` de `[token]` trae el usuario actualizado.
-- Un `useEffect` con `[token]` trae usuario y carrito cada vez que cambia el token (todavía con `api.js`).
-- `loadingUser`: mientras llega `GET /users/me`, las rutas protegidas muestran `PageLoading` en vez del login.
+- `state.auth.token`: el `authSlice` lo lee de `localStorage` al arrancar. Los thunks `login`, `register` y `changeEmail` lo guardan y `deactivateMe` lo borra; antes de despachar `logout()` lo borra el componente (`localStorage.removeItem('token')`). Es lo único que se persiste en el navegador; los reducers no tocan `localStorage`.
+- `state.auth.user`: respuesta de `GET /users/me` (thunk `getMe`). `user.roles` es un array (`USER`, `VENDOR`, `ADMIN`).
+- `state.auth.loadingUser`: mientras llega `getMe`, las rutas protegidas muestran `PageLoading` en vez del login.
+- `state.cart.cart`: respuesta de `GET /cart` (se pide una vez por token). Cada ítem trae `imageUrl` y `stock`. El Header calcula el contador sumando `quantity` de `cart.items`.
+- `state.categories.items`: `App` hace `dispatch(fetchCategories())` una sola vez; Home, catálogo y filtros las leen del store.
+- Un `useEffect` de `App` con `[token]` despacha `getMe` y `fetchCart`. Si `getMe` falla, despacha `logout()` y avisa que la sesión venció.
+- Cerrar sesión = `dispatch(logout())`. Los slices con datos del usuario (`cart`, `orders`, `seller`, `admin`, `sales`) escuchan esa acción y vuelven a su estado inicial, así el próximo usuario no ve datos del anterior.
+- El checkout agrega la orden nueva al historial (`orders` escucha `checkout.fulfilled`), sin volver a pedir `GET /orders`.
+- Login y Register despachan `login` / `register` y leen `state.auth.loading` y `state.auth.error` (`pending`, `fulfilled`, `rejected` en el slice; al montarse despachan `clearError()` para no mostrar un error viejo). La validación del formulario sigue en un `useState` local. El `fulfilled` guarda el token y el `useEffect` de `[token]` trae usuario y carrito. El perfil usa `updateMe`, `changeEmail`, `changePassword` y `deactivateMe` (después de la baja se despacha `logout()`). Al cambiar el email el back devuelve un token nuevo: `changeEmail.fulfilled` lo guarda sin borrar `user`, y el `useEffect` de `[token]` trae el usuario actualizado.
 - Si un visitante tuvo que loguearse en medio de una acción (por ejemplo, agregar al carrito), después del login vuelve a donde estaba (`navigate(-1)`), no al inicio.
 
 Rutas protegidas con renderizado condicional en `element` (no se usan `Navigate` ni `Outlet`):
