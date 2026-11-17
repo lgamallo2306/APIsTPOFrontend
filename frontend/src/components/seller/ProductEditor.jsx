@@ -1,52 +1,31 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { getProduct } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchEditorProduct } from '../../redux/sellerSlice'
 import EmptyState from '../ui/EmptyState'
 import ProductEditorPanel from './ProductEditorPanel'
 import './ProductEditor.css'
 
-const ERROR_CARGA = 'No pudimos traer el producto. Revisá tu conexión e intentá de nuevo.'
-
-// Lee la URL y consigue el producto a editar. En el alta no hay producto
-function ProductEditor({ user, token, categories, onLogout }) {
+function ProductEditor({ user, token, categories }) {
   const location = useLocation()
   const id = location.pathname.split('/')[3] // "/vendedor/productos/5" → "5" · "/vendedor/productos/nuevo" → "nuevo"
   const isNew = id === 'nuevo'
-  const productFromList = location.state && location.state.product ? location.state.product : null
-  const suggestedPrice = location.state && location.state.price ? location.state.price : null
-  const [product, setProduct] = useState(productFromList)
-  const [loading, setLoading] = useState(!isNew && productFromList === null)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
+  const suggestedPrice = location.state && location.state.price ? location.state.price: null
+  const dispatch = useDispatch()
+  const editor = useSelector((state) => state.seller.editor)
 
-  useEffect(() => {
-    if (isNew) {
-      setProduct(null)
-      setLoading(false)
-      return
-    }
-    if (productFromList !== null) {
-      setProduct(productFromList)
-      setLoading(false)
-      return
-    }
-    setLoading(true)
-    setError('')
-    getProduct(id)
-      .then((data) => {
-        setProduct(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(err.status ? err.message : ERROR_CARGA)
-        setLoading(false)
-      })
-  }, [id, isNew, productFromList, retry])
+  useEffect(()=>{
+    if(!isNew && editor.id !== id) dispatch(fetchEditorProduct(id))
+  },[dispatch, isNew, id, editor.id])
+
+  const loading = !isNew && (editor.id !== id || editor.loading)
+  const error = isNew ? null : editor.error
+  const product = isNew ? null : editor.product
 
   if (loading) return <div className="skel product-editor-skeleton" />
 
   if (error) {
-    return <EmptyState title="No pudimos cargar el producto" text={error} actionLabel="Reintentar" onAction={() => setRetry(retry + 1)} />
+    return <EmptyState title="No pudimos cargar el producto" text={error} actionLabel="Reintentar" onAction={() => dispatch(fetchEditorProduct(id))} />
   }
 
   
@@ -58,10 +37,8 @@ function ProductEditor({ user, token, categories, onLogout }) {
     <ProductEditorPanel
       token={token}
       categories={categories}
-      onLogout={onLogout}
       product={product}
       suggestedPrice={isNew ? suggestedPrice : null}
-      onProductChange={(updated) => setProduct(updated)}
     />
   )
 }
