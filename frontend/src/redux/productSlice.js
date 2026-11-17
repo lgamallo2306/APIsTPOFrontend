@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL } from './apiconfig'
 import { createProduct, updateProduct, uploadProductImage, updateStock, updateDiscount, deleteProduct } from './sellerSlice'
+import { checkout } from './cartSlice'
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (query) => {
   const { data } = await axios.get(`${URL}/products?size=12&${query}`)
@@ -15,6 +16,11 @@ export const fetchProductRow = createAsyncThunk('products/fetchProductRow', asyn
 })
 
 
+export const fetchSellerProducts = createAsyncThunk('products/fetchSellerProducts', async (query) => {
+  const { data } = await axios.get(`${URL}/products?size=12&${query}`)
+  return data
+})
+
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (id) => {
   const { data } = await axios.get(`${URL}/products/${id}`)
   return data
@@ -25,6 +31,7 @@ const productSlice = createSlice({
   initialState: {
   catalog: { query: null, page: null, loading: false, error: null },
   rows: {},
+  sellerProducts: { query: null, page: null, loading: false, error: null },
   detail: { id: null, product: null, loading: false, error: null },
 },
   reducers: {},
@@ -53,6 +60,18 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductRow.rejected, (state, action) => {
         state.rows[action.meta.arg] = { items: [], loading: false, error: action.error.message }
+      })
+
+      .addCase(fetchSellerProducts.pending, (state, action) => {
+        state.sellerProducts = { query: action.meta.arg, page: null, loading: true, error: null }
+      })
+      .addCase(fetchSellerProducts.fulfilled, (state, action) => {
+        state.sellerProducts.loading = false
+        state.sellerProducts.page = action.payload
+      })
+      .addCase(fetchSellerProducts.rejected, (state, action) => {
+        state.sellerProducts.loading = false
+        state.sellerProducts.error = action.error.message
       })
 
       // detalle
@@ -89,6 +108,14 @@ const productSlice = createSlice({
       .addCase(updateDiscount.fulfilled, (state, action) => {
         if (state.detail.id === String(action.payload.id)) {
           state.detail.product = action.payload
+        }
+      })
+      .addCase(checkout.fulfilled, (state, action) => {
+        if (state.detail.product) {
+          const item = action.payload.items.find((orderItem) => orderItem.productId === state.detail.product.id)
+          if (item) {
+            state.detail.product.stock = state.detail.product.stock - item.quantity
+          }
         }
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {

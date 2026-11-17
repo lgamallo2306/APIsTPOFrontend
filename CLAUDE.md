@@ -179,7 +179,7 @@ Vive en Redux. Ningún componente la recibe por props: cada uno la lee con `useS
 - `state.categories.items`: `App` hace `dispatch(fetchCategories())` una sola vez; Home, catálogo y filtros las leen del store.
 - Un `useEffect` de `App` con `[token]` despacha `getMe` y `fetchCart`. Si `getMe` falla, despacha `logout()` y avisa que la sesión venció.
 - Cerrar sesión = `dispatch(logout())`. Los slices con datos del usuario (`cart`, `orders`, `seller`, `admin`, `sales`) escuchan esa acción y vuelven a su estado inicial, así el próximo usuario no ve datos del anterior.
-- El checkout agrega la orden nueva al historial (`orders` escucha `checkout.fulfilled`), sin volver a pedir `GET /orders`.
+- El checkout agrega la orden nueva al historial (`orders` escucha `checkout.fulfilled`), sin volver a pedir `GET /orders`, y descuenta lo comprado del stock del producto que está en `products.detail`. El detalle de una orden se toma de la lista si ya está cargada; si no, `GET /orders/{id}`.
 - Login y Register despachan `login` / `register` y leen `state.auth.loading` y `state.auth.error` (`pending`, `fulfilled`, `rejected` en el slice; al montarse despachan `clearError()` para no mostrar un error viejo). La validación del formulario sigue en un `useState` local. El `fulfilled` guarda el token y el `useEffect` de `[token]` trae usuario y carrito. El perfil usa `updateMe`, `changeEmail`, `changePassword` y `deactivateMe` (después de la baja se despacha `logout()`). Al cambiar el email el back devuelve un token nuevo: `changeEmail.fulfilled` lo guarda sin borrar `user`, y el `useEffect` de `[token]` trae el usuario actualizado.
 - Si un visitante tuvo que loguearse en medio de una acción (por ejemplo, agregar al carrito), después del login vuelve a donde estaba (`navigate(-1)`), no al inicio.
 
@@ -195,6 +195,7 @@ Rutas protegidas con renderizado condicional en `element` (no se usan `Navigate`
 | --- | --- | --- |
 | `/` | público | CatalogView |
 | `/productos/:id` | público | ProductDetailView |
+| `/vendedores/:id` | público | SellerProfileView (productos del vendedor y reseñas que recibió; se llega desde "Vendido por" en el detalle) |
 | `/login`, `/registro` | público | LoginView, RegisterView |
 | `/carrito`, `/mis-compras`, `/perfil` | USER | CartView, MyPurchasesView, ProfileView |
 | `/compra/:id/confirmada` | USER | OrderConfirmationView (la orden llega del checkout en `location.state`; sin state, `GET /orders/{id}`) |
@@ -230,6 +231,7 @@ El backend real manda sobre el handoff:
 | `PATCH /products/{id}/stock` | body `{ quantity }`: **se suma** al stock actual (negativo resta). El front pide el valor nuevo y manda la diferencia |
 | `PATCH /products/{id}/discount` | body `{ discount }` |
 | `GET /users` | existe, paginado (ADMIN) |
+| `GET /products?sellerId=` | filtro opcional por vendedor (lo usa el perfil del vendedor). `GET /users/{id}` es solo ADMIN: el nombre del vendedor sale de `sellerName` de sus productos |
 | `GET /categories` | devuelve una página (`Page`): la lista está en `data.content` |
 | `GET /products/{id}`, `/products/mine` | el producto trae `categoryName` (no el id) e `imageUrls` (sin id de imagen). Para quitar una imagen se hace `PUT /products/{id}` con `imageUrls` sin esa url; si el `PUT` no manda `imageUrls`, las imágenes no se tocan |
 | `GET/POST /reviews/products/{id}`, `GET/POST /reviews/sellers/{id}` | reseñas (no están en el handoff). GET público, devuelve lista. POST body `{ rating, comment }`; 409 si no compró o ya reseñó |
