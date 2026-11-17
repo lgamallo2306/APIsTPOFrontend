@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { createProduct, updateProduct, uploadProductImage } from '../../redux/sellerSlice'
+import { updateProduct, uploadProductImage } from '../../redux/sellerSlice'
 import { toast } from 'react-toastify'
 import ProductDataForm from './ProductDataForm'
 import ProductSteps from './ProductSteps'
@@ -11,8 +10,8 @@ import ProductImagesStep from './ProductImagesStep'
 const ERROR_GENERICO = 'No pudimos completar la operación. Intentá de nuevo en unos segundos.'
 
 
-function ProductEditorPanel({ product, suggestedPrice, initialStep}) {
-  const navigate = useNavigate()
+// Edición de un producto que ya existe: los dos pasos se pueden elegir y cada cambio se guarda en el momento
+function ProductEditorPanel({ product, initialStep }) {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token)
   const categories = useSelector((state) => state.categories.items)
@@ -26,22 +25,13 @@ function ProductEditorPanel({ product, suggestedPrice, initialStep}) {
   const handleSave = (data) => {
     setSaving(true)
     setSaveError('')
-    const action = product
-      ? updateProduct({ token, id: product.id, product: data })
-      : createProduct({ token, product: data })
-    dispatch(action).then((result) => {
+    dispatch(updateProduct({ token, id: product.id, product: data })).then((result) => {
       setSaving(false)
       if (result.error) {
         setSaveError(result.error.message ? result.error.message : ERROR_GENERICO)
         return
       }
-      if (product) {
-        toast.success('Cambios guardados')
-        return
-      }
-      setStep(2)
-      navigate(`/vendedor/productos/${result.payload.id}`, { state: { step: 2, created: true } })
-      toast.success('Producto creado. Ahora agregá las imágenes.')
+      toast.success('Cambios guardados')
     })
   }
 
@@ -80,12 +70,12 @@ function ProductEditorPanel({ product, suggestedPrice, initialStep}) {
   }
   return (
     <div className="product-editor">
-      <ProductSteps step={step} canChoose={product !== null} onChange={setStep} />
+      <ProductSteps step={step} canChoose={true} onChange={setStep} />
       {step === 1 && (
         <ProductDataForm
           product={product}
           categories={categories}
-          suggestedPrice={suggestedPrice}
+          suggestedPrice={null}
           saving={saving}
           error={saveError}
           onSave={handleSave}

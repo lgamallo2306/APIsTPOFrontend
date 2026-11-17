@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchEditorProduct } from '../../redux/sellerSlice'
 import EmptyState from '../ui/EmptyState'
 import ProductEditorPanel from './ProductEditorPanel'
+import NewProductWizard from './NewProductWizard'
 import './ProductEditor.css'
 
 function ProductEditor() {
@@ -34,10 +35,12 @@ function ProductEditor() {
     return <EmptyState title="Este producto no es tuyo" text="Solo podés editar los productos que publicaste vos." />
   }
 
+  // alta: el asistente en pasos, que crea el producto recién al publicar. Edición: el panel de siempre
+  if (isNew) return <NewProductWizard suggestedPrice={suggestedPrice} />
+
   return (
     <ProductEditorPanel
       product={product}
-      suggestedPrice={isNew ? suggestedPrice : null}
       initialStep={location.state && location.state.step ? location.state.step : 1}
     />
   )

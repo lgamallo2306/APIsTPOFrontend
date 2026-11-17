@@ -8,9 +8,23 @@ export const fetchMyProducts = createAsyncThunk('seller/fetchMyProducts', async 
     return data
 })
 
-export const createProduct = createAsyncThunk('seller/createProduct', async ({ token, product }) => {
+// Alta completa: crea el producto y después sube las imágenes de a una, en orden (la primera queda de portada).
+// files = imágenes elegidas en el paso 2. Si falla una, el producto ya existe: se devuelve igual, con el error,
+// así el vendedor reintenta desde la edición en vez de crear el producto otra vez
+export const publishProduct = createAsyncThunk('seller/publishProduct', async ({ token, product, files }) => {
   const { data } = await axios.post(`${URL}/products`, product, authConfig(token))
-  return data
+  let saved = data
+  for (let i = 0; i < files.length; i++) {
+    const formData = new FormData()
+    formData.append('file', files[i])
+    try {
+      const response = await axios.post(`${URL}/products/${saved.id}/images`, formData, authConfig(token))
+      saved = response.data
+    } catch (error) {
+      return { product: saved, imageError: error.message }
+    }
+  }
+  return { product: saved, imageError: null }
 })
 
 export const updateProduct = createAsyncThunk('seller/updateProduct', async ({ token, id, product }) => {
@@ -62,9 +76,10 @@ const sellerSlice = createSlice({
                 state.editor = { id: null, product: null, loading: false, error: null }
             })
 
-            // el editor muestra lo que devolvió el back; el id se guarda como string, igual que viene de la URL
-            .addCase(createProduct.fulfilled, (state, action) => {
-                state.editor = { id: String(action.payload.id), product: action.payload, loading: false, error: null }
+            // el editor guarda el producto publicado; el id se guarda como string, igual que viene de la URL
+            .addCase(publishProduct.fulfilled, (state, action) => {
+                const product = action.payload.product
+                state.editor = { id: String(product.id), product: product, loading: false, error: null }
                 // hay un producto más: la lista se vuelve a pedir la próxima vez que se abra "Mis productos"
                 state.page = { number: null, data: null, loading: false, error: null }
             })

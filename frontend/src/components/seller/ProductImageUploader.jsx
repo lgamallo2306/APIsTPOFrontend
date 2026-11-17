@@ -3,18 +3,6 @@ import './ProductImageUploader.css'
 
 
 function ProductImageUploader({ product, uploading, error, onUpload, onRemove }) {
-  if (!product) {
-    return (
-      <section className="card product-images">
-        <h2 className="h3">Imágenes</h2>
-        <div className="drop product-images-drop">
-          <span>Primero creá el producto</span>
-          <span className="small muted">Con los datos guardados se habilita la carga de imágenes.</span>
-        </div>
-      </section>
-    )
-  }
-
   const handleFile = (e) => {
     const file = e.target.files[0]
     if (file) onUpload(file)

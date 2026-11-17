@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { URL } from './apiconfig'
-import { createProduct, updateProduct, uploadProductImage, updateStock, updateDiscount, deleteProduct } from './sellerSlice'
+import { publishProduct, updateProduct, uploadProductImage, updateStock, updateDiscount, deleteProduct } from './sellerSlice'
 import { checkout } from './cartSlice'
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (query) => {
@@ -87,8 +87,9 @@ const productSlice = createSlice({
         state.detail.error = action.error.message
       })
 
-      .addCase(createProduct.fulfilled, (state, action) => {
-        state.detail = { id: String(action.payload.id), product: action.payload, loading: false, error: null }
+      .addCase(publishProduct.fulfilled, (state, action) => {
+        const product = action.payload.product
+        state.detail = { id: String(product.id), product: product, loading: false, error: null }
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         if (state.detail.id === String(action.payload.id)) {

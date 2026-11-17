@@ -69,7 +69,7 @@ function ProductDataForm({ product, categories, suggestedPrice, saving, error, o
     })
   }
 
-  let submitLabel = 'Guardar y seguir'
+  let submitLabel = 'Siguiente'
   if (product) submitLabel = 'Guardar cambios'
   if (saving) submitLabel = 'Guardando…'
 
