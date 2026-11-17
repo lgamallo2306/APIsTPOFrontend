@@ -1,9 +1,15 @@
-/* Formulario de producto: datos a la izquierda, imágenes a la derecha */
+/* Editor de producto: barra de pasos arriba y un paso a la vez debajo */
 .product-editor {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  align-items: start;
+  max-width: 48rem;
+}
+
+.product-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .product-editor-skeleton {
@@ -43,12 +49,6 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-}
-
-@media (max-width: 56rem) {
-  .product-editor {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 @media (max-width: 43.75rem) {

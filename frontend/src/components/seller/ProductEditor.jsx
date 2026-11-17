@@ -38,6 +38,7 @@ function ProductEditor() {
     <ProductEditorPanel
       product={product}
       suggestedPrice={isNew ? suggestedPrice : null}
+      initialStep={location.state && location.state.step ? location.state.step : 1}
     />
   )
 }
