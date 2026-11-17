@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import PriceTag from './PriceTag'
 import StockBadge from './StockBadge'
 import AddToCart from '../cart/AddToCart'
@@ -17,7 +18,9 @@ function ProductInfo({ product }) {
           <StockBadge stock={product.stock} />
         </div>
         <h1 className="h1 product-info-title">{product.name}</h1>
-        <p className="small muted">Vendido por <strong>{product.sellerName}</strong></p>
+        <p className="small muted">Vendido por {product.sellerId !== null
+          ? <Link to={`/vendedores/${product.sellerId}`}><strong>{product.sellerName}</strong></Link>
+          : <strong>{product.sellerName}</strong>}</p>
         <PriceTag price={product.price} discount={product.discount} large />
         <div className="divider" />
         <AddToCart product={product} />

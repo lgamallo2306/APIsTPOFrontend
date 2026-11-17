@@ -20,6 +20,7 @@ import UsersView from './views/admin/UsersView'
 import NotFoundView from './views/NotFoundView'
 import OrderConfirmationView from './views/OrderConfirmationView'
 import HomeView from './views/HomeView'
+import SellerProfileView from './views/SellerProfileView'
 import Footer from './components/layout/Footer'
 import { ToastContainer, toast } from 'react-toastify'
 import LoginRequired from './components/auth/LoginRequired'
@@ -65,6 +66,7 @@ function App() {
         <Route path='/' element={<HomeView />} />
         <Route path='/catalogo' element={<CatalogView />} />
         <Route path="/productos/:id" element={<ProductDetailView />} />
+        <Route path="/vendedores/:id" element={<SellerProfileView />} />
         <Route path="/login" element={<LoginView />} />
         <Route path="/registro" element={<RegisterView />} />
 
