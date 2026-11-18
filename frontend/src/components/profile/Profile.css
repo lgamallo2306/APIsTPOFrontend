@@ -45,11 +45,6 @@
   border-bottom: none;
 }
 
-.profile-data-roles {
-  display: flex;
-  gap: 0.375rem;
-}
-
 .profile-links {
   display: flex;
   flex-direction: column;
