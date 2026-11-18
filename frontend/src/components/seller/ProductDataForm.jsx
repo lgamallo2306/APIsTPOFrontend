@@ -24,7 +24,7 @@ function ProductDataForm({ product, categories, suggestedPrice, saving, error, o
   const [form, setForm] = useState(productToForm(product, categories, suggestedPrice))
   const [validation, setValidation] = useState('')
 
-  // cuando cambia el producto (se creó, se guardó o se pasó de editar a nuevo), el formulario se actualiza
+
   useEffect(() => {
     setForm(productToForm(product, categories, suggestedPrice))
     setValidation('')

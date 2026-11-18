@@ -11,6 +11,7 @@ export const fetchMyProducts = createAsyncThunk('seller/fetchMyProducts', async 
 export const publishProduct = createAsyncThunk('seller/publishProduct', async ({ token, product, files }) => {
   const { data } = await axios.post(`${URL}/products`, product, authConfig(token))
   let saved = data
+  
   for (let i = 0; i < files.length; i++) {
     const formData = new FormData()
     formData.append('file', files[i])
