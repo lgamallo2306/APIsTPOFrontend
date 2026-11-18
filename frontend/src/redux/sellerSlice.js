@@ -8,9 +8,6 @@ export const fetchMyProducts = createAsyncThunk('seller/fetchMyProducts', async 
     return data
 })
 
-// Alta completa: crea el producto y después sube las imágenes de a una, en orden (la primera queda de portada).
-// files = imágenes elegidas en el paso 2. Si falla una, el producto ya existe: se devuelve igual, con el error,
-// así el vendedor reintenta desde la edición en vez de crear el producto otra vez
 export const publishProduct = createAsyncThunk('seller/publishProduct', async ({ token, product, files }) => {
   const { data } = await axios.post(`${URL}/products`, product, authConfig(token))
   let saved = data
@@ -39,7 +36,7 @@ export const uploadProductImage = createAsyncThunk('seller/uploadProductImage', 
   return data
 })
 
-// un producto para el editor. Es un GET público: no hace falta el token
+
 export const fetchEditorProduct = createAsyncThunk('seller/fetchEditorProduct', async (id) => {
   const { data } = await axios.get(`${URL}/products/${id}`)
   return data
@@ -63,9 +60,8 @@ export const deleteProduct = createAsyncThunk('seller/deleteProduct', async ({ t
 const sellerSlice = createSlice({
     name: 'seller',
     initialState: {
-        // number = página pedida; data = la página que devuelve el back 
+    
         page: {number: null, data: null, loading: false, error: null},
-        // id = producto que se pidió (viene de la URL, es string); product = el que devolvió el back
         editor: { id: null, product: null, loading: false, error: null },
     },
     reducers: {},
@@ -76,11 +72,9 @@ const sellerSlice = createSlice({
                 state.editor = { id: null, product: null, loading: false, error: null }
             })
 
-            // el editor guarda el producto publicado; el id se guarda como string, igual que viene de la URL
             .addCase(publishProduct.fulfilled, (state, action) => {
                 const product = action.payload.product
                 state.editor = { id: String(product.id), product: product, loading: false, error: null }
-                // hay un producto más: la lista se vuelve a pedir la próxima vez que se abra "Mis productos"
                 state.page = { number: null, data: null, loading: false, error: null }
             })
             .addCase(updateProduct.fulfilled, (state, action) => {
@@ -143,4 +137,4 @@ const sellerSlice = createSlice({
     }
 })
 
-export default sellerSlice.reducer
+export default sellerSlice.reducer

@@ -27,7 +27,7 @@ export const deleteReview = createAsyncThunk('reviews/deleteReview', async ({ to
   await axios.delete(`${URL}/reviews/${id}`, authConfig(token))
 })
 
-// product y seller guardan las reseñas del último producto / vendedor pedido (id = lo que se pidió)
+
 const reviewsSlice = createSlice({
   name: 'reviews',
   initialState: {
@@ -63,8 +63,7 @@ const reviewsSlice = createSlice({
         state.seller.error = action.error.message
       })
 
-      // el back las ordena de la más nueva a la más vieja: la nueva va primera.
-      // Solo se agrega si ya están cargadas las reseñas de ese producto / vendedor
+   
       .addCase(createProductReview.fulfilled, (state, action) => {
         if (state.product.id === action.meta.arg.id) {
           state.product.items = [action.payload, ...state.product.items]

@@ -9,7 +9,7 @@ import NewProductImages from './NewProductImages'
 
 const ERROR_GENERICO = 'No pudimos publicar el producto. Intentá de nuevo en unos segundos.'
 
-// Alta en dos pasos. Hasta "Publicar" no se manda nada al back: datos e imágenes quedan en el estado local
+
 function NewProductWizard({ suggestedPrice }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -21,7 +21,7 @@ function NewProductWizard({ suggestedPrice }) {
   const [publishing, setPublishing] = useState(false)
   const [publishError, setPublishError] = useState('')
 
-  // el formulario ya validó los datos: se guardan y se pasa a las imágenes
+
   const handleNext = (data) => {
     setDraft(data)
     setStep(2)
@@ -38,7 +38,7 @@ function NewProductWizard({ suggestedPrice }) {
       }
       const saved = result.payload.product
       if (result.payload.imageError) {
-        // el producto ya existe: se reintentan las imágenes desde la edición, sin crearlo de nuevo
+  
         toast.warning('El producto se publicó, pero no se pudo subir una imagen. Probá de nuevo desde acá.')
         navigate(`/vendedor/productos/${saved.id}`, { replace: true, state: { step: 2 } })
         return
@@ -51,7 +51,6 @@ function NewProductWizard({ suggestedPrice }) {
   return (
     <div className="product-editor">
       <ProductSteps step={step} canChoose={false} onChange={setStep} />
-      {/* el formulario queda montado (oculto) en el paso 2, así no se pierden los datos al volver */}
       <div hidden={step !== 1}>
         <ProductDataForm product={null} categories={categories} suggestedPrice={suggestedPrice} saving={false} error="" onSave={handleNext} />
       </div>
